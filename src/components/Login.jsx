@@ -68,7 +68,7 @@ const Login = () => {
                       </label>
                       <input
                         type="name"
-                        className="input bg-gray-500/80"
+                        className="input bg-gray-500/30 text-black"
                         placeholder="First Name"
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
@@ -82,7 +82,7 @@ const Login = () => {
                       </label>
                       <input
                         type="name"
-                        className="input bg-gray-500/80"
+                        className="input bg-gray-500/30 text-black"
                         placeholder="Last Name"
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
@@ -92,7 +92,7 @@ const Login = () => {
                   <label className="label text-black">email</label>
                   <input
                     type="email"
-                    className="input bg-gray-500/80"
+                    className="input bg-gray-500/30 text-black"
                     placeholder="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -101,7 +101,7 @@ const Login = () => {
                   <label className="label text-black">Password</label>
                   <input
                     type="password"
-                    className="input bg-gray-500/80"
+                    className="input bg-gray-500/30 text-black"
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -129,13 +129,13 @@ const Login = () => {
                   </p>
                 </fieldset>
 
-                <h2 className="text-lg font-bold text-center text-base-300">
+                <h2 className="text-lg font-bold text-center text-blue-800">
                   OR
                 </h2>
 
                 <div
                   id="googleBtn"
-                  className="w-22/23 border border-gray-900"
+                  className="w-full border border-gray-900"
                 ></div>
               </div>
             </div>
