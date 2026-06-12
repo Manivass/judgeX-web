@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { BASE_URL } from "../utils/constant";
+import { useNavigate } from "react-router";
 
 const Login = () => {
   let [firstName, setFirstName] = useState("");
@@ -8,16 +9,17 @@ const Login = () => {
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
   let [signup, setsignUp] = useState(false);
+  const navigate = useNavigate();
   console.log(useEffect);
   const handleGoogleLogin = async (response) => {
     try {
       console.log("Google Token:", response.credential);
-      const res = await axios.post(
+      await axios.post(
         BASE_URL + "/google-login",
-        { token: response.credential, provider: "google" },
+        { token: response.credential, authProvider: "google" },
         { withCredentials: true },
       );
-      console.log("Backend response:", res.data);
+      navigate("/");
     } catch (err) {
       console.log(err);
     }

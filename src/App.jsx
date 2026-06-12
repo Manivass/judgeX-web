@@ -1,12 +1,12 @@
 import Login from "./components/Login";
-import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
-import Home from "./components/Home";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 export const Layout = () => {
   return (
     <>
       <Navbar />
-      <Outlet />
+      <Footer />
     </>
   );
 };
@@ -19,12 +19,6 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
-    children: [
-      {
-        index: true,
-        element: <Home />,
-      },
-    ],
   },
 ]);
 

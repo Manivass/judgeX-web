@@ -1,3 +1,5 @@
+import Home from "./Home";
+
 const Navbar = () => {
   return (
     <div>
@@ -73,7 +75,9 @@ const Navbar = () => {
             <div className="px-4">Navbar Title</div>
           </nav>
           {/* Page content here */}
-          <div className="p-4">Page Content</div>
+          <div className="p-4">
+            <Home />
+          </div>
         </div>
 
         <div className="drawer-side is-drawer-close:overflow-visible">
