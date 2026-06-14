@@ -9,8 +9,33 @@ const Login = () => {
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
   let [signup, setsignUp] = useState(false);
+  let [errMsg, setErr] = useState("");
   const navigate = useNavigate();
-  console.log(useEffect);
+
+  const handleSignUp = async () => {
+    try {
+      await axios.post(
+        BASE_URL + "/signup",
+        { firstName, lastName, email, password },
+        { withCredentials: true },
+      );
+      navigate("/");
+    } catch (err) {
+      setErr(err?.response?.data?.message);
+    }
+  };
+  const handleLogin = async () => {
+    try {
+      await axios.post(
+        BASE_URL + "/login",
+        { email, password },
+        { withCredentials: true },
+      );
+      navigate("/");
+    } catch (err) {
+      setErr(err?.response?.data?.message);
+    }
+  };
   const handleGoogleLogin = async (response) => {
     try {
       console.log("Google Token:", response.credential);
@@ -99,7 +124,6 @@ const Login = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                   />
-
                   <label className="label text-black">Password</label>
                   <input
                     type="password"
@@ -108,14 +132,13 @@ const Login = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   />
-                  {!signup && (
-                    <div>
-                      <a className="link link-hover text-gray-900">
-                        Forgot password?
-                      </a>
-                    </div>
-                  )}
-                  <button className="btn btn-primary mt-4">
+                  <div>
+                    <p className="link link-hover text-red-900">{errMsg}</p>
+                  </div>
+                  <button
+                    className="btn btn-primary mt-4"
+                    onClick={signup ? handleSignUp : handleLogin}
+                  >
                     {signup ? "SignUp" : "Login"}
                   </button>
                   <p className="text-black">
@@ -124,6 +147,10 @@ const Login = () => {
                       className="underline cursor-pointer hover:text-blue-700"
                       onClick={() => {
                         setsignUp(!signup);
+                        setFirstName("");
+                        setLastName("");
+                        setEmail("");
+                        setPassword("");
                       }}
                     >
                       {signup ? "Login" : "SignUp"}
