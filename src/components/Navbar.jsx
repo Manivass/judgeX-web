@@ -2,6 +2,7 @@ import { MdOutlineMenu } from "react-icons/md";
 import { FaHome } from "react-icons/fa";
 import { PiCodesandboxLogoBold } from "react-icons/pi";
 import { TbUserSquareRounded } from "react-icons/tb";
+import { Link } from "react-router-dom";
 const Navbar = () => {
   return (
     <div className="navbar bg-base-100 shadow-sm">
@@ -26,14 +27,14 @@ const Navbar = () => {
               </h2>
               {/* Sidebar content here */}
               <li>
-                <a className="text-lg font-semibold">
+                <Link to="/" className="text-lg font-semibold">
                   <FaHome className="text-2xl my-auto" /> Home
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="text-lg font-semibold">
+                <Link to="/profile" className="text-lg font-semibold">
                   <TbUserSquareRounded className="text-2xl" /> Profile
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

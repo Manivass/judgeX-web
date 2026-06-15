@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { BASE_URL } from "../utils/constant";
 import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
+import { addUser } from "../store/user";
 
 const Login = () => {
   let [firstName, setFirstName] = useState("");
@@ -11,6 +13,7 @@ const Login = () => {
   let [signup, setsignUp] = useState(false);
   let [errMsg, setErr] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSignUp = async () => {
     try {
@@ -38,11 +41,17 @@ const Login = () => {
   };
   const handleGoogleLogin = async (response) => {
     try {
-      console.log("Google Token:", response.credential);
-      await axios.post(
+      const res = await axios.post(
         BASE_URL + "/google-login",
         { token: response.credential, authProvider: "google" },
         { withCredentials: true },
+      );
+
+      const user = res?.data?.user;
+      dispatch(
+        addUser({
+          user,
+        }),
       );
       navigate("/");
     } catch (err) {

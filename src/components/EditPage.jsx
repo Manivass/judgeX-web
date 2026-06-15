@@ -1,5 +1,9 @@
 import { LuPencil } from "react-icons/lu";
+import { useSelector } from "react-redux";
 const Editpage = () => {
+  const userInfo = useSelector((store) => store);
+  console.log(userInfo);
+
   return (
     <div>
       <div className="card   rounded-box   w-55 md:w-auto  grow  px-3 py-1 ">
@@ -20,19 +24,14 @@ const Editpage = () => {
               className="drawer-overlay"
             ></label>
             <div className="menu bg-base-200 min-h-full  w-260 px-5 ">
-              <ul className=" flex  justify-between">
-                <li>
-                  <h2 className="text-4xl font-semibold text-blue-600 ">
-                    Edit Profile
-                  </h2>
-                  <p className="text-slate-600 text-md py-2">
-                    Update your profile and showcase your profile
-                  </p>
-                </li>
-              </ul>
+              <div className="my-3 flex flex-col gap-2">
+                <h3 className="text-4xl text-blue-700 font-semibold">
+                  Edit profile
+                </h3>
+                <p>update your profile to showcase</p>
+              </div>
               {/* Sidebar content here */}
-
-              <div className="border  border-slate-300 h-auto py-1  ">
+              <div className="border border-slate-300 h-full py-1  ">
                 <div className="grid grid-cols-2">
                   {/* FirstBox */}
                   <div className=" px-3 ">
@@ -158,17 +157,17 @@ const Editpage = () => {
                       />
                     </fieldset>
 
-                    <li className="flex flex-col">
-                      <div className="flex  justify-end">
-                        <div className="px-6 py-2 text-md text-white bg-blue-800 rounded-lg">
+                    <div className="flex flex-col">
+                      <div className="flex  justify-end p-4">
+                        <button className="px-7 py-1 cursor-pointer  text-lg text-white bg-blue-800 rounded-lg">
                           Save
-                        </div>
+                        </button>
                       </div>
 
-                      <p className="label text-md text-red-600">
+                      <p className="  text-md text-red-600 text-end  mb-2">
                         *hello Vanakam da mpla
                       </p>
-                    </li>
+                    </div>
                   </div>
                 </div>
               </div>
