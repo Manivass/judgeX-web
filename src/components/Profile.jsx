@@ -4,13 +4,21 @@ import { HiMiniTrophy } from "react-icons/hi2";
 import Editpage from "./EditPage";
 import { useSelector } from "react-redux";
 import { map } from "../utils/constant";
+import { useNavigate } from "react-router";
+import { useEffect } from "react";
 
 const Profile = () => {
   const userDetails = useSelector((store) => store?.user);
-  let joinedDate = userDetails?.data?.user?.createdAt;
-  joinedDate = joinedDate?.slice(0, 9).split("-");
-  console.log(joinedDate);
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    if (!userDetails?.data) {
+      navigate("/login");
+      return null;
+    }
+  }, [userDetails]);
+  let joinedDate = userDetails?.data?.user?.createdAt;
+  joinedDate = joinedDate?.slice(0, 9)?.split("-") || [];
   return (
     <div className="min-h-screen bg-[#050816] p-6">
       {/* Background Glow */}

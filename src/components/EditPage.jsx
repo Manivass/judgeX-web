@@ -1,13 +1,24 @@
+import axios from "axios";
 import { useState } from "react";
 import { LuPencil } from "react-icons/lu";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+import { BASE_URL } from "../utils/constant";
+import { addStateSuggestion } from "../store/stateSuggestion";
 const Editpage = () => {
   const userInfo = useSelector((store) => store?.user);
+  const stateSuggest = useSelector((store) => store?.stateSuggest);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  if (!userInfo) {
+    navigate("/login");
+  }
   let [firstName, setFirstName] = useState(userInfo?.data?.user?.firstName);
   let [lastName, setLastName] = useState(userInfo?.data?.user?.lastName);
   let [contactEmail, setContactEmail] = useState(
     userInfo?.data?.user?.contactEmail,
   );
+  let [isFocus, setIsFocused] = useState(false);
   let [state, setState] = useState(userInfo?.data?.user?.state);
   let [bio, setBio] = useState(userInfo?.data?.user?.bio);
   let [githubURL, setGithubURL] = useState(userInfo?.data?.user?.githubURL);
@@ -20,9 +31,45 @@ const Editpage = () => {
   let [phoneNumber, setPhoneNumber] = useState(
     userInfo?.data?.user?.phoneNumber,
   );
-  console.log(linkedinURL);
-  console.log(githubURL);
-  console.log(instagramURL);
+
+  let [err, setErr] = useState("");
+
+  const handleStateSuggestion = async (e) => {
+    const value = e;
+    setState(value || "");
+    try {
+      const res = await axios.post(
+        BASE_URL + "/state-location-search",
+        { state },
+        { withCredentials: true },
+      );
+      dispatch(addStateSuggestion(res.data.searchResult));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleSaveEditProfile = async () => {
+    try {
+      const res = await axios.post(
+        BASE_URL + "/editProfile",
+        {
+          firstName,
+          lastName,
+          contactEmail,
+          state,
+          bio,
+          githubURL,
+          instagramURL,
+          linkedinURL,
+          phoneNumber,
+        },
+        { withCredentials: true },
+      );
+    } catch (err) {
+      setErr(err?.response?.message);
+    }
+  };
 
   return (
     <div>
@@ -86,7 +133,7 @@ const Editpage = () => {
                           type="text"
                           className="input"
                           placeholder="Enter the LastName"
-                          value={lastName}
+                          value={lastName || ""}
                           onChange={(e) => setLastName(e.target.value)}
                         />
                       </fieldset>
@@ -98,7 +145,7 @@ const Editpage = () => {
                           type="text"
                           className="input"
                           placeholder="Enter the Contact email"
-                          value={contactEmail}
+                          value={contactEmail || ""}
                           onChange={(e) => setContactEmail(e.target.value)}
                         />
                       </fieldset>
@@ -110,7 +157,7 @@ const Editpage = () => {
                           type="text"
                           className="input"
                           placeholder="Enter the Phone Number"
-                          value={phoneNumber}
+                          value={phoneNumber || ""}
                           onChange={(e) => setPhoneNumber(e.target.value)}
                         />
                       </fieldset>
@@ -120,10 +167,28 @@ const Editpage = () => {
                           type="text"
                           placeholder="Enter the State"
                           className="input w-full h-10 p-5 border border-slate-400"
-                          value={state}
-                          onChange={(e) => setState(e.target.value)}
+                          value={state || ""}
+                          onChange={(e) =>
+                            handleStateSuggestion(e.target.value)
+                          }
+                          onFocus={() => setIsFocused(true)}
+                          onBlur={() =>
+                            setTimeout(() => setIsFocused(false), 500)
+                          }
                         />
-                        <div className="bg-white h-28"></div>
+                        <div className="bg-white h-auto">
+                          {isFocus &&
+                            stateSuggest?.map((sugg) => {
+                              return (
+                                <div
+                                  className="h-7 font-semibold border border-slate-400 my-auto cursor-pointer px-3 pt-2 hover:bg-gray-400"
+                                  onClick={() => setState(sugg)}
+                                >
+                                  <h2 className="text-md">{sugg}</h2>
+                                </div>
+                              );
+                            })}
+                        </div>
                       </fieldset>
                       <fieldset className="fieldset">
                         <legend className="fieldset-legend">Country</legend>
@@ -131,7 +196,6 @@ const Editpage = () => {
                           type="text"
                           placeholder="Enter the Country"
                           className="input border border-slate-400 h-10 p-5  "
-                          value="India"
                         />
                       </fieldset>
                     </div>
@@ -144,7 +208,7 @@ const Editpage = () => {
                       <textarea
                         placeholder="Enter your Bio"
                         className="textarea textarea-info  h-auto  w-full"
-                        value={bio}
+                        value={bio || ""}
                         onChange={(e) => setBio(e.target.value)}
                       ></textarea>
                     </fieldset>
@@ -154,7 +218,7 @@ const Editpage = () => {
                         type="text"
                         placeholder="Enter your github URL"
                         className="input w-full h-10 p-5 border border-slate-400"
-                        value={githubURL}
+                        value={githubURL || ""}
                         onChange={(e) => setGithubURL(e.target.value)}
                       />
                     </fieldset>
@@ -164,7 +228,7 @@ const Editpage = () => {
                         type="text"
                         placeholder="Enter your linkedin URL"
                         className="input w-full h-10 p-5 border border-slate-400"
-                        value={linkedinURL}
+                        value={linkedinURL || ""}
                         onChange={(e) => setLinkedinURL(e.target.value)}
                       />
                     </fieldset>
@@ -174,20 +238,23 @@ const Editpage = () => {
                         type="text"
                         placeholder="Enter your instagram URL"
                         className="input w-full h-10 p-5 border border-slate-400"
-                        value={instagramURL}
+                        value={instagramURL || ""}
                         onChange={(e) => setinstagramURL(e.target.value)}
                       />
                     </fieldset>
 
                     <div className="flex flex-col">
                       <div className="flex  justify-end p-4">
-                        <button className="px-7 py-1 cursor-pointer  text-lg text-white bg-blue-800 rounded-lg border border-blue-950 hover:-translate-y-1 duration-500">
+                        <button
+                          className="px-7 py-1 cursor-pointer font-semibold text-lg text-white bg-blue-800 rounded-lg border border-blue-950 hover:-translate-y-1 duration-500 "
+                          onClick={handleSaveEditProfile}
+                        >
                           Save
                         </button>
                       </div>
 
                       <p className="  text-md text-red-600 text-end  mb-2">
-                        *hello Vanakam da mpla
+                        {err}
                       </p>
                     </div>
                   </div>
