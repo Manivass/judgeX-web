@@ -1,19 +1,15 @@
-import { FaGithub, FaLinkedin, FaPen, FaCheckCircle } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaCheckCircle } from "react-icons/fa";
 import { MdOutlineEmail, MdLocationOn } from "react-icons/md";
 import { HiMiniTrophy } from "react-icons/hi2";
 import Editpage from "./EditPage";
+import { useSelector } from "react-redux";
+import { map } from "../utils/constant";
 
 const Profile = () => {
-  const user = {
-    firstName: "Manivass",
-    lastName: "V",
-    email: "manivass@gmail.com",
-    college: "Bannari Amman Institute of Technology",
-    location: "Tamil Nadu, India",
-    role: "User",
-    joined: "Nov 2023",
-    profilePicture: "https://i.pravatar.cc/300",
-  };
+  const userDetails = useSelector((store) => store?.user);
+  let joinedDate = userDetails?.data?.user?.createdAt;
+  joinedDate = joinedDate?.slice(0, 9).split("-");
+  console.log(joinedDate);
 
   return (
     <div className="min-h-screen bg-[#050816] p-6">
@@ -35,23 +31,24 @@ const Profile = () => {
 
             <div className="flex flex-col md:flex-row gap-6">
               <div className="avatar">
-                <div className="w-32 md:w-40 h-40 rounded-full  ring-offset-4 ring-offset-base-100 shadow-[0_0_40px_rgba(59,130,246,0.4)]">
-                  <img src={user.profilePicture} alt="" />
+                <div className="w-32 md:w-35 h-35 rounded-full  ring-offset-4 ring-offset-base-100 shadow-[0_0_40px_rgba(59,130,246,0.4)]">
+                  <img src={userDetails?.data?.user?.profilePicture} alt="" />
                 </div>
               </div>
 
               <div>
                 <div className="flex items-center gap-3 flex-wrap">
-                  <h1 className="text-4xl font-bold text-white">
-                    {user.firstName} {user.lastName}
+                  <h1 className="text-3xl font-bold text-white">
+                    {userDetails?.data?.user?.firstName}{" "}
+                    {userDetails?.data?.user?.lastName}
                   </h1>
                 </div>
 
-                <p className="mt-2 text-slate-400">{user.college}</p>
+                <p className="mt-2 text-slate-400">{userDetails?.college}</p>
 
                 <div className="flex items-center gap-2 mt-2 text-slate-400">
                   <MdLocationOn />
-                  {user.location}
+                  <h2 className="text-sm font-semibold">TamilNadu,India</h2>
                 </div>
 
                 <p className="mt-4 text-slate-300">
@@ -64,7 +61,6 @@ const Profile = () => {
                     <FaGithub />
                     GitHub
                   </a>
-
                   <a href="#" className="btn btn-sm btn-outline">
                     <FaLinkedin />
                     LinkedIn
@@ -81,15 +77,19 @@ const Profile = () => {
               <div className="space-y-3 mt-6 lg:mt-0">
                 <div className="flex items-center gap-3 text-slate-300">
                   <MdOutlineEmail />
-                  {user.email}
+                  {userDetails?.data?.user?.email}
                 </div>
 
                 <div className="flex items-center gap-3 text-slate-300">
-                  📅 Joined {user.joined}
+                  📅 <span className="font-semibold">Joined :</span>
+                  {joinedDate[2] +
+                    " " +
+                    map[joinedDate[1]] +
+                    " " +
+                    joinedDate[0]}
                 </div>
-
                 <div className="flex items-center gap-3 text-slate-300">
-                  🎯 Role : {user.role}
+                  🎯 Role : {userDetails?.data?.user?.role}
                 </div>
               </div>
             </div>
@@ -108,7 +108,6 @@ const Profile = () => {
 
             <p className="text-slate-500 mt-2">Rank #25,543</p>
           </div>
-
           <div className="group rounded-3xl bg-gradient-to-br from-cyan-500/10 to-transparent border border-cyan-500/20 p-6 hover:-translate-y-2 transition duration-300">
             <HiMiniTrophy className="text-3xl text-cyan-400" />
 
@@ -133,6 +132,7 @@ const Profile = () => {
             <div
               className="radial-progress text-warning"
               style={{ "--value": 73 }}
+              role="progressbar"
             >
               73%
             </div>
