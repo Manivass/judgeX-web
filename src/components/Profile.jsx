@@ -7,6 +7,7 @@ import { map } from "../utils/constant";
 import { useNavigate } from "react-router";
 import { useEffect } from "react";
 import { FaInstagram } from "react-icons/fa";
+import { RiGraduationCapFill } from "react-icons/ri";
 const Profile = () => {
   const userDetails = useSelector((store) => store?.user);
   const navigate = useNavigate();
@@ -60,16 +61,20 @@ const Profile = () => {
                     {userDetails?.data?.user?.lastName}
                   </h1>
                 </div>
+                <div className=" flex gap-4 text-slate-400">
+                  <div className="flex items-center gap-2  ">
+                    <RiGraduationCapFill className=" my-auto  mt-3" />
+                    <p className="mt-2 text-slate-400 font-semibold">
+                      {userDetails?.data?.user?.college}
+                    </p>
+                  </div>
 
-                <p className="mt-2 text-slate-400">
-                  {userDetails?.data?.user?.college}
-                </p>
-
-                <div className="flex items-center gap-2 mt-2 text-slate-400">
-                  <MdLocationOn />
-                  <h2 className="text-sm font-semibold">
-                    {userDetails?.data?.user?.state},India
-                  </h2>
+                  <div className="flex items-center gap-2 mt-2 ">
+                    <MdLocationOn />
+                    <h2 className="text-sm font-semibold">
+                      {userDetails?.data?.user?.state},India
+                    </h2>
+                  </div>
                 </div>
 
                 <p className="mt-4 text-slate-300">
@@ -79,21 +84,21 @@ const Profile = () => {
                 <div className="flex gap-4 mt-5">
                   <a
                     href={userDetails?.data?.user?.githubURL}
-                    className="btn btn-sm btn-outline"
+                    className="btn  btn-active btn-outline hover:btn-success hover:duration-500"
                   >
                     <FaGithub />
                     GitHub
                   </a>
                   <a
                     href={userDetails?.data?.user?.linkedinURL}
-                    className="btn btn-sm btn-outline"
+                    className="btn  btn-active btn-outline hover:btn-success hover:duration-500"
                   >
                     <FaLinkedin />
                     LinkedIn
                   </a>
                   <a
                     href={userDetails?.data?.user?.instagramURL}
-                    className="btn btn-sm btn-outline"
+                    className="btn  btn-active btn-outline hover:btn-success hover:duration-500 "
                   >
                     <FaInstagram />
                     Instagram
@@ -230,12 +235,12 @@ const Profile = () => {
           </div>
         </div>
       </div>
-      <div className=" p-6">
+      <div className="p-6">
         <div className="max-w-7xl mx-auto">
           {/* Top Cards */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
             {/* Problems Solved */}
-            <div className="card bg-indigo-200 shadow-xl">
+            <div className="card bg-gray-900 shadow-xs shadow-slate-400 border border-slate-700">
               <div className="card-body">
                 <h2 className="card-title text-sm text-gray-400">
                   Problems Solved
@@ -257,24 +262,24 @@ const Profile = () => {
                 <div className="space-y-2">
                   <div className="flex justify-between">
                     <span className="text-success">Easy</span>
-                    <span>{easy}</span>
+                    <span className="text-white">{easy}</span>
                   </div>
 
                   <div className="flex justify-between">
                     <span className="text-warning">Medium</span>
-                    <span>{medium}</span>
+                    <span className="text-white"> {medium}</span>
                   </div>
 
                   <div className="flex justify-between">
                     <span className="text-error">Hard</span>
-                    <span>{hard}</span>
+                    <span className="text-white">{hard}</span>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Submission Overview */}
-            <div className="card bg-indigo-200 shadow-xl">
+            <div className="card bg-gray-900 shadow-xs shadow-slate-400 border border-slate-700">
               <div className="card-body">
                 <h2 className="card-title text-sm text-gray-400">
                   Submission Overview
@@ -296,31 +301,31 @@ const Profile = () => {
                 <div className="space-y-2">
                   <div className="flex justify-between">
                     <span className="text-success">Accepted</span>
-                    <span>500</span>
+                    <span className="text-white">500</span>
                   </div>
 
                   <div className="flex justify-between">
                     <span className="text-error">Wrong Answer</span>
-                    <span>150</span>
+                    <span className="text-white">150</span>
                   </div>
 
                   <div className="flex justify-between">
                     <span className="text-warning">Runtime Error</span>
-                    <span>40</span>
+                    <span className="text-white">40</span>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Acceptance Rate */}
-            <div className="card bg-indigo-200 shadow-xl">
+            <div className="card bg-gray-900 shadow-xs shadow-slate-400 border border-slate-700">
               <div className="card-body">
                 <div className="flex justify-between items-center">
                   <h2 className="card-title text-sm text-gray-400">
                     Acceptance Rate
                   </h2>
 
-                  <select className="select select-xs">
+                  <select className="select select-xs bg-gray-200">
                     <option>6 Months</option>
                   </select>
                 </div>
@@ -341,7 +346,7 @@ const Profile = () => {
           {/* Bottom Cards */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5">
             {/* Recent Submissions */}
-            <div className="card bg-indigo-200 shadow-xl">
+            <div className="card bg-gray-900 shadow-xs shadow-slate-400 border border-slate-700">
               <div className="card-body">
                 <h2 className="card-title text-sm text-gray-400">
                   Recent Submissions
@@ -350,7 +355,7 @@ const Profile = () => {
                 <div className="space-y-4 mt-2">
                   <div className="flex justify-between">
                     <div>
-                      <p>Two Sum</p>
+                      <p className="text-white">Two Sum</p>
                       <div className="badge badge-success badge-sm">Easy</div>
                     </div>
 
@@ -359,7 +364,7 @@ const Profile = () => {
 
                   <div className="flex justify-between">
                     <div>
-                      <p>Merge Intervals</p>
+                      <p className="text-white">Merge Intervals</p>
                       <div className="badge badge-warning badge-sm">Medium</div>
                     </div>
 
@@ -368,7 +373,7 @@ const Profile = () => {
 
                   <div className="flex justify-between">
                     <div>
-                      <p>Regular Expression Matching</p>
+                      <p className="text-white">Regular Expression Matching</p>
                       <div className="badge badge-error badge-sm">Hard</div>
                     </div>
 
@@ -379,7 +384,7 @@ const Profile = () => {
             </div>
 
             {/* Activity Calendar */}
-            <div className="card bg-indigo-200 shadow-xl">
+            <div className="card bg-gray-900 shadow-xs shadow-slate-400 border border-slate-700">
               <div className="card ">
                 <div className="card-body">
                   <h2 className="card-title text-sm text-gray-400">
@@ -407,7 +412,7 @@ const Profile = () => {
                     Contest Performance
                   </h2>
 
-                  <div className="stats  bg-gray-200">
+                  <div className="stats stats-vertical lg:stats-horizontal shadow bg-gray-200">
                     <div className="stat">
                       <div className="stat-title">Rating</div>
                       <div className="stat-value text-primary">1650</div>

@@ -66,6 +66,7 @@ const Editpage = () => {
           instagramURL,
           linkedinURL,
           phoneNumber,
+          college,
         },
         { withCredentials: true },
       );
