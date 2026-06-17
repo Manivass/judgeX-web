@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { map } from "../utils/constant";
 import { useNavigate } from "react-router";
 import { useEffect } from "react";
-
+import { FaInstagram } from "react-icons/fa";
 const Profile = () => {
   const userDetails = useSelector((store) => store?.user);
   const navigate = useNavigate();
@@ -18,7 +18,16 @@ const Profile = () => {
     }
   }, [userDetails]);
   let joinedDate = userDetails?.data?.user?.createdAt;
-  joinedDate = joinedDate?.slice(0, 9)?.split("-") || [];
+  joinedDate = joinedDate?.slice(0, 10)?.split("-") || [];
+
+  let easy = userDetails?.data?.user?.solvedProblems?.easy;
+  let medium = userDetails?.data?.user?.solvedProblems?.medium;
+  let hard = userDetails?.data?.user?.solvedProblems?.hard;
+
+  let submissionEasy = userDetails?.data?.user?.totalSubmissions?.easy;
+  let submissionMedium = userDetails?.data?.user?.totalSubmissions?.medium;
+  let submissionHard = userDetails?.data?.user?.totalSubmissions?.hard;
+
   return (
     <div className="min-h-screen bg-[#050816] p-6">
       {/* Background Glow */}
@@ -52,26 +61,42 @@ const Profile = () => {
                   </h1>
                 </div>
 
-                <p className="mt-2 text-slate-400">{userDetails?.college}</p>
+                <p className="mt-2 text-slate-400">
+                  {userDetails?.data?.user?.college}
+                </p>
 
                 <div className="flex items-center gap-2 mt-2 text-slate-400">
                   <MdLocationOn />
-                  <h2 className="text-sm font-semibold">TamilNadu,India</h2>
+                  <h2 className="text-sm font-semibold">
+                    {userDetails?.data?.user?.state},India
+                  </h2>
                 </div>
 
                 <p className="mt-4 text-slate-300">
-                  Full Stack Developer | DSA Enthusiast | Building cool projects
-                  every day 🚀
+                  {userDetails?.data?.user?.bio}
                 </p>
 
                 <div className="flex gap-4 mt-5">
-                  <a href="#" className="btn btn-sm btn-outline">
+                  <a
+                    href={userDetails?.data?.user?.githubURL}
+                    className="btn btn-sm btn-outline"
+                  >
                     <FaGithub />
                     GitHub
                   </a>
-                  <a href="#" className="btn btn-sm btn-outline">
+                  <a
+                    href={userDetails?.data?.user?.linkedinURL}
+                    className="btn btn-sm btn-outline"
+                  >
                     <FaLinkedin />
                     LinkedIn
+                  </a>
+                  <a
+                    href={userDetails?.data?.user?.instagramURL}
+                    className="btn btn-sm btn-outline"
+                  >
+                    <FaInstagram />
+                    Instagram
                   </a>
                 </div>
               </div>
@@ -112,7 +137,9 @@ const Profile = () => {
 
             <p className="mt-4 text-slate-400">Problems Solved</p>
 
-            <h1 className="text-5xl font-bold text-emerald-400 mt-2">220</h1>
+            <h1 className="text-5xl font-bold text-emerald-400 mt-2">
+              {userDetails?.data?.user?.solvedProblems?.total}
+            </h1>
 
             <p className="text-slate-500 mt-2">Rank #25,543</p>
           </div>
@@ -121,7 +148,9 @@ const Profile = () => {
 
             <p className="mt-4 text-slate-400">Problems Attempted</p>
 
-            <h1 className="text-5xl font-bold text-cyan-400 mt-2">275</h1>
+            <h1 className="text-5xl font-bold text-cyan-400 mt-2">
+              {submissionEasy + submissionMedium + submissionHard}
+            </h1>
 
             <p className="text-slate-500 mt-2">Rank #33,284</p>
           </div>
@@ -131,7 +160,9 @@ const Profile = () => {
 
             <p className="mt-4 text-slate-400">Total Submissions</p>
 
-            <h1 className="text-5xl font-bold text-purple-400 mt-2">705</h1>
+            <h1 className="text-5xl font-bold text-purple-400 mt-2">
+              {userDetails?.data?.user?.totalSubmissions?.total}
+            </h1>
 
             <p className="text-slate-500 mt-2">Rank #44,112</p>
           </div>
@@ -162,25 +193,24 @@ const Profile = () => {
             <div>
               <div className="flex justify-between text-sm text-slate-300 mb-2">
                 <span>Easy</span>
-                <span>150 / 200</span>
+                <span>{easy} / 200</span>
               </div>
 
               <progress
                 className="progress progress-success w-full"
-                value="75"
-                max="100"
+                value={easy}
+                max="200"
               ></progress>
             </div>
-
             <div>
               <div className="flex justify-between text-sm text-slate-300 mb-2">
                 <span>Medium</span>
-                <span>60 / 150</span>
+                <span>{medium} / 150</span>
               </div>
 
               <progress
                 className="progress progress-warning w-full"
-                value="40"
+                value={medium}
                 max="100"
               ></progress>
             </div>
@@ -188,14 +218,208 @@ const Profile = () => {
             <div>
               <div className="flex justify-between text-sm text-slate-300 mb-2">
                 <span>Hard</span>
-                <span>10 / 50</span>
+                <span>{hard} / 50</span>
               </div>
 
               <progress
                 className="progress progress-error w-full"
-                value="20"
+                value={hard}
                 max="100"
               ></progress>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className=" p-6">
+        <div className="max-w-7xl mx-auto">
+          {/* Top Cards */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+            {/* Problems Solved */}
+            <div className="card bg-indigo-200 shadow-xl">
+              <div className="card-body">
+                <h2 className="card-title text-sm text-gray-400">
+                  Problems Solved
+                </h2>
+
+                <div className="flex justify-center py-4">
+                  <div
+                    className="radial-progress text-success"
+                    style={{
+                      "--value": 56,
+                      "--size": "8rem",
+                    }}
+                    role="progressbar"
+                  >
+                    120
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-success">Easy</span>
+                    <span>{easy}</span>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <span className="text-warning">Medium</span>
+                    <span>{medium}</span>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <span className="text-error">Hard</span>
+                    <span>{hard}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Submission Overview */}
+            <div className="card bg-indigo-200 shadow-xl">
+              <div className="card-body">
+                <h2 className="card-title text-sm text-gray-400">
+                  Submission Overview
+                </h2>
+
+                <div className="flex justify-center py-4">
+                  <div
+                    className="radial-progress text-primary"
+                    style={{
+                      "--value": 71,
+                      "--size": "8rem",
+                    }}
+                    role="progressbar"
+                  >
+                    705
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-success">Accepted</span>
+                    <span>500</span>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <span className="text-error">Wrong Answer</span>
+                    <span>150</span>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <span className="text-warning">Runtime Error</span>
+                    <span>40</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Acceptance Rate */}
+            <div className="card bg-indigo-200 shadow-xl">
+              <div className="card-body">
+                <div className="flex justify-between items-center">
+                  <h2 className="card-title text-sm text-gray-400">
+                    Acceptance Rate
+                  </h2>
+
+                  <select className="select select-xs">
+                    <option>6 Months</option>
+                  </select>
+                </div>
+
+                <div className="flex items-end justify-between h-48 mt-6">
+                  {[45, 65, 40, 30, 70, 60].map((h, i) => (
+                    <div
+                      key={i}
+                      className="w-6 bg-primary rounded-t"
+                      style={{ height: `${h}%` }}
+                    ></div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Cards */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5">
+            {/* Recent Submissions */}
+            <div className="card bg-indigo-200 shadow-xl">
+              <div className="card-body">
+                <h2 className="card-title text-sm text-gray-400">
+                  Recent Submissions
+                </h2>
+
+                <div className="space-y-4 mt-2">
+                  <div className="flex justify-between">
+                    <div>
+                      <p>Two Sum</p>
+                      <div className="badge badge-success badge-sm">Easy</div>
+                    </div>
+
+                    <span className="text-success">Accepted</span>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <div>
+                      <p>Merge Intervals</p>
+                      <div className="badge badge-warning badge-sm">Medium</div>
+                    </div>
+
+                    <span className="text-success">Accepted</span>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <div>
+                      <p>Regular Expression Matching</p>
+                      <div className="badge badge-error badge-sm">Hard</div>
+                    </div>
+
+                    <span className="text-error">Wrong Answer</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Activity Calendar */}
+            <div className="card bg-indigo-200 shadow-xl">
+              <div className="card ">
+                <div className="card-body">
+                  <h2 className="card-title text-sm text-gray-400">
+                    Coding Streak
+                  </h2>
+
+                  <div className="stats stats-vertical lg:stats-horizontal shadow bg-gray-200">
+                    <div className="stat">
+                      <div className="stat-title">Current Streak</div>
+                      <div className="stat-value text-success">21</div>
+                      <div className="stat-desc">Days</div>
+                    </div>
+
+                    <div className="stat">
+                      <div className="stat-title">Best Streak</div>
+                      <div className="stat-value text-primary">48</div>
+                      <div className="stat-desc">Days</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="card ">
+                <div className="card-body">
+                  <h2 className="card-title text-sm text-gray-400">
+                    Contest Performance
+                  </h2>
+
+                  <div className="stats  bg-gray-200">
+                    <div className="stat">
+                      <div className="stat-title">Rating</div>
+                      <div className="stat-value text-primary">1650</div>
+                    </div>
+
+                    <div className="stat">
+                      <div className="stat-title">Rank</div>
+                      <div className="stat-value text-success">#1243</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

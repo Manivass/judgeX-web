@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { BASE_URL } from "../utils/constant";
 import { addStateSuggestion } from "../store/stateSuggestion";
+import { addUser } from "../store/user";
 const Editpage = () => {
   const userInfo = useSelector((store) => store?.user);
   const stateSuggest = useSelector((store) => store?.stateSuggest);
@@ -32,7 +33,9 @@ const Editpage = () => {
     userInfo?.data?.user?.phoneNumber,
   );
 
-  let [err, setErr] = useState("");
+  let [college, setCollege] = useState("");
+  let [success, setSuccess] = useState("");
+  let [errInfo, setErr] = useState("");
 
   const handleStateSuggestion = async (e) => {
     const value = e;
@@ -40,12 +43,12 @@ const Editpage = () => {
     try {
       const res = await axios.post(
         BASE_URL + "/state-location-search",
-        { state },
+        { value },
         { withCredentials: true },
       );
       dispatch(addStateSuggestion(res.data.searchResult));
     } catch (err) {
-      console.log(err);
+      setErr(err?.response?.data?.message);
     }
   };
 
@@ -66,8 +69,15 @@ const Editpage = () => {
         },
         { withCredentials: true },
       );
+      const user = res?.data?.message;
+      dispatch(addUser({ user }));
+      setErr("");
+      setSuccess(true);
+      setTimeout(() => {
+        setSuccess(false);
+      }, 3000);
     } catch (err) {
-      setErr(err?.response?.message);
+      setErr(err?.response?.data?.message);
     }
   };
 
@@ -213,6 +223,16 @@ const Editpage = () => {
                       ></textarea>
                     </fieldset>
                     <fieldset className="fieldset">
+                      <legend className="fieldset-legend">college</legend>
+                      <input
+                        type="text"
+                        placeholder="Enter your github URL"
+                        className="input w-full h-10 p-5 border border-slate-400"
+                        value={college || ""}
+                        onChange={(e) => setCollege(e.target.value)}
+                      />
+                    </fieldset>
+                    <fieldset className="fieldset">
                       <legend className="fieldset-legend">Github URL</legend>
                       <input
                         type="text"
@@ -252,9 +272,8 @@ const Editpage = () => {
                           Save
                         </button>
                       </div>
-
-                      <p className="  text-md text-red-600 text-end  mb-2">
-                        {err}
+                      <p className=" text-md text-red-600 text-end  mb-2">
+                        {errInfo}
                       </p>
                     </div>
                   </div>
@@ -264,6 +283,13 @@ const Editpage = () => {
           </div>
         </div>
       </div>
+      {success && (
+        <div className="toast toast-top toast-center z-50">
+          <div className="alert alert-success">
+            <span>profile updated successfully.</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
