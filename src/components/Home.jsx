@@ -1,15 +1,36 @@
+import axios from "axios";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import { BASE_URL } from "../utils/constant";
+import { addStats } from "../store/stats";
+import CodeEditor from "./CodeEditor";
 
 const Home = () => {
   const navigate = useNavigate();
   const userDetails = useSelector((store) => store?.user);
+  const dispatch = useDispatch();
+  const stats = useSelector((store) => store?.stats);
+
+  const getStats = async () => {
+    try {
+      const res = await axios.get(BASE_URL + "/dashboard/stats", {
+        withCredentials: true,
+      });
+      dispatch(addStats(res?.data?.stats));
+    } catch (err) {
+      console.log(err?.response?.data?.message);
+    }
+  };
   useEffect(() => {
     if (!userDetails?.data) {
       navigate("/login");
     }
   }, [userDetails]);
+
+  useEffect(() => {
+    getStats();
+  }, []);
   return (
     <div className="w-screen border border-slate-800 bg-[#0B1120]">
       <div className="max-w-screen mx-auto  overflow-hidden  shadow-2xl">
@@ -55,7 +76,9 @@ const Home = () => {
             <div className="text-blue-500 text-3xl">👥</div>
 
             <div>
-              <h3 className="font-bold text-xl text-gray-200">12,540</h3>
+              <h3 className="font-bold text-xl text-gray-200">
+                {stats?.totalUser}
+              </h3>
               <p className="text-xs text-slate-400">Total Users</p>
             </div>
           </div>
@@ -64,7 +87,9 @@ const Home = () => {
             <div className="text-green-500 text-3xl">📄</div>
 
             <div>
-              <h3 className="font-bold text-xl text-gray-200">350</h3>
+              <h3 className="font-bold text-xl text-gray-200">
+                {stats?.totalQuestions}
+              </h3>
               <p className="text-xs text-slate-400">Total Problems</p>
             </div>
           </div>
@@ -73,7 +98,9 @@ const Home = () => {
             <div className="text-yellow-500 text-3xl">{"</>"}</div>
 
             <div>
-              <h3 className="font-bold text-xl text-gray-200">50,892</h3>
+              <h3 className="font-bold text-xl text-gray-200">
+                {stats?.submissions}
+              </h3>
               <p className="text-xs text-slate-400">Total Submissions</p>
             </div>
           </div>
@@ -97,19 +124,25 @@ const Home = () => {
             <div className="grid grid-cols-3 gap-3 mt-3">
               <div className="bg-green-900/30 rounded-lg p-4 text-center">
                 <p className="text-green-400 font-semibold">Easy</p>
-                <h1 className="text-3xl font-bold mt-2 text-white">120</h1>
+                <h1 className="text-3xl font-bold mt-2 text-white">
+                  {stats?.easyQuestions}
+                </h1>
                 <p className="text-xs text-slate-400">Problems</p>
               </div>
 
               <div className="bg-yellow-900/30 rounded-lg p-4 text-center">
                 <p className="text-yellow-400 font-semibold">Medium</p>
-                <h1 className="text-3xl font-bold mt-2 text-white">150</h1>
+                <h1 className="text-3xl font-bold mt-2 text-white">
+                  {stats?.mediumQuestions}
+                </h1>
                 <p className="text-xs text-slate-400">Problems</p>
               </div>
 
               <div className="bg-red-900/30 rounded-lg p-4 text-center">
                 <p className="text-red-400 font-semibold">Hard</p>
-                <h1 className="text-3xl font-bold mt-2 text-white">80</h1>
+                <h1 className="text-3xl font-bold mt-2 text-white">
+                  {stats?.hardQuestions}
+                </h1>
                 <p className="text-xs text-slate-400">Problems</p>
               </div>
             </div>
@@ -252,6 +285,7 @@ const Home = () => {
           </div>
         </div>
       </div>
+      <CodeEditor />
     </div>
   );
 };

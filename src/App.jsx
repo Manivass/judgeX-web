@@ -6,6 +6,7 @@ import Profile from "./components/Profile";
 import Home from "./components/Home";
 import { Provider } from "react-redux";
 import store from "./store/store";
+import CodeEditor from "./components/CodeEditor";
 
 export const Layout = () => {
   return (
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: "/profile",
         element: <Profile />,
+      },
+      {
+        path: "/codeEditor",
+        element: <CodeEditor />,
       },
     ],
   },
