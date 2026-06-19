@@ -15,3 +15,29 @@ export const map = {
   12: "Dec",
 };
 
+export const boilerplates = {
+  java: `public class Solution {
+    public static void main(String[] args) {
+
+    }
+}`,
+
+  javascript: `function solve() {
+
+}
+
+solve();`,
+
+  python: `def solve():
+    pass
+
+solve()`,
+
+  "c++": `#include <iostream>
+using namespace std;
+
+int main() {
+
+    return 0;
+}`,
+};
