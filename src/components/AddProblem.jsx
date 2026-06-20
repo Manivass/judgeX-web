@@ -1,6 +1,20 @@
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { BASE_URL } from "../utils/constant";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 
 const AddProblem = () => {
+  const user = useSelector((store) => store?.user?.data);
+  console.log(user);
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    console.log(user);
+    if (!user) {
+      navigate("/login");
+    }
+  }, []);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [constraint, setConstraint] = useState([""]);
@@ -8,6 +22,12 @@ const AddProblem = () => {
   const [testcase, setTestcase] = useState([
     { input: "", output: "", hidden: false },
   ]);
+  const [timeLimit, setTimeLimit] = useState(0);
+  const [memoryLimit, setMemoryLimit] = useState(0);
+  let [dataStructure, setDataStructure] = useState("");
+  const [explanation, setExplanation] = useState("");
+  const [errMsg, setErr] = useState("");
+
   const addConstraint = () => {
     setConstraint([...constraint, ""]);
   };
@@ -40,10 +60,38 @@ const AddProblem = () => {
     ]);
   };
 
+  const handleSaveProblem = async () => {
+    try {
+      let dataStructureSplit = dataStructure
+        .split(",")
+        .map((val) => val.trim());
+      let res = await axios.post(
+        BASE_URL + "/addQuestions",
+        {
+          title,
+          description,
+          constraint,
+          difficulty,
+          testcase,
+          timeLimit,
+          dataStructure: dataStructureSplit,
+          memoryLimit,
+          explanation,
+        },
+        {
+          withCredentials: true,
+        },
+      );
+      console.log(res?.data);
+    } catch (err) {
+      setErr(err?.response?.data?.message);
+    }
+  };
+
   const handleHiddenTestCase = (index) => {
     let updated = [...testcase];
     updated[index].hidden = !updated[index].hidden;
-    setConstraint(updated);
+    setTestcase(updated);
   };
 
   const handleDelete = (index) => {
@@ -93,12 +141,11 @@ const AddProblem = () => {
                   <select
                     className="select select-bordered w-full"
                     value={difficulty}
+                    onChange={(e) => setDifficulty(e.target.value)}
                   >
-                    <option onClick={() => setDifficulty("easy")}>Easy</option>
-                    <option onClick={() => setDifficulty("medium")}>
-                      Medium
-                    </option>
-                    <option onClick={() => setDifficulty("hard")}>Hard</option>
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
                   </select>
                 </div>
               </div>
@@ -113,6 +160,8 @@ const AddProblem = () => {
                   <input
                     type="text"
                     placeholder="Array, HashMap"
+                    value={dataStructure}
+                    onChange={(e) => setDataStructure(e.target.value)}
                     className="input input-bordered w-full"
                   />
                 </div>
@@ -123,9 +172,9 @@ const AddProblem = () => {
                   </label>
 
                   <input
-                    type="number"
                     className="input input-bordered w-full"
-                    defaultValue={1000}
+                    value={timeLimit}
+                    onChange={(e) => setTimeLimit(Number(e.target.value))}
                   />
                 </div>
               </div>
@@ -137,9 +186,9 @@ const AddProblem = () => {
                 </label>
 
                 <input
-                  type="number"
                   className="input input-bordered w-full"
-                  defaultValue={256}
+                  value={memoryLimit}
+                  onChange={(e) => setMemoryLimit(Number(e.target.value))}
                 />
               </div>
 
@@ -203,6 +252,8 @@ const AddProblem = () => {
                 <textarea
                   className="textarea textarea-bordered w-full h-40"
                   placeholder="Provide explanation..."
+                  value={explanation}
+                  onChange={(e) => setExplanation(e.target.value)}
                 />
               </div>
             </div>
@@ -221,7 +272,7 @@ const AddProblem = () => {
                   + Add Test Case
                 </button>
               </div>
-              <div className="grid grid-cols-3 align-items-center gap-4">
+              <div className="grid grid-grid-cols-1 lg:grid-cols-3 align-items-center gap-4">
                 {/* Test Case 1 */}
                 {testcase?.map((item, index) => {
                   return (
@@ -270,7 +321,7 @@ const AddProblem = () => {
                             type="checkbox"
                             className="toggle toggle-primary"
                             checked={item.hidden}
-                            onClick={() => handleHiddenTestCase(index)}
+                            onChange={() => handleHiddenTestCase(index)}
                           />
                         </div>
 
@@ -285,13 +336,17 @@ const AddProblem = () => {
                   );
                 })}
               </div>
-
               {/* Buttons */}
               <div className="flex justify-end gap-3 pt-4">
                 <button className="btn btn-ghost">Cancel</button>
 
-                <button className="btn btn-primary">Save Problem</button>
+                <button className="btn btn-primary" onClick={handleSaveProblem}>
+                  Save Problem
+                </button>
               </div>
+              <p className="text-red-400 text-end font-semibold font-serif">
+                {errMsg}
+              </p>
             </div>
           </div>
         </div>

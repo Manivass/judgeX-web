@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
 import { BASE_URL } from "../utils/constant";
 import { addStats } from "../store/stats";
-import CodeEditor from "./CodeEditor";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -287,7 +286,6 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <CodeEditor />
     </div>
   );
 };
