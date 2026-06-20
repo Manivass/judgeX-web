@@ -18,25 +18,26 @@ export const map = {
 export const boilerplates = {
   java: `public class Solution {
     public static void main(String[] args) {
-
+        // enter the code here 
     }
 }`,
 
   javascript: `function solve() {
-
+  // enter the code here
 }
 
 solve();`,
 
   python: `def solve():
+    # enter the code here
     pass
 
 solve()`,
 
-  "c++": `#include <iostream>
-using namespace std;
+  c: `#include <stdio.h>
 
 int main() {
+    // enter the code here
 
     return 0;
 }`,

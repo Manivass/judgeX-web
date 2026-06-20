@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 import store from "./store/store";
 
 import ProblemPage from "./components/Problempage";
+import AddProblem from "./components/AddProblem";
 
 export const Layout = () => {
   return (
@@ -37,8 +38,12 @@ const router = createBrowserRouter([
         element: <Profile />,
       },
       {
-        path: "/codeEditor",
+        path: "/problem",
         element: <ProblemPage />,
+      },
+      {
+        path: "/addProblem",
+        element: <AddProblem />,
       },
     ],
   },

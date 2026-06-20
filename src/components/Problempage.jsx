@@ -5,7 +5,7 @@ export default function ProblemPage() {
     <div className="h-auto bg-gray-100 text-base-content flex  overflow-auto">
       {/* Left Side */}
       <div className="w-[40%] border-r border-base-content/10 overflow-y-auto">
-        <div className="tabs tabs-bordered px-4 pt-2 sticky top-0 bg-base-300 z-10">
+        <div className="tabs tabs-bordered px-4 pt-2  top-0 bg-base-300 z-10">
           <a className="tab tab-active">Problem</a>
           <a className="tab">Submissions</a>
           <a className="tab">Discuss</a>

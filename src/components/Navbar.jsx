@@ -36,6 +36,11 @@ const Navbar = () => {
                   <TbUserSquareRounded className="text-2xl" /> Profile
                 </Link>
               </li>
+              <li>
+                <Link to="/addProblem" className="text-lg font-semibold">
+                  <TbUserSquareRounded className="text-2xl" /> Add Problem
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

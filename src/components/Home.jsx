@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { BASE_URL } from "../utils/constant";
 import { addStats } from "../store/stats";
 import CodeEditor from "./CodeEditor";
@@ -52,7 +52,9 @@ const Home = () => {
             </p>
 
             <div className="flex gap-3 mt-6">
-              <button className="btn btn-primary">{"</>"} Start Coding</button>
+              <Link to="/problem" className="btn btn-primary">
+                {"</>"} Start Coding
+              </Link>
 
               <button className="btn btn-active border-slate-600">
                 ☰ View Problems

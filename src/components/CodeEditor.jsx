@@ -23,7 +23,7 @@ const CodeEditor = () => {
               JavaScript
             </option>
             <option onClick={(e) => setLanguage(e.target.value)}>Java</option>
-            <option onClick={(e) => setLanguage(e.target.value)}>C++</option>
+            <option onClick={(e) => setLanguage(e.target.value)}>C</option>
             <option onClick={(e) => setLanguage(e.target.value)}>Python</option>
           </select>
 
@@ -46,7 +46,7 @@ const CodeEditor = () => {
               onChange={(e) => setCode(e)}
               theme="vs-dark"
               height="70vh"
-              language="javascript"
+              language={language.toLowerCase()}
               options={{
                 minimap: { enabled: false },
                 fontSize: 16,
@@ -59,6 +59,19 @@ const CodeEditor = () => {
         </div>
 
         {/* <!-- Footer --> */}
+        <div className="p-4">
+          <h2>Input</h2>
+          <textarea
+            className="textarea w-full py-3 my-4 overflow-y-auto h-32"
+            placeholder="Enter Input"
+          ></textarea>
+          <h2>Output</h2>
+          <textarea
+            className="textarea w-full py-3 my-4 overflow-y-auto h-24 "
+            disabled
+            placeholder="Output"
+          ></textarea>
+        </div>
       </div>
     </div>
   );
