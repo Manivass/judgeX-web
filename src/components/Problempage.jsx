@@ -1,6 +1,32 @@
+import { useDispatch, useSelector } from "react-redux";
 import CodeEditor from "./CodeEditor";
+import { BASE_URL } from "../utils/constant";
+import axios from "axios";
+import { useEffect } from "react";
+import { addQuestion } from "../store/question";
+const ProblemPage = () => {
+  const question = useSelector((store) => store.question);
+  const testcases = question?.testcase;
+  const constraints = question?.constraints;
+  const visisbleTestcase = testcases?.filter((val) => val.ishidden === false);
 
-export default function ProblemPage() {
+  const hiddenTestcase = testcases?.filter((val) => val.ishidden === true);
+
+  const dispatch = useDispatch();
+  const getQuestions = async () => {
+    try {
+      const res = await axios.get(BASE_URL + "/questions", {
+        withCredentials: true,
+      });
+      dispatch(addQuestion(res?.data?.questions[0]));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getQuestions();
+  }, []);
   return (
     <div className="h-auto bg-gray-100 text-base-content flex  overflow-auto">
       {/* Left Side */}
@@ -12,81 +38,66 @@ export default function ProblemPage() {
         </div>
 
         <div className="p-6">
-          <h1 className="text-3xl font-bold">1. Two Sum</h1>
+          <h1 className="text-3xl font-bold">{question?.title}</h1>
 
           <div className="mt-3">
-            <span className="badge badge-success">Easy</span>
+            <span className="badge badge-success">{question?.difficulty}</span>
           </div>
 
-          <p className="mt-5 leading-7">
-            Given an array of integers nums and an integer target, return
-            indices of the two numbers such that they add up to target.
+          <p className="mt-5 leading-7 font-semibold">
+            {question?.description}
           </p>
 
-          <p className="mt-4 leading-7">
-            You may assume that each input would have exactly one solution, and
-            you may not use the same element twice.
-          </p>
+          <p className="mt-4 leading-7">{question?.explanation}</p>
 
           {/* Example 1 */}
-          <div className="mt-8">
-            <h2 className="font-bold mb-3">Example 1</h2>
+          {visisbleTestcase &&
+            visisbleTestcase?.map((val, index) => {
+              return (
+                <div key={index}>
+                  <div className="mt-8">
+                    <h2 className="font-bold mb-3">Example {index + 1}</h2>
 
-            <div className="mockup-code">
-              <pre>
-                <code>Input: nums = [2,7,11,15], target = 9</code>
-              </pre>
+                    <div className="mockup-code">
+                      <pre>
+                        <code>{val.input}</code>
+                      </pre>
 
-              <pre>
-                <code>Output: [0,1]</code>
-              </pre>
-
-              <pre>
-                <code>Explanation: nums[0] + nums[1] = 9</code>
-              </pre>
-            </div>
-          </div>
-
-          {/* Example 2 */}
-          <div className="mt-6">
-            <h2 className="font-bold mb-3">Example 2</h2>
-
-            <div className="mockup-code">
-              <pre>
-                <code>Input: nums = [3,2,4], target = 6</code>
-              </pre>
-
-              <pre>
-                <code>Output: [1,2]</code>
-              </pre>
-            </div>
-          </div>
-
-          {/* Example 3 */}
-          <div className="mt-6">
-            <h2 className="font-bold mb-3">Example 3</h2>
-
-            <div className="mockup-code">
-              <pre>
-                <code>Input: nums = [3,3], target = 6</code>
-              </pre>
-
-              <pre>
-                <code>Output: [0,1]</code>
-              </pre>
-            </div>
-          </div>
+                      <pre>
+                        <code>{val.output}</code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
 
           {/* Constraints */}
           <div className="mt-8">
             <h2 className="font-bold mb-3">Constraints</h2>
 
             <ul className="list-disc pl-5 space-y-2">
-              <li>2 &lt;= nums.length &lt;= 10⁴</li>
-              <li>-10⁹ &lt;= nums[i] &lt;= 10⁹</li>
-              <li>-10⁹ &lt;= target &lt;= 10⁹</li>
-              <li>Only one valid answer exists.</li>
+              {constraints && constraints?.map((val) => <li>{val}</li>)}
             </ul>
+            <h2 className="font-bold text-lg my-2">Hidden Testcase</h2>
+
+            {hiddenTestcase &&
+              hiddenTestcase?.map((val, index) => {
+                return (
+                  <div key={index}>
+                    <div className="p-4 space-y-4">
+                      <div className=" bg-base-200 border border-base-400">
+
+                        <div className="collapse-title font-semibold">
+                          Case {index + 1}
+                        </div>
+
+                        <div className="collapse-content"></div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
           </div>
         </div>
       </div>
@@ -101,57 +112,12 @@ export default function ProblemPage() {
 
             <a className="tab">Output</a>
           </div>
-
-          <div className="p-4 space-y-4">
-            <div className="collapse collapse-arrow bg-base-200">
-              <input type="checkbox" defaultChecked />
-
-              <div className="collapse-title font-semibold">Case 1</div>
-
-              <div className="collapse-content">
-                <input
-                  className="input input-bordered w-full"
-                  defaultValue="nums = [2,7,11,15], target = 9"
-                />
-
-                <div className="mt-3 text-success font-bold">[0,1]</div>
-              </div>
-            </div>
-
-            <div className="collapse collapse-arrow bg-base-200">
-              <input type="checkbox" />
-
-              <div className="collapse-title font-semibold">Case 2</div>
-
-              <div className="collapse-content">
-                <input
-                  className="input input-bordered w-full"
-                  defaultValue="nums = [3,2,4], target = 6"
-                />
-
-                <div className="mt-3 text-success font-bold">[1,2]</div>
-              </div>
-            </div>
-
-            <div className="collapse collapse-arrow bg-base-200">
-              <input type="checkbox" />
-
-              <div className="collapse-title font-semibold">Case 3</div>
-
-              <div className="collapse-content">
-                <input
-                  className="input input-bordered w-full"
-                  defaultValue="nums = [3,3], target = 6"
-                />
-
-                <div className="mt-3 text-success font-bold">[0,1]</div>
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Bottom Buttons */}
       </div>
     </div>
   );
-}
+};
+
+export default ProblemPage;

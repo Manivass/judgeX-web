@@ -6,8 +6,6 @@ import { useNavigate } from "react-router";
 
 const AddProblem = () => {
   const user = useSelector((store) => store?.user?.data);
-  console.log(user);
-
   const navigate = useNavigate();
   useEffect(() => {
     console.log(user);

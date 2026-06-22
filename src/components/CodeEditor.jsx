@@ -1,15 +1,31 @@
 import Editor from "@monaco-editor/react";
 import { useState } from "react";
-import { boilerplates } from "../utils/constant";
+import { BASE_URL, boilerplates, languageId } from "../utils/constant";
+import axios from "axios";
 
 const CodeEditor = () => {
   const [language, setLanguage] = useState("javascript");
   const [code, setCode] = useState("");
+  const [input, setInput] = useState("");
+  const [output, setOutput] = useState("");
 
   const boilerplate = boilerplates[language.toLocaleLowerCase()];
 
-  const handleRun = () => {
-    console.log(code);
+  const handleRun = async () => {
+    try {
+      const res = await axios.post(BASE_URL + "/run", {
+        code,
+        language_id: languageId[language],
+        stdin: input,
+      });
+      setOutput(
+        res?.data?.result?.stdout
+          ? res?.data?.result?.stdout
+          : res?.data?.result?.compile_output,
+      );
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -59,18 +75,26 @@ const CodeEditor = () => {
         </div>
 
         {/* <!-- Footer --> */}
-        <div className="p-4">
-          <h2>Input</h2>
-          <textarea
-            className="textarea w-full py-3 my-4 overflow-y-auto h-32"
-            placeholder="Enter Input"
-          ></textarea>
-          <h2>Output</h2>
-          <textarea
-            className="textarea w-full py-3 my-4 overflow-y-auto h-24 "
-            disabled
-            placeholder="Output"
-          ></textarea>
+        <div className="p-4 collapse collapse-arrow">
+          <input type="checkbox" />
+          <div className="collapse-title">Sample testcase</div>
+          <div className="collapse-content bg-base-200">
+            <div className="">Input</div>
+            <textarea
+              className=" textarea w-full py-3 my-4 overflow-y-auto h-32"
+              placeholder="Enter Input"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+            ></textarea>
+
+            <div className=" font-semibold">Output</div>
+            <textarea
+              className=" textarea w-full py-3 my-4 overflow-y-auto h-32"
+              placeholder="Enter Input"
+              value={output}
+              onChange={(e) => setOutput(e.target.value)}
+            ></textarea>
+          </div>
         </div>
       </div>
     </div>

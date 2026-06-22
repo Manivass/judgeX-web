@@ -16,7 +16,7 @@ export const map = {
 };
 
 export const boilerplates = {
-  java: `public class Solution {
+  java: `public class Main {
     public static void main(String[] args) {
         // enter the code here 
     }
@@ -41,4 +41,18 @@ int main() {
 
     return 0;
 }`,
+};
+
+export const languageId = {
+  JavaScript: 63,
+  Python: 71,
+  "C++": 54,
+  Java: 62,
+  C: 50,
+  "C#": 51,
+  Go: 60,
+  Rust: 73,
+  TypeScript: 74,
+  PHP: 68,
+  Ruby: 72,
 };
