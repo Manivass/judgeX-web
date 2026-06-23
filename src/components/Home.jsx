@@ -51,13 +51,13 @@ const Home = () => {
             </p>
 
             <div className="flex gap-3 mt-6">
-              <Link to="/problem" className="btn btn-primary">
+              <Link to="/problemSolution" className="btn btn-primary">
                 {"</>"} Start Coding
               </Link>
 
-              <button className="btn btn-active border-slate-600">
+              <Link to="/problems" className="btn btn-active border-slate-600">
                 ☰ View Problems
-              </button>
+              </Link>
             </div>
           </div>
 

@@ -9,6 +9,7 @@ import store from "./store/store";
 
 import ProblemPage from "./components/Problempage";
 import AddProblem from "./components/AddProblem";
+import Questions from "./components/Questions";
 
 export const Layout = () => {
   return (
@@ -38,8 +39,12 @@ const router = createBrowserRouter([
         element: <Profile />,
       },
       {
-        path: "/problem",
+        path: "/problem/:id",
         element: <ProblemPage />,
+      },
+      {
+        path: "/problems",
+        element: <Questions />,
       },
       {
         path: "/addProblem",
