@@ -1,21 +1,33 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { BASE_URL } from "../utils/constant";
+import { Link } from "react-router-dom";
 const Questions = () => {
+  const [allQuestion, setAllQuestion] = useState();
   const [questions, setQuestions] = useState();
 
-  useEffect(() => {
-    getQuestions();
-  }, []);
   let getQuestions = async () => {
     try {
       const res = await axios.get(BASE_URL + "/questions", {
         withCredentials: true,
       });
+      setAllQuestion(res?.data?.questions);
       setQuestions(res?.data?.questions);
     } catch (err) {
       console.log(err?.response?.data?.message);
     }
+  };
+  useEffect(() => {
+    getQuestions();
+  }, []);
+
+  const handleSearch = (value) => {
+    const searchValue = value.toLowerCase();
+    const getQuestion = allQuestion.filter((question) =>
+      question.title.toLowerCase().includes(searchValue),
+    );
+
+    setQuestions(getQuestion);
   };
   return (
     <div>
@@ -41,50 +53,11 @@ const Questions = () => {
           <div className="badge badge-warning p-4">Unsolved 85</div>
         </div>
 
-        <div className="flex gap-5">
+        <div className="flex gap-5 w-10/12 mx-auto">
           {/* Filter Sidebar */}
-          <div className="w-64 bg-white/80 rounded-lg p-4">
-            <h2 className="font-semibold mb-4">Filters</h2>
-
-            <p className="text-sm text-gray-400">Difficulty</p>
-
-            <div className="space-y-3 mt-3">
-              <label className="flex gap-2">
-                <input type="checkbox" className="checkbox checkbox-sm" />
-                Easy
-              </label>
-
-              <label className="flex gap-2">
-                <input type="checkbox" className="checkbox checkbox-sm" />
-                Medium
-              </label>
-
-              <label className="flex gap-2">
-                <input type="checkbox" className="checkbox checkbox-sm" />
-                Hard
-              </label>
-            </div>
-
-            <p className="text-sm text-gray-400 mt-6">Topics</p>
-
-            {[
-              "Array",
-              "String",
-              "Linked List",
-              "Tree",
-              "Dynamic Programming",
-            ].map((item) => (
-              <label className="flex gap-2 mt-3" key={item}>
-                <input type="checkbox" className="checkbox checkbox-sm" />
-
-                {item}
-              </label>
-            ))}
-          </div>
-
           {/* Problems Table */}
 
-          <div className="flex-1 bg-[#0b1428] rounded-lg overflow-hidden">
+          <div className="flex-1 bg-[#0b1428] rounded-lg overflow-hidden px-3">
             {/* Search */}
 
             <div className="p-4">
@@ -96,6 +69,7 @@ const Questions = () => {
           bg-[#111c33]
           "
                 placeholder="Search problems..."
+                onChange={(e) => handleSearch(e.target.value)}
               />
             </div>
 
@@ -116,13 +90,15 @@ const Questions = () => {
                   {questions !== undefined &&
                     questions?.map((problem, index) => (
                       <tr key={index} className="hover:bg-[#071024]">
-                        <td className="text-white">{index + 1}</td>
+                        <td className="text-white">{problem?.number}</td>
                         <td>
-                          <div className="font-semibold  text-gray-300">
+                          <Link
+                            to={`/problem/${problem._id}`}
+                            className="font-semibold  text-gray-300 cursor-pointer"
+                          >
                             {problem?.title}
-                          </div>
+                          </Link>
                         </td>
-
                         <td>
                           <span
                             className={

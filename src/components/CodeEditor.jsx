@@ -2,13 +2,14 @@ import Editor from "@monaco-editor/react";
 import { useState } from "react";
 import { BASE_URL, boilerplates, languageId } from "../utils/constant";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const CodeEditor = () => {
+  const question = useSelector((store) => store?.question);
   const [language, setLanguage] = useState("javascript");
   const [code, setCode] = useState("");
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
-
   const boilerplate = boilerplates[language.toLocaleLowerCase()];
 
   const handleRun = async () => {
@@ -23,6 +24,24 @@ const CodeEditor = () => {
           ? res?.data?.result?.stdout
           : res?.data?.result?.compile_output,
       );
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const res = await axios.post(
+        BASE_URL + `/codeSubmission/${question._id}`,
+        {
+          code,
+          language_id: languageId[language],
+        },
+        {
+          withCredentials: true,
+        },
+      );
+      console.log(res?.data);
     } catch (err) {
       console.log(err);
     }
@@ -49,7 +68,9 @@ const CodeEditor = () => {
                 ▶ Run Code
               </button>
 
-              <button className="btn btn-primary">Submit Code</button>
+              <button className="btn btn-primary" onClick={handleSubmit}>
+                Submit Code
+              </button>
             </div>
           </div>
         </div>
@@ -89,8 +110,8 @@ const CodeEditor = () => {
 
             <div className=" font-semibold">Output</div>
             <textarea
-              className=" textarea w-full py-3 my-4 overflow-y-auto h-32"
-              placeholder="Enter Input"
+              className=" textarea w-full py-3 my-4 overflow-y-auto h-32 border border-gray-400"
+              disabled
               value={output}
               onChange={(e) => setOutput(e.target.value)}
             ></textarea>
