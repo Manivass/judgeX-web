@@ -1,8 +1,18 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BASE_URL } from "../utils/constant";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 
-const AddProblem = () => {
+const EditProblem = () => {
+  const user = useSelector((store) => store?.user?.data);
+  const navigate = useNavigate();
+  useEffect(() => {
+    console.log(user);
+    if (!user) {
+      navigate("/login");
+    }
+  }, []);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [constraint, setConstraint] = useState([""]);
@@ -343,4 +353,4 @@ const AddProblem = () => {
   );
 };
 
-export default AddProblem;
+export default EditProblem;

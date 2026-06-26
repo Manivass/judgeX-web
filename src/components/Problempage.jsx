@@ -10,7 +10,6 @@ const ProblemPage = () => {
   const dispatch = useDispatch();
   const question = useSelector((store) => store?.question);
   const testcase = useSelector((store) => store?.submission);
-  console.log(testcase);
 
   let getQuestions = async () => {
     try {
