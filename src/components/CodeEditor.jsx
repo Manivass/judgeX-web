@@ -2,7 +2,8 @@ import Editor from "@monaco-editor/react";
 import { useState } from "react";
 import { BASE_URL, boilerplates, languageId } from "../utils/constant";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addSubmissionResult } from "../store/submissionResult";
 
 const CodeEditor = () => {
   const question = useSelector((store) => store?.question);
@@ -11,6 +12,7 @@ const CodeEditor = () => {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const boilerplate = boilerplates[language.toLocaleLowerCase()];
+  const dispatch = useDispatch();
 
   const handleRun = async () => {
     try {
@@ -41,7 +43,7 @@ const CodeEditor = () => {
           withCredentials: true,
         },
       );
-      console.log(res?.data);
+      dispatch(addSubmissionResult(res?.data?.testcaseResults));
     } catch (err) {
       console.log(err);
     }

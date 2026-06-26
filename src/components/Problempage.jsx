@@ -9,6 +9,8 @@ const ProblemPage = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const question = useSelector((store) => store?.question);
+  const testcase = useSelector((store) => store?.submission);
+  console.log(testcase);
 
   let getQuestions = async () => {
     try {
@@ -43,7 +45,9 @@ const ProblemPage = () => {
         </div>
 
         <div className="p-6">
-          <h1 className="text-3xl font-bold">{question?.number}.{question && question?.title}</h1>
+          <h1 className="text-3xl font-bold">
+            {question?.number}.{question && question?.title}
+          </h1>
 
           <div className="mt-3">
             <span className="badge badge-success">{question?.difficulty}</span>
@@ -95,7 +99,17 @@ const ProblemPage = () => {
                         <div className="collapse-title font-semibold">
                           Case {index + 1}
                         </div>
-                        <div className="btn btn-success my-auto text-lg">pass</div>
+                        <div
+                          className={`btn my-auto text-lg ${
+                            testcase && testcase[index] == "pass"
+                              ? "btn-success"
+                              : "btn-error"
+                          }`}
+                        >
+                          {testcase && testcase[index] == "pass"
+                            ? "pass"
+                            : "fail"}
+                        </div>
 
                         <div className="collapse-content"></div>
                       </div>
@@ -110,7 +124,6 @@ const ProblemPage = () => {
       {/* Right Side */}
       <div className="flex-1 flex flex-col">
         <CodeEditor />
-
         {/* Bottom Buttons */}
       </div>
     </div>
