@@ -1,7 +1,7 @@
 import { FaGithub, FaLinkedin, FaCheckCircle } from "react-icons/fa";
 import { MdOutlineEmail, MdLocationOn } from "react-icons/md";
 import { HiMiniTrophy } from "react-icons/hi2";
-import Editpage from "./EditPage";
+import Editpage from "./EditProfilePage";
 import { useSelector } from "react-redux";
 import { map } from "../utils/constant";
 import { useNavigate } from "react-router";

@@ -1,30 +1,58 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { BASE_URL } from "../utils/constant";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router";
+import { addQuestion } from "../store/question";
 
 const EditProblem = () => {
-  const user = useSelector((store) => store?.user?.data);
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const question = useSelector((store) => store?.question);
   const navigate = useNavigate();
-  useEffect(() => {
-    console.log(user);
-    if (!user) {
-      navigate("/login");
+  const [toast, setToast] = useState(false);
+
+  var getQuestionInfo = async () => {
+    try {
+      const res = await axios.get(BASE_URL + `/question/${id}`, {
+        withCredentials: true,
+      });
+      dispatch(addQuestion(res?.data?.question));
+    } catch (err) {
+      console.log(err);
     }
+  };
+  useEffect(() => {
+    getQuestionInfo();
   }, []);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [title, setTitle] = useState(question?.title);
+
+  const [description, setDescription] = useState(question?.description);
   const [constraint, setConstraint] = useState([""]);
-  const [difficulty, setDifficulty] = useState("easy");
+  const [difficulty, setDifficulty] = useState(question?.difficulty);
   const [testcase, setTestcase] = useState([
     { input: "", output: "", hidden: false },
   ]);
-  const [timeLimit, setTimeLimit] = useState(0);
-  const [memoryLimit, setMemoryLimit] = useState(0);
-  let [dataStructure, setDataStructure] = useState("");
-  const [explanation, setExplanation] = useState("");
+  const [timeLimit, setTimeLimit] = useState(question?.timeLimit);
+  const [memoryLimit, setMemoryLimit] = useState(question?.memoryLimit);
+  let [dataStructure, setDataStructure] = useState(question?.dataStructure);
+  const [explanation, setExplanation] = useState(question?.explanation);
   const [errMsg, setErr] = useState("");
+
+  useEffect(() => {
+    if (question) {
+      setTitle(question?.title);
+      setDescription(question?.description);
+      setDifficulty(question?.difficulty);
+      setTimeLimit(question?.timeLimit);
+      setMemoryLimit(question?.memoryLimit);
+      setDescription(question?.description);
+      setExplanation(question?.explanation);
+      setConstraint(question?.constraints);
+      setTestcase(question?.testcase);
+      setDataStructure(question?.dataStructure);
+    }
+  }, [question]);
 
   const addConstraint = () => {
     setConstraint([...constraint, ""]);
@@ -59,12 +87,20 @@ const EditProblem = () => {
   };
 
   const handleSaveProblem = async () => {
+    console.log("START FUNCTION");
+
     try {
-      let dataStructureSplit = dataStructure
+      console.log("INSIDE TRY");
+
+      let dataStructureSplit = (dataStructure || "")
         .split(",")
         .map((val) => val.trim());
-      let res = await axios.post(
-        BASE_URL + "/addQuestions",
+      dataStructureSplit = dataStructureSplit.map((val) =>
+        val.toLowerCase().trim(),
+      );
+      console.log(dataStructureSplit);
+      await axios.post(
+        BASE_URL + `/editQuestion/${question?._id}`,
         {
           title,
           description,
@@ -80,7 +116,12 @@ const EditProblem = () => {
           withCredentials: true,
         },
       );
-      console.log(res?.data);
+      setErr("");
+      setToast(true);
+      setTimeout(() => {
+        setToast(false);
+      }, 2000);
+      navigate("/questions");
     } catch (err) {
       setErr(err?.response?.data?.message);
     }
@@ -106,7 +147,9 @@ const EditProblem = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-6">
-          <h1 className="text-3xl font-bold">Add New Problem</h1>
+          <h1 className="text-3xl font-bold">
+            Editing {question?.title} Problem
+          </h1>
           <p className="text-base-content/60">
             Create a new coding problem for the platform
           </p>
@@ -281,7 +324,7 @@ const EditProblem = () => {
                       <div className="flex justify-between mb-4">
                         <h3 className="font-semibold">Test Case {index + 1}</h3>
 
-                        {item?.hidden ? (
+                        {item?.ishidden ? (
                           <div className="badge badge-error">hidden</div>
                         ) : (
                           <div className="badge badge-success">Visible</div>
@@ -318,7 +361,7 @@ const EditProblem = () => {
                           <input
                             type="checkbox"
                             className="toggle toggle-primary"
-                            checked={item.hidden}
+                            checked={item.ishidden}
                             onChange={() => handleHiddenTestCase(index)}
                           />
                         </div>
@@ -338,7 +381,11 @@ const EditProblem = () => {
               <div className="flex justify-end gap-3 pt-4">
                 <button className="btn btn-ghost">Cancel</button>
 
-                <button className="btn btn-primary" onClick={handleSaveProblem}>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={handleSaveProblem}
+                >
                   Save Problem
                 </button>
               </div>
@@ -349,6 +396,13 @@ const EditProblem = () => {
           </div>
         </div>
       </div>
+      {toast && (
+        <div className="toast toast-top toast-center">
+          <div className="alert alert-success">
+            <span>Message sent successfully.</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

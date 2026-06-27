@@ -1,11 +1,16 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { BASE_URL } from "../utils/constant";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addQuestion, removeQuestion } from "../store/question";
 const ProblemDetails = () => {
   const [allQuestion, setAllQuestion] = useState();
   const [questions, setQuestions] = useState();
   const [reload, setReload] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  dispatch(removeQuestion());
   let getQuestions = async () => {
     try {
       const res = await axios.get(BASE_URL + "/questions", {
@@ -89,14 +94,11 @@ const ProblemDetails = () => {
                   {questions !== undefined &&
                     questions?.map((problem, index) => (
                       <tr key={index} className="hover:bg-[#071024]">
-                        <td className="text-white">{problem?.number}</td>
+                        <td className="text-white">{problem?.questionNumber}</td>
                         <td>
-                          <Link
-                            to={`/problem/${problem._id}`}
-                            className="font-semibold  text-gray-300 cursor-pointer"
-                          >
+                          <span className="font-semibold  text-gray-300 cursor-pointer">
                             {problem?.title}
-                          </Link>
+                          </span>
                         </td>
                         <td>
                           <span
@@ -123,9 +125,12 @@ const ProblemDetails = () => {
                         </td>
 
                         <td className="flex gap-5">
-                          <button className="btn btn-active btn-md">
+                          <Link
+                            to={`/questions/edit/${problem?._id}`}
+                            className="btn btn-active btn-md"
+                          >
                             Edit
-                          </button>
+                          </Link>
                           <button
                             className="btn btn-error btn-md"
                             onClick={() => handleDelete(problem?._id)}

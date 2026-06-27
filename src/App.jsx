@@ -11,6 +11,7 @@ import ProblemPage from "./components/Problempage";
 import AddProblem from "./components/AddProblem";
 import Questions from "./components/Questions";
 import ProblemDetails from "./components/ProblemDetails";
+import EditProblem from "./components/EditProblem";
 
 export const Layout = () => {
   return (
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
       {
         path: "/questions/create",
         element: <AddProblem />,
+      },
+      {
+        path: "/questions/edit/:id",
+        element: <EditProblem />,
       },
       {
         path: "/questions",

@@ -37,7 +37,7 @@ const Navbar = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/addProblem" className="text-lg font-semibold">
+                <Link to="/questions" className="text-lg font-semibold">
                   <TbUserSquareRounded className="text-2xl" /> Add Problem
                 </Link>
               </li>
