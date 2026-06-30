@@ -90,7 +90,9 @@ const Questions = () => {
                   {questions !== undefined &&
                     questions?.map((problem, index) => (
                       <tr key={index} className="hover:bg-[#071024]">
-                        <td className="text-white">{problem?.number}</td>
+                        <td className="text-white">
+                          {problem?.questionNumber}
+                        </td>
                         <td>
                           <Link
                             to={`/problem/${problem._id}`}

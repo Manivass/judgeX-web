@@ -5,11 +5,14 @@ import { useEffect } from "react";
 import { addQuestion } from "../store/question";
 import { useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
+import Testcase from "./Testcase";
+import { changeActiveTab } from "../store/activetab";
+import Editorial from "./Editorial";
 const ProblemPage = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const question = useSelector((store) => store?.question);
-  const testcase = useSelector((store) => store?.submission);
+  const activetab = useSelector((store) => store?.activetab);
 
   let getQuestions = async () => {
     try {
@@ -25,99 +28,118 @@ const ProblemPage = () => {
   };
   useEffect(() => {
     getQuestions();
-  }, []);
+  }, [id]);
 
-  const testcases = question?.testcase;
-  const constraints = question?.constraints;
-  const visisbleTestcase = testcases?.filter((val) => val.ishidden === false);
+  let handleTab = (tab) => {
+    dispatch(changeActiveTab(tab));
+  };
 
-  const hiddenTestcase = testcases?.filter((val) => val.ishidden === true);
+  const testcases = question?.testcase || [];
+  const constraints = question?.constraints || [];
+  const visibleTestcase = testcases.filter((val) => !val.ishidden);
+
+  const hiddenTestcase = testcases.filter((val) => !val.ishidden);
+  const editorial = question?.editorial;
 
   return (
     <div className="h-auto bg-gray-100 text-base-content flex  overflow-auto">
       {/* Left Side */}
       <div className="w-[40%] border-r border-base-content/10 overflow-y-auto">
         <div className="tabs tabs-bordered px-4 pt-2  top-0 bg-base-300 z-10">
-          <a className="tab tab-active">Problem</a>
-          <a className="tab">Submissions</a>
-          <a className="tab">Discuss</a>
+          <a
+            className={activetab === "Problem" ? "tab tab-active" : "tab"}
+            onClick={() => handleTab("Problem")}
+          >
+            Problem
+          </a>
+          <a
+            className={activetab === "Testcase" ? "tab tab-active" : "tab"}
+            onClick={() => handleTab("Testcase")}
+          >
+            Testcase
+          </a>
+          <a
+            className={activetab === "Solutions" ? "tab tab-active" : "tab"}
+            onClick={() => handleTab("Solutions")}
+          >
+            Solutions
+          </a>
+          <a
+            className={activetab === "Submissions" ? "tab tab-active" : "tab"}
+            onClick={() => handleTab("Submissions")}
+          >
+            Submissions
+          </a>
+          <a
+            className={activetab === "Editorial" ? "tab tab-active" : "tab"}
+            onClick={() => handleTab("Editorial")}
+          >
+            Editorial
+          </a>
+
+          <a
+            className={activetab === "Discuss" ? "tab tab-active" : "tab"}
+            onClick={() => handleTab("Discuss")}
+          >
+            Discuss
+          </a>
         </div>
+        {activetab && activetab === "Problem" && (
+          <div className="p-6">
+            <h1 className="text-3xl font-bold">
+              {question?.questionNumber}.{question && question?.title}
+            </h1>
 
-        <div className="p-6">
-          <h1 className="text-3xl font-bold">
-            {question?.number}.{question && question?.title}
-          </h1>
+            <div className="mt-3">
+              <span className="badge badge-success">
+                {question?.difficulty}
+              </span>
+            </div>
 
-          <div className="mt-3">
-            <span className="badge badge-success">{question?.difficulty}</span>
-          </div>
+            <p className="mt-5 leading-7 font-semibold">
+              {question?.description}
+            </p>
 
-          <p className="mt-5 leading-7 font-semibold">
-            {question?.description}
-          </p>
+            <p className="mt-4 leading-7">{question?.explanation}</p>
 
-          <p className="mt-4 leading-7">{question?.explanation}</p>
-
-          {/* Example 1 */}
-          {visisbleTestcase &&
-            visisbleTestcase?.map((val, index) => {
-              return (
-                <div key={index}>
-                  <div className="mt-8">
-                    <h2 className="font-bold mb-3">Example {index + 1}</h2>
-
-                    <div className="mockup-code">
-                      <pre>
-                        <code>{val.input}</code>
-                      </pre>
-
-                      <pre>
-                        <code>{val.output}</code>
-                      </pre>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-
-          {/* Constraints */}
-          <div className="mt-8">
-            <h2 className="font-bold mb-3">Constraints</h2>
-
-            <ul className="list-disc pl-5 space-y-2">
-              {constraints && constraints?.map((val) => <li>{val}</li>)}
-            </ul>
-            <h2 className="font-bold text-lg my-2">Hidden Testcase</h2>
-
-            {hiddenTestcase &&
-              hiddenTestcase?.map((val, index) => {
+            {/* Example 1 */}
+            {visibleTestcase &&
+              visibleTestcase?.map((val, index) => {
                 return (
                   <div key={index}>
-                    <div className="p-4 space-y-4">
-                      <div className="flex justify-between border border-base-300 bg-base-200">
-                        <div className="collapse-title font-semibold">
-                          Case {index + 1}
-                        </div>
-                        <div
-                          className={`btn my-auto text-lg ${
-                            testcase && testcase[index] == "pass"
-                              ? "btn-success"
-                              : "btn-error"
-                          }`}
-                        >
-                          {testcase && testcase[index] == "pass"
-                            ? "pass"
-                            : "fail"}
-                        </div>
+                    <div className="mt-8">
+                      <h2 className="font-bold mb-3">Example {index + 1}</h2>
 
-                        <div className="collapse-content"></div>
+                      <div className="mockup-code">
+                        <pre>
+                          <code>{val.input}</code>
+                        </pre>
+
+                        <pre>
+                          <code>{val.output}</code>
+                        </pre>
                       </div>
                     </div>
                   </div>
                 );
               })}
+
+            {/* Constraints */}
+            <div className="mt-8">
+              <h2 className="font-bold mb-3">Constraints</h2>
+
+              <ul className="list-disc pl-5 space-y-2">
+                {constraints?.map((val) => (
+                  <li>{val}</li>
+                ))}
+              </ul>
+            </div>
           </div>
-        </div>
+        )}
+        {activetab === "Testcase" && (
+          <Testcase testcase={{ hiddenTestcase, visibleTestcase }} />
+        )}
+        {activetab === "Editorial" && <Editorial editorial={editorial} />}
       </div>
 
       {/* Right Side */}

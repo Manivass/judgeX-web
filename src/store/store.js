@@ -4,6 +4,7 @@ import stateSuggestion from "./stateSuggestion";
 import statsReducer from "./stats";
 import questionReducer from "./question";
 import submissionReducer from "./submissionResult";
+import activetabReducer from "./activetab";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     stats: statsReducer,
     question: questionReducer,
     submission: submissionReducer,
+    activetab: activetabReducer,
   },
 });
 

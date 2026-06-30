@@ -4,6 +4,7 @@ import { BASE_URL, boilerplates, languageId } from "../utils/constant";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addSubmissionResult } from "../store/submissionResult";
+import { changeActiveTab } from "../store/activetab";
 
 const CodeEditor = () => {
   const question = useSelector((store) => store?.question);
@@ -44,6 +45,7 @@ const CodeEditor = () => {
         },
       );
       dispatch(addSubmissionResult(res?.data?.testcaseResults));
+      dispatch(changeActiveTab("Testcase"))
     } catch (err) {
       console.log(err);
     }
