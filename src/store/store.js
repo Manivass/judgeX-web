@@ -3,8 +3,9 @@ import userReducer from "./user";
 import stateSuggestion from "./stateSuggestion";
 import statsReducer from "./stats";
 import questionReducer from "./question";
-import submissionReducer from "./submissionResult";
+import testcaseReducer from "./testcase";
 import activetabReducer from "./activetab";
+import submissionSlice from "./submission";
 
 const store = configureStore({
   reducer: {
@@ -12,8 +13,9 @@ const store = configureStore({
     stateSuggest: stateSuggestion,
     stats: statsReducer,
     question: questionReducer,
-    submission: submissionReducer,
+    testcase: testcaseReducer,
     activetab: activetabReducer,
+    submission: submissionSlice,
   },
 });
 

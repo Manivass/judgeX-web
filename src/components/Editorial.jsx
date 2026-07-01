@@ -11,19 +11,16 @@ const Editorial = ({ editorial }) => {
           <div key={val._id} className="card bg-base-200 shadow-xl">
             <div className="card-body">
               <h3 className="text-xl font-semibold">Approach {index + 1}</h3>
-
               <div>
                 <div className="badge badge-primary">Approach</div>
 
                 <p className="mt-2">{val?.approach}</p>
               </div>
-
               <div>
                 <div className="badge badge-secondary">Algorithm</div>
 
                 <p className="mt-2">{val?.algorithm}</p>
               </div>
-
               <div className="flex gap-3">
                 <div className="badge badge-success">
                   Time: {val?.complexity?.time}

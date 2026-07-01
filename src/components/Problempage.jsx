@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import Testcase from "./Testcase";
 import { changeActiveTab } from "../store/activetab";
 import Editorial from "./Editorial";
+import Submissions from "./Submission";
+import { removeSubmission } from "../store/submission";
 const ProblemPage = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -19,7 +21,6 @@ const ProblemPage = () => {
       const res = await axios.get(BASE_URL + `/question/${id}`, {
         withCredentials: true,
       });
-      console.log(res?.data?.question);
 
       dispatch(addQuestion(res?.data?.question));
     } catch (err) {
@@ -27,6 +28,8 @@ const ProblemPage = () => {
     }
   };
   useEffect(() => {
+    dispatch(removeSubmission());
+    dispatch(changeActiveTab("Problem"));
     getQuestions();
   }, [id]);
 
@@ -45,7 +48,7 @@ const ProblemPage = () => {
     <div className="h-auto bg-gray-100 text-base-content flex  overflow-auto">
       {/* Left Side */}
       <div className="w-[40%] border-r border-base-content/10 overflow-y-auto">
-        <div className="tabs tabs-bordered px-4 pt-2  top-0 bg-base-300 z-10">
+        <div className="tabs overflow-x-auto tabs-bordered px-4 pt-2  top-0 bg-base-300 z-10">
           <a
             className={activetab === "Problem" ? "tab tab-active" : "tab"}
             onClick={() => handleTab("Problem")}
@@ -140,6 +143,7 @@ const ProblemPage = () => {
           <Testcase testcase={{ hiddenTestcase, visibleTestcase }} />
         )}
         {activetab === "Editorial" && <Editorial editorial={editorial} />}
+        {activetab === "Submissions" && <Submissions />}
       </div>
 
       {/* Right Side */}

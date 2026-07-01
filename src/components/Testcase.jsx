@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 const Testcase = ({ testcase }) => {
-  const result = useSelector((store) => store?.submission);
+  const result = useSelector((store) => store?.testcase);
   const hiddenTestcase = testcase?.hiddenTestcase;
   const visibleTestcase = testcase?.visibleTestcase;
   const [testpass, setTestPass] = useState(false);
