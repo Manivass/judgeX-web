@@ -2,8 +2,37 @@ import { MdOutlineMenu } from "react-icons/md";
 import { FaHome } from "react-icons/fa";
 import { PiCodesandboxLogoBold } from "react-icons/pi";
 import { TbUserSquareRounded } from "react-icons/tb";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { BASE_URL } from "../utils/constant";
+import { useDispatch } from "react-redux";
+import { removeActiveTab } from "../store/activetab";
+import { removeQuestion } from "../store/question";
+import { clearSolution } from "../store/solution";
+import { removeStats } from "../store/stats";
+import { removeStateSuggestion } from "../store/stateSuggestion";
+import { clearSubmission } from "../store/submission";
+import { removeTestcase } from "../store/testcase";
+import { removeUser } from "../store/user";
 const Navbar = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    try {
+      await axios.post(BASE_URL + "/logout", {}, { withCredentials: true });
+      dispatch(removeActiveTab());
+      dispatch(removeQuestion());
+      dispatch(clearSolution());
+      dispatch(removeStats());
+      dispatch(removeStateSuggestion());
+      dispatch(clearSubmission());
+      dispatch(removeTestcase());
+      dispatch(removeUser());
+      navigate("/login");
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div className="navbar bg-base-100 shadow-sm">
       <div className="flex-none">
@@ -83,7 +112,7 @@ const Navbar = () => {
               <a>Settings</a>
             </li>
             <li>
-              <a>Logout</a>
+              <a onClick={handleLogout}>Logout</a>
             </li>
           </ul>
         </div>

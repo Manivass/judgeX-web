@@ -7,11 +7,11 @@ const submissionSlice = createSlice({
     addSubmission: (state, action) => {
       return action.payload;
     },
-    removeSubmission: () => {
+    clearSubmission: () => {
       return null;
     },
   },
 });
 
-export const { addSubmission, removeSubmission } = submissionSlice.actions;
+export const { addSubmission, clearSubmission } = submissionSlice.actions;
 export default submissionSlice.reducer;

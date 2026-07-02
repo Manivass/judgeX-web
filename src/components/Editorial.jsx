@@ -1,6 +1,4 @@
 const Editorial = ({ editorial }) => {
-  console.log(editorial);
-
   return (
     <div className="p-5 space-y-5">
       <h2 className="text-2xl font-bold">Editorial</h2>

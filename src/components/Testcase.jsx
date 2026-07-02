@@ -1,14 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 const Testcase = ({ testcase }) => {
   const result = useSelector((store) => store?.testcase);
   const hiddenTestcase = testcase?.hiddenTestcase;
   const visibleTestcase = testcase?.visibleTestcase;
   const [testpass, setTestPass] = useState(false);
-  const isPassed = result?.filter((val) => val == "fail");
-  if (isPassed?.length == 0) {
-    setTestPass(true);
-  }
+  console.log("Testcase rendered");
+  useEffect(() => {
+    if (!result?.testcaseResults) {
+      setTestPass(false);
+      return;
+    }
+
+    const isPassed = result.testcaseResults.every((val) => val === "pass");
+
+    setTestPass(isPassed);
+  }, [result]);
 
   return (
     <div className="p-4 grid grid-cols-1 gap-2">
@@ -39,7 +46,8 @@ const Testcase = ({ testcase }) => {
       )}
       <div>
         <h2 className="font-bold text-lg my-2">hidden Testcase</h2>
-        {hiddenTestcase.length > 0 &&
+
+        {hiddenTestcase.length > 0 ? (
           hiddenTestcase?.map((val, index) => {
             return (
               <div key={index}>
@@ -48,15 +56,19 @@ const Testcase = ({ testcase }) => {
                     <div className="collapse-title font-semibold">
                       Case {index + 1}
                     </div>
-                    {result != null && (
+                    {result?.testcaseResults != null && (
                       <div
                         className={`btn my-auto text-lg ${
-                          result && result[index] == "pass"
+                          result.testcaseResults &&
+                          result.testcaseResults[index] == "pass"
                             ? "btn-success"
                             : "btn-error"
                         }`}
                       >
-                        {result && result[index] == "pass" ? "pass" : "fail"}
+                        {result.testcaseResults &&
+                        result.testcaseResults[index] === "pass"
+                          ? "pass"
+                          : "fail"}
                       </div>
                     )}
 
@@ -65,7 +77,10 @@ const Testcase = ({ testcase }) => {
                 </div>
               </div>
             );
-          })}
+          })
+        ) : (
+          <h2>No testcase found</h2>
+        )}
       </div>
       {testpass && (
         <div className="flex gap-2 p-4 justify-center">

@@ -1,15 +1,13 @@
 import axios from "axios";
 import { useEffect } from "react";
-import { BASE_URL } from "../utils/constant";
+import { BASE_URL, map } from "../utils/constant";
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
 import { addSubmission } from "../store/submission";
 
 const Submissions = () => {
   const question = useSelector((store) => store?.question?._id);
   let submission = useSelector((store) => store?.submission);
   const dispatch = useDispatch();
-  const [verdict, setVerdict] = useState();
 
   let getSubmission = async () => {
     try {
@@ -17,7 +15,6 @@ const Submissions = () => {
         withCredentials: true,
       });
       dispatch(addSubmission(res?.data?.submissions));
-      setVerdict(question?.verdict);
     } catch (err) {
       console.log(err);
     }
@@ -27,9 +24,9 @@ const Submissions = () => {
   }, []);
   return (
     <div className="px-3  py-3 w-full">
-      <div className="join join-vertical  w-full  bg-gray-200 border border-gray-300">
-        {submission &&
-          submission?.map((val, index) => (
+      {submission?.length > 0 ? (
+        <div className="join join-vertical  w-full  bg-gray-200 border border-gray-300">
+          {submission?.map((val, index) => (
             <div
               key={index}
               className="collapse collapse-arrow join-item border-gray-400 border-b"
@@ -37,10 +34,24 @@ const Submissions = () => {
               <input type="radio" name="my-accordion-4" defaultChecked />
               <div className="collapse-title font-semibold ">
                 <ul className="flex justify-between">
-                  <li>🟢 {val?.verdict}</li>
+                  <li>
+                    {val?.verdict === "Wrong Answer"
+                      ? "🔴 wrong answer"
+                      : "🟢 correct answer"}
+                  </li>
                   <li className=" ">{val?.language}</li>
                   <li>{val?.executionTime} s</li>
-                  <li>Jun 24, 12:45 PM</li>
+                  <li>
+                    {map[val?.createdAt?.slice(0, 7)?.split("-")[1]]}-
+                    {val?.createdAt?.slice(0, 10)?.split("-")[2]}-
+                    {val?.createdAt?.slice(0, 10)?.split("-")[0]}-
+                    <span className="text-blue-700">
+                      {Number(val?.createdAt?.slice(11, 13)) + 5}:
+                      {Math.floor(
+                        (Number(val?.createdAt?.slice(14, 16)) + 32) % 60,
+                      )}
+                    </span>
+                  </li>
                 </ul>
               </div>
               <div className="collapse-content  px-4">
@@ -50,7 +61,7 @@ const Submissions = () => {
                 </h2>
                 <h2 className="text-md font-semibold">
                   <span className="text-blue-900 font-semibold">verdict </span>:{" "}
-                  {verdict === "Wrong Answer"
+                  {val?.verdict === "Wrong Answer"
                     ? "🔴 wrong answer"
                     : "🟢 correct answer"}
                 </h2>
@@ -68,7 +79,12 @@ const Submissions = () => {
               </div>
             </div>
           ))}
-      </div>
+        </div>
+      ) : (
+        <h2 className="text-lg font-semibold text-center py-3">
+          No submission found
+        </h2>
+      )}
     </div>
   );
 };

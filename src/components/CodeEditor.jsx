@@ -44,7 +44,9 @@ const CodeEditor = () => {
           withCredentials: true,
         },
       );
-      dispatch(addTestcase(res?.data?.testcaseResults));
+      dispatch(addTestcase(res?.data?.newSubmission));
+      console.log(res?.data?.newSubmission);
+
       dispatch(changeActiveTab("Testcase"));
     } catch (err) {
       console.log(err);

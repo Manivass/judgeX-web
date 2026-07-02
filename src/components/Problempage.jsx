@@ -9,7 +9,8 @@ import Testcase from "./Testcase";
 import { changeActiveTab } from "../store/activetab";
 import Editorial from "./Editorial";
 import Submissions from "./Submission";
-import { removeSubmission } from "../store/submission";
+import { clearSubmission } from "../store/submission";
+import Solution from "./Solution";
 const ProblemPage = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -28,7 +29,7 @@ const ProblemPage = () => {
     }
   };
   useEffect(() => {
-    dispatch(removeSubmission());
+    dispatch(clearSubmission());
     dispatch(changeActiveTab("Problem"));
     getQuestions();
   }, [id]);
@@ -144,6 +145,7 @@ const ProblemPage = () => {
         )}
         {activetab === "Editorial" && <Editorial editorial={editorial} />}
         {activetab === "Submissions" && <Submissions />}
+        {activetab === "Solutions" && <Solution />}
       </div>
 
       {/* Right Side */}

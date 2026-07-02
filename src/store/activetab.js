@@ -7,8 +7,11 @@ const activetab = createSlice({
     changeActiveTab: (state, action) => {
       return action.payload;
     },
+    removeActiveTab: () => {
+      return null;
+    },
   },
 });
 
-export const { changeActiveTab } = activetab.actions;
+export const { changeActiveTab, removeActiveTab } = activetab.actions;
 export default activetab.reducer;
