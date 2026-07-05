@@ -1,8 +1,6 @@
 const Editorial = ({ editorial }) => {
   return (
-    <div className="p-5 space-y-5">
-      <h2 className="text-2xl font-bold">Editorial</h2>
-
+    <div className="p-5 space-y-5 h-screen overflow-y-auto">
       {/* Approach 1 */}
       {editorial.length > 0 &&
         editorial?.map((val, index) => (

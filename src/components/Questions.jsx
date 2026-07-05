@@ -22,7 +22,7 @@ const Questions = () => {
   }, []);
 
   const handleSearch = (value) => {
-    const searchValue = value.toLowerCase();
+    const searchValue = value.toLowerCase(); 
     const getQuestion = allQuestion.filter((question) =>
       question.title.toLowerCase().includes(searchValue),
     );

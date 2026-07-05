@@ -56,3 +56,28 @@ export const languageId = {
   PHP: 68,
   Ruby: 72,
 };
+
+export const getTimeAgo = (createdAt) => {
+  const now = new Date();
+  const created = new Date(createdAt);
+
+  const diff = Math.floor((now.getTime() - created.getTime()) / 1000);
+
+  if (diff < 60) {
+    return `${diff} sec ago`;
+  }
+
+  if (diff < 3600) {
+    return `${Math.floor(diff / 60)} min ago`;
+  }
+
+  if (diff < 86400) {
+    return `${Math.floor(diff / 3600)} hour ago`;
+  }
+
+  if (diff < 172800) {
+    return "Yesterday";
+  }
+
+  return `${Math.floor(diff / 86400)} days ago`;
+};

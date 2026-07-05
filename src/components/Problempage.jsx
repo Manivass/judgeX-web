@@ -11,6 +11,7 @@ import Editorial from "./Editorial";
 import Submissions from "./Submission";
 import { clearSubmission } from "../store/submission";
 import Solution from "./Solution";
+import Discuss from "./Discuss";
 const ProblemPage = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -146,6 +147,7 @@ const ProblemPage = () => {
         {activetab === "Editorial" && <Editorial editorial={editorial} />}
         {activetab === "Submissions" && <Submissions />}
         {activetab === "Solutions" && <Solution />}
+        {activetab === "Discuss" && <Discuss />}
       </div>
 
       {/* Right Side */}
