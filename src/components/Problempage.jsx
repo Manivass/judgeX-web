@@ -17,6 +17,14 @@ const ProblemPage = () => {
   const dispatch = useDispatch();
   const question = useSelector((store) => store?.question);
   const activetab = useSelector((store) => store?.activetab);
+  const user = useSelector((store) => store?.user?.data?.user);
+  const isSolved = user?.solvedProblems?.solvedQuestionsIds?.some(
+    (id) => id.toString() === question._id,
+  );
+
+  const isAttempted = user?.attemptedProblems?.attemptedQuestionsIds?.some(
+    (id) => id.toString() === question._id,
+  );
 
   let getQuestions = async () => {
     try {
@@ -90,10 +98,25 @@ const ProblemPage = () => {
           </a>
         </div>
         {activetab && activetab === "Problem" && (
-          <div className="p-6">
-            <h1 className="text-3xl font-bold">
-              {question?.questionNumber}.{question && question?.title}
-            </h1>
+          <div className="p-6 ">
+            <div className="flex justify-between my-auto">
+              <h2 className="text-3xl font-bold">
+                {question?.questionNumber}.{question && question?.title}
+              </h2>
+              <div>
+                {isSolved ? (
+                  <span className="text-white bg-green-500 p-2 rounded-lg font-semibold">
+                    🟢 Solved
+                  </span>
+                ) : isAttempted ? (
+                  <span className="text-yellow-500 font-semibold">
+                    🟡 Attempted
+                  </span>
+                ) : (
+                  <span className="text-gray-500"></span>
+                )}
+              </div>
+            </div>
 
             <div className="mt-3">
               <span className="badge badge-success">

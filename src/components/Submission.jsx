@@ -34,11 +34,7 @@ const Submissions = () => {
               <input type="radio" name="my-accordion-4" defaultChecked />
               <div className="collapse-title font-semibold ">
                 <ul className="flex justify-between">
-                  <li>
-                    {val?.verdict === "Wrong Answer"
-                      ? "🔴 wrong answer"
-                      : "🟢 correct answer"}
-                  </li>
+                  <li>{val?.result ? "🟢 Right Answer" : "🔴 Wrong Answer"}</li>
                   <li className=" ">{val?.language}</li>
                   <li>{val?.executionTime} s</li>
                   <li>
@@ -61,9 +57,7 @@ const Submissions = () => {
                 </h2>
                 <h2 className="text-md font-semibold">
                   <span className="text-blue-900 font-semibold">verdict </span>:{" "}
-                  {val?.verdict === "Wrong Answer"
-                    ? "🔴 wrong answer"
-                    : "🟢 correct answer"}
+                  {val?.result ? "🔴 wrong answer" : "🟢 correct answer"}
                 </h2>
                 <h2 className="text-md font-semibold">
                   <span className="text-blue-900 font-semibold">

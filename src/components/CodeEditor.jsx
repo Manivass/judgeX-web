@@ -5,6 +5,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { changeActiveTab } from "../store/activetab";
 import { addTestcase } from "../store/testcase";
+import { addUser } from "../store/user";
 
 const CodeEditor = () => {
   const question = useSelector((store) => store?.question);
@@ -14,6 +15,7 @@ const CodeEditor = () => {
   const [output, setOutput] = useState("");
   const boilerplate = boilerplates[language.toLocaleLowerCase()];
   const dispatch = useDispatch();
+  const user = useSelector((store) => store?.user);
 
   const handleRun = async () => {
     try {
@@ -45,9 +47,10 @@ const CodeEditor = () => {
         },
       );
       dispatch(addTestcase(res?.data?.newSubmission));
-      console.log(res?.data?.newSubmission);
 
       dispatch(changeActiveTab("Testcase"));
+      dispatch(addUser(res?.data?.user));
+      console.log(user);
     } catch (err) {
       console.log(err);
     }
