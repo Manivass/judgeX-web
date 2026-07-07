@@ -15,7 +15,6 @@ const CodeEditor = () => {
   const [output, setOutput] = useState("");
   const boilerplate = boilerplates[language.toLocaleLowerCase()];
   const dispatch = useDispatch();
-  const user = useSelector((store) => store?.user);
 
   const handleRun = async () => {
     try {
@@ -50,7 +49,6 @@ const CodeEditor = () => {
 
       dispatch(changeActiveTab("Testcase"));
       dispatch(addUser(res?.data?.user));
-      console.log(user);
     } catch (err) {
       console.log(err);
     }

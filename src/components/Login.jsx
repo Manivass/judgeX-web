@@ -47,21 +47,13 @@ const Login = () => {
         { withCredentials: true },
       );
 
-      const user = res?.data?.user;
-      dispatch(
-        addUser({
-          user,
-        }),
-      );
+      dispatch(addUser(res?.data?.user));
       navigate("/");
     } catch (err) {
       console.log(err);
     }
   };
   useEffect(() => {
-    console.log("Effect Running");
-    console.log(window.google);
-
     if (!window.google) {
       console.log("Google SDK Not Loaded");
       return;

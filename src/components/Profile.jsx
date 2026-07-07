@@ -13,21 +13,21 @@ const Profile = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!userDetails?.data) {
+    if (!userDetails) {
       navigate("/login");
       return null;
     }
   }, [userDetails]);
-  let joinedDate = userDetails?.data?.user?.createdAt;
+  let joinedDate = userDetails?.createdAt;
   joinedDate = joinedDate?.slice(0, 10)?.split("-") || [];
 
-  let easy = userDetails?.data?.user?.solvedProblems?.easy;
-  let medium = userDetails?.data?.user?.solvedProblems?.medium;
-  let hard = userDetails?.data?.user?.solvedProblems?.hard;
+  let easy = userDetails?.solvedProblems?.easy;
+  let medium = userDetails?.solvedProblems?.medium;
+  let hard = userDetails?.solvedProblems?.hard;
 
-  let submissionEasy = userDetails?.data?.user?.totalSubmissions?.easy;
-  let submissionMedium = userDetails?.data?.user?.totalSubmissions?.medium;
-  let submissionHard = userDetails?.data?.user?.totalSubmissions?.hard;
+  let submissionEasy = userDetails?.totalSubmissions?.easy;
+  let submissionMedium = userDetails?.totalSubmissions?.medium;
+  let submissionHard = userDetails?.totalSubmissions?.hard;
 
   return (
     <div className="min-h-screen bg-[#050816] p-6">
@@ -50,54 +50,51 @@ const Profile = () => {
             <div className="flex flex-col md:flex-row gap-6">
               <div className="avatar">
                 <div className="w-32 md:w-35 h-35 rounded-full  ring-offset-4 ring-offset-base-100 shadow-[0_0_40px_rgba(59,130,246,0.4)]">
-                  <img src={userDetails?.data?.user?.profilePicture} alt="" />
+                  <img src={userDetails?.profilePicture} alt="" />
                 </div>
               </div>
 
               <div>
                 <div className="flex items-center gap-3 flex-wrap">
                   <h1 className="text-3xl font-bold text-white">
-                    {userDetails?.data?.user?.firstName}{" "}
-                    {userDetails?.data?.user?.lastName}
+                    {userDetails?.firstName} {userDetails?.lastName}
                   </h1>
                 </div>
                 <div className=" flex gap-4 text-slate-400">
                   <div className="flex items-center gap-2  ">
                     <RiGraduationCapFill className=" my-auto  mt-3" />
                     <p className="mt-2 text-slate-400 font-semibold">
-                      {userDetails?.data?.user?.college}
+                      {userDetails?.college}
                     </p>
                   </div>
 
                   <div className="flex items-center gap-2 mt-2 ">
                     <MdLocationOn />
                     <h2 className="text-sm font-semibold">
-                      {userDetails?.data?.user?.state},India
+                      {userDetails?.state},India
                     </h2>
                   </div>
                 </div>
 
-                <p className="mt-4 text-slate-300">
-                  {userDetails?.data?.user?.bio}
-                </p>
+                <p className="mt-4 text-slate-300">{userDetails?.bio}</p>
 
                 <div className="flex gap-4 mt-5">
                   <a
-                    href={userDetails?.data?.user?.githubURL}
+                    href={userDetails?.githubURL}
                     className="btn  btn-active btn-outline hover:btn-success hover:duration-500"
                   >
                     <FaGithub />
                     GitHub
                   </a>
                   <a
-                    href={userDetails?.data?.user?.linkedinURL}
+                    href={userDetails?.linkedinURL}
                     className="btn  btn-active btn-outline hover:btn-success hover:duration-500"
                   >
                     <FaLinkedin />
                     LinkedIn
                   </a>
                   <a
-                    href={userDetails?.data?.user?.instagramURL}
+                    href={userDetails?.instagramURL}
                     className="btn  btn-active btn-outline hover:btn-success hover:duration-500 "
                   >
                     <FaInstagram />
@@ -115,7 +112,7 @@ const Profile = () => {
               <div className="space-y-3 mt-6 lg:mt-0">
                 <div className="flex items-center gap-3 text-slate-300">
                   <MdOutlineEmail />
-                  {userDetails?.data?.user?.email}
+                  {userDetails?.email}
                 </div>
 
                 <div className="flex items-center gap-3 text-slate-300">
@@ -127,7 +124,7 @@ const Profile = () => {
                     joinedDate[0]}
                 </div>
                 <div className="flex items-center gap-3 text-slate-300">
-                  🎯 Role : {userDetails?.data?.user?.role}
+                  🎯 Role : {userDetails?.role}
                 </div>
               </div>
             </div>
@@ -143,7 +140,7 @@ const Profile = () => {
             <p className="mt-4 text-slate-400">Problems Solved</p>
 
             <h1 className="text-5xl font-bold text-emerald-400 mt-2">
-              {userDetails?.data?.user?.solvedProblems?.total}
+              {userDetails?.solvedProblems?.total}
             </h1>
 
             <p className="text-slate-500 mt-2">Rank #25,543</p>
@@ -166,7 +163,7 @@ const Profile = () => {
             <p className="mt-4 text-slate-400">Total Submissions</p>
 
             <h1 className="text-5xl font-bold text-purple-400 mt-2">
-              {userDetails?.data?.user?.totalSubmissions?.total}
+              {userDetails?.totalSubmissions?.total}
             </h1>
 
             <p className="text-slate-500 mt-2">Rank #44,112</p>

@@ -57,7 +57,7 @@ const Submissions = () => {
                 </h2>
                 <h2 className="text-md font-semibold">
                   <span className="text-blue-900 font-semibold">verdict </span>:{" "}
-                  {val?.result ? "🔴 wrong answer" : "🟢 correct answer"}
+                  {val?.result ? "🟢 correct answer" : "🔴 wrong answer"}
                 </h2>
                 <h2 className="text-md font-semibold">
                   <span className="text-blue-900 font-semibold">

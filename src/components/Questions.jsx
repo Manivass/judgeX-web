@@ -2,9 +2,18 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { BASE_URL } from "../utils/constant";
 import { Link } from "react-router-dom";
+import { SiTicktick } from "react-icons/si";
+import { useDispatch, useSelector } from "react-redux";
+import { removeTestcase } from "../store/testcase";
 const Questions = () => {
   const [allQuestion, setAllQuestion] = useState();
   const [questions, setQuestions] = useState();
+  const dispatch = useDispatch();
+  dispatch(removeTestcase());
+  const solvedQuestions = useSelector(
+    (store) => store?.user?.solvedProblems?.solvedQuestionsIds,
+  );
+  console.log(solvedQuestions);
 
   let getQuestions = async () => {
     try {
@@ -22,7 +31,7 @@ const Questions = () => {
   }, []);
 
   const handleSearch = (value) => {
-    const searchValue = value.toLowerCase(); 
+    const searchValue = value.toLowerCase();
     const getQuestion = allQuestion.filter((question) =>
       question.title.toLowerCase().includes(searchValue),
     );
@@ -90,8 +99,13 @@ const Questions = () => {
                   {questions !== undefined &&
                     questions?.map((problem, index) => (
                       <tr key={index} className="hover:bg-[#071024]">
-                        <td className="text-white">
-                          {problem?.questionNumber}
+                        <td className="flex gap-2">
+                          <p>{problem?.questionNumber} </p>
+                          <p className="text-green-500 text-lg  my-auto">
+                            {solvedQuestions?.includes(problem._id) && (
+                              <SiTicktick />
+                            )}
+                          </p>
                         </td>
                         <td>
                           <Link

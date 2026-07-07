@@ -1,15 +1,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { BASE_URL } from "../utils/constant";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { addQuestion, removeQuestion } from "../store/question";
+import { removeQuestion } from "../store/question";
 const ProblemDetails = () => {
   const [allQuestion, setAllQuestion] = useState();
   const [questions, setQuestions] = useState();
   const [reload, setReload] = useState(false);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   dispatch(removeQuestion());
   let getQuestions = async () => {
     try {
@@ -94,7 +93,9 @@ const ProblemDetails = () => {
                   {questions !== undefined &&
                     questions?.map((problem, index) => (
                       <tr key={index} className="hover:bg-[#071024]">
-                        <td className="text-white">{problem?.questionNumber}</td>
+                        <td className="text-white">
+                          {problem?.questionNumber}
+                        </td>
                         <td>
                           <span className="font-semibold  text-gray-300 cursor-pointer">
                             {problem?.title}

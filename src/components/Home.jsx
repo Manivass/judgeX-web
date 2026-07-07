@@ -8,6 +8,7 @@ import { addStats } from "../store/stats";
 const Home = () => {
   const navigate = useNavigate();
   const userDetails = useSelector((store) => store?.user);
+
   const dispatch = useDispatch();
   const stats = useSelector((store) => store?.stats);
 
@@ -22,7 +23,7 @@ const Home = () => {
     }
   };
   useEffect(() => {
-    if (!userDetails?.data) {
+    if (!userDetails) {
       navigate("/login");
     }
   }, [userDetails]);

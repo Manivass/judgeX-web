@@ -10,20 +10,21 @@ import { changeActiveTab } from "../store/activetab";
 import Editorial from "./Editorial";
 import Submissions from "./Submission";
 import { clearSubmission } from "../store/submission";
-import Solution from "./Solution";
 import Discuss from "./Discuss";
 const ProblemPage = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const question = useSelector((store) => store?.question);
   const activetab = useSelector((store) => store?.activetab);
-  const user = useSelector((store) => store?.user?.data?.user);
+  const user = useSelector((store) => store?.user);
+  console.log(user);
+
   const isSolved = user?.solvedProblems?.solvedQuestionsIds?.some(
-    (id) => id.toString() === question._id,
+    (questionId) => questionId.toString() === id,
   );
 
   const isAttempted = user?.attemptedProblems?.attemptedQuestionsIds?.some(
-    (id) => id.toString() === question._id,
+    (questionId) => questionId.toString() === id,
   );
 
   let getQuestions = async () => {
@@ -70,12 +71,6 @@ const ProblemPage = () => {
             onClick={() => handleTab("Testcase")}
           >
             Testcase
-          </a>
-          <a
-            className={activetab === "Solutions" ? "tab tab-active" : "tab"}
-            onClick={() => handleTab("Solutions")}
-          >
-            Solutions
           </a>
           <a
             className={activetab === "Submissions" ? "tab tab-active" : "tab"}
@@ -169,7 +164,6 @@ const ProblemPage = () => {
         )}
         {activetab === "Editorial" && <Editorial editorial={editorial} />}
         {activetab === "Submissions" && <Submissions />}
-        {activetab === "Solutions" && <Solution />}
         {activetab === "Discuss" && <Discuss />}
       </div>
 

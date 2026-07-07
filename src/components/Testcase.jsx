@@ -28,12 +28,10 @@ const Testcase = ({ testcase }) => {
                 <div key={index}>
                   <div className="my-1">
                     <h2 className="font-bold mb-3">Example {index + 1}</h2>
-
                     <div className="mockup-code">
                       <pre>
                         <code>{val.input}</code>
                       </pre>
-
                       <pre>
                         <code>{val.output}</code>
                       </pre>

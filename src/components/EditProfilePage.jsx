@@ -70,8 +70,8 @@ const Editpage = () => {
         },
         { withCredentials: true },
       );
-      const user = res?.data?.message;
-      dispatch(addUser({ user }));
+      const user = res?.data?.updatedUser;
+      dispatch(addUser(user));
       setErr("");
       setSuccess(true);
       setTimeout(() => {
