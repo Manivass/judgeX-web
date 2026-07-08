@@ -8,7 +8,6 @@ import { BASE_URL } from "../utils/constant";
 import { useDispatch } from "react-redux";
 import { removeActiveTab } from "../store/activetab";
 import { removeQuestion } from "../store/question";
-import { clearSolution } from "../store/solution";
 import { removeStats } from "../store/stats";
 import { removeStateSuggestion } from "../store/stateSuggestion";
 import { clearSubmission } from "../store/submission";
@@ -22,7 +21,6 @@ const Navbar = () => {
       await axios.post(BASE_URL + "/logout", {}, { withCredentials: true });
       dispatch(removeActiveTab());
       dispatch(removeQuestion());
-      dispatch(clearSolution());
       dispatch(removeStats());
       dispatch(removeStateSuggestion());
       dispatch(clearSubmission());

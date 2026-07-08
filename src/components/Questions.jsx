@@ -10,10 +10,13 @@ const Questions = () => {
   const [questions, setQuestions] = useState();
   const dispatch = useDispatch();
   dispatch(removeTestcase());
+  const solvedProblems = useSelector(
+    (store) => store?.user?.solvedProblems?.total,
+  );
   const solvedQuestions = useSelector(
     (store) => store?.user?.solvedProblems?.solvedQuestionsIds,
   );
-  console.log(solvedQuestions);
+  console.log();
 
   let getQuestions = async () => {
     try {
@@ -55,11 +58,15 @@ const Questions = () => {
 
         {/* Status Cards */}
         <div className="flex gap-3 mb-6">
-          <div className="badge badge-primary p-4">All Problems 120</div>
+          <div className="badge badge-primary p-4">
+            All Problems {allQuestion?.length}
+          </div>
 
-          <div className="badge badge-success p-4">Solved 35</div>
+          <div className="badge badge-success p-4">Solved {solvedProblems}</div>
 
-          <div className="badge badge-warning p-4">Unsolved 85</div>
+          <div className="badge badge-warning p-4">
+            Unsolved {allQuestion?.length - solvedProblems}
+          </div>
         </div>
 
         <div className="flex gap-5 w-10/12 mx-auto">

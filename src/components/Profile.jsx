@@ -3,14 +3,62 @@ import { MdOutlineEmail, MdLocationOn } from "react-icons/md";
 import { HiMiniTrophy } from "react-icons/hi2";
 import Editpage from "./EditProfilePage";
 import { useSelector } from "react-redux";
-import { map } from "../utils/constant";
+import { BASE_URL, map } from "../utils/constant";
 import { useNavigate } from "react-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FaInstagram } from "react-icons/fa";
 import { RiGraduationCapFill } from "react-icons/ri";
+import axios from "axios";
 const Profile = () => {
   const userDetails = useSelector((store) => store?.user);
   const navigate = useNavigate();
+  const [totalQuestions, setTotalQuestions] = useState({
+    totaleasy: 0,
+    totalmedium: 0,
+    totalhard: 0,
+  });
+
+  const [submission, setSubmission] = useState({
+    totalSubmissions: 0,
+    passedSubmissions: 0,
+  });
+  console.log(
+    Math.floor(
+      (submission.passedSubmissions / submission.totalSubmissions) * 100,
+    ),
+  );
+
+  const getQuestionCount = async () => {
+    try {
+      const res = await axios.get(BASE_URL + "/questions", {
+        withCredentials: true,
+      });
+      let questions = res?.data?.questionCount;
+
+      setTotalQuestions({
+        totaleasy: Number(questions.easyQuestion),
+        totalmedium: Number(questions.mediumQuestion),
+        totalhard: Number(questions.hardQuestion),
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const getSubmissionCount = async () => {
+    try {
+      const res = await axios.get(BASE_URL + "/totalSubmissions", {
+        withCredentials: true,
+      });
+      let submission = res?.data?.submission;
+
+      setSubmission({
+        totalSubmissions: Number(submission.totalSubmissions),
+        passedSubmissions: Number(submission.passedSubmissions),
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
     if (!userDetails) {
@@ -18,16 +66,21 @@ const Profile = () => {
       return null;
     }
   }, [userDetails]);
+  useEffect(() => {
+    getQuestionCount();
+    getSubmissionCount();
+  }, []);
+
   let joinedDate = userDetails?.createdAt;
   joinedDate = joinedDate?.slice(0, 10)?.split("-") || [];
 
-  let easy = userDetails?.solvedProblems?.easy;
-  let medium = userDetails?.solvedProblems?.medium;
-  let hard = userDetails?.solvedProblems?.hard;
+  let solvedeasy = Number(userDetails?.solvedProblems?.easy);
+  let solvedmedium = Number(userDetails?.solvedProblems?.medium);
+  let solvedhard = Number(userDetails?.solvedProblems?.hard);
 
-  let submissionEasy = userDetails?.totalSubmissions?.easy;
-  let submissionMedium = userDetails?.totalSubmissions?.medium;
-  let submissionHard = userDetails?.totalSubmissions?.hard;
+  let attemptedEasy = Number(userDetails?.attemptedProblems?.easy);
+  let attemptedMedium = Number(userDetails?.attemptedProblems?.medium);
+  let attemptedHard = Number(userDetails?.attemptedProblems?.hard);
 
   return (
     <div className="min-h-screen bg-[#050816] p-6">
@@ -151,7 +204,12 @@ const Profile = () => {
             <p className="mt-4 text-slate-400">Problems Attempted</p>
 
             <h1 className="text-5xl font-bold text-cyan-400 mt-2">
-              {submissionEasy + submissionMedium + submissionHard}
+              {attemptedEasy +
+                attemptedMedium +
+                attemptedHard +
+                solvedeasy +
+                solvedmedium +
+                solvedhard}
             </h1>
 
             <p className="text-slate-500 mt-2">Rank #33,284</p>
@@ -195,38 +253,44 @@ const Profile = () => {
             <div>
               <div className="flex justify-between text-sm text-slate-300 mb-2">
                 <span>Easy</span>
-                <span>{easy} / 200</span>
+                <span>
+                  {solvedeasy} / {totalQuestions.totaleasy}
+                </span>
               </div>
 
               <progress
                 className="progress progress-success w-full"
-                value={easy}
-                max="200"
+                value={solvedeasy}
+                max={totalQuestions.totaleasy}
               ></progress>
             </div>
             <div>
               <div className="flex justify-between text-sm text-slate-300 mb-2">
                 <span>Medium</span>
-                <span>{medium} / 150</span>
+                <span>
+                  {solvedmedium} / {totalQuestions.totalmedium}
+                </span>
               </div>
 
               <progress
                 className="progress progress-warning w-full"
-                value={medium}
-                max="100"
+                value={solvedmedium}
+                max={totalQuestions.totalmedium}
               ></progress>
             </div>
 
             <div>
               <div className="flex justify-between text-sm text-slate-300 mb-2">
                 <span>Hard</span>
-                <span>{hard} / 50</span>
+                <span>
+                  {solvedhard} / {totalQuestions.totalhard}
+                </span>
               </div>
 
               <progress
                 className="progress progress-error w-full"
-                value={hard}
-                max="100"
+                value={solvedhard}
+                max={totalQuestions.totalhard}
               ></progress>
             </div>
           </div>
@@ -247,29 +311,35 @@ const Profile = () => {
                   <div
                     className="radial-progress text-success"
                     style={{
-                      "--value": 56,
+                      "--value":
+                        Math.floor(
+                          (solvedeasy + solvedmedium + solvedhard) /
+                            (totalQuestions.totaleasy +
+                              totalQuestions.totalmedium +
+                              totalQuestions.totalhard),
+                        ) * 100,
                       "--size": "8rem",
                     }}
                     role="progressbar"
                   >
-                    120
+                    {solvedeasy + solvedhard + solvedmedium}
                   </div>
                 </div>
 
                 <div className="space-y-2">
                   <div className="flex justify-between">
                     <span className="text-success">Easy</span>
-                    <span className="text-white">{easy}</span>
+                    <span className="text-white">{solvedeasy}</span>
                   </div>
 
                   <div className="flex justify-between">
                     <span className="text-warning">Medium</span>
-                    <span className="text-white"> {medium}</span>
+                    <span className="text-white"> {solvedmedium}</span>
                   </div>
 
                   <div className="flex justify-between">
                     <span className="text-error">Hard</span>
-                    <span className="text-white">{hard}</span>
+                    <span className="text-white">{solvedhard}</span>
                   </div>
                 </div>
               </div>
@@ -286,29 +356,38 @@ const Profile = () => {
                   <div
                     className="radial-progress text-primary"
                     style={{
-                      "--value": 71,
+                      "--value": Math.floor(
+                        (submission.passedSubmissions /
+                          submission.totalSubmissions) *
+                          100,
+                      ),
                       "--size": "8rem",
                     }}
                     role="progressbar"
                   >
-                    705
+                    {Math.floor(
+                      (submission.passedSubmissions /
+                        submission.totalSubmissions) *
+                        100,
+                    )}
+                    %
                   </div>
                 </div>
 
                 <div className="space-y-2">
                   <div className="flex justify-between">
                     <span className="text-success">Accepted</span>
-                    <span className="text-white">500</span>
+                    <span className="text-white">
+                      {submission.passedSubmissions}
+                    </span>
                   </div>
 
                   <div className="flex justify-between">
                     <span className="text-error">Wrong Answer</span>
-                    <span className="text-white">150</span>
-                  </div>
-
-                  <div className="flex justify-between">
-                    <span className="text-warning">Runtime Error</span>
-                    <span className="text-white">40</span>
+                    <span className="text-white">
+                      {submission.totalSubmissions -
+                        submission.passedSubmissions}
+                    </span>
                   </div>
                 </div>
               </div>
