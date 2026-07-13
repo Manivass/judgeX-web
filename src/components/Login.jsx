@@ -17,11 +17,13 @@ const Login = () => {
 
   const handleSignUp = async () => {
     try {
-      await axios.post(
+      const res = await axios.post(
         BASE_URL + "/signup",
         { firstName, lastName, email, password },
         { withCredentials: true },
       );
+
+      dispatch(addUser(res?.data?.user));
       navigate("/");
     } catch (err) {
       setErr(err?.response?.data?.message);
@@ -29,11 +31,12 @@ const Login = () => {
   };
   const handleLogin = async () => {
     try {
-      await axios.post(
+      const res = await axios.post(
         BASE_URL + "/login",
         { email, password },
         { withCredentials: true },
       );
+      dispatch(addUser(res?.data?.user));
       navigate("/");
     } catch (err) {
       setErr(err?.response?.data?.message);
