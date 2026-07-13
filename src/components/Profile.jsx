@@ -22,11 +22,6 @@ const Profile = () => {
     totalSubmissions: 0,
     passedSubmissions: 0,
   });
-  console.log(
-    Math.floor(
-      (submission.passedSubmissions / submission.totalSubmissions) * 100,
-    ),
-  );
 
   const getQuestionCount = async () => {
     try {
