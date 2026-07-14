@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { BASE_URL } from "../utils/constant";
+import { useSelector } from "react-redux";
 
 const AddProblem = () => {
   const [title, setTitle] = useState("");
@@ -15,6 +16,7 @@ const AddProblem = () => {
   let [dataStructure, setDataStructure] = useState("");
   const [explanation, setExplanation] = useState("");
   const [errMsg, setErr] = useState("");
+  const user = useSelector((store) => store?.user);
 
   const addConstraint = () => {
     setConstraint([...constraint, ""]);
@@ -329,7 +331,7 @@ const AddProblem = () => {
                 <button className="btn btn-ghost">Cancel</button>
 
                 <button className="btn btn-primary" onClick={handleSaveProblem}>
-                  Save Problem
+                  {user?.role == "admin" ? "Save Problem" : "give request"}
                 </button>
               </div>
               <p className="text-red-400 text-end font-semibold font-serif">

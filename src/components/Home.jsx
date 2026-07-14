@@ -4,6 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
 import { BASE_URL } from "../utils/constant";
 import { addStats } from "../store/stats";
+import TextType from "./TextType";
+import LineWaves from "./LightFall";
+import Lightfall from "./LightFall";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -32,88 +35,95 @@ const Home = () => {
     getStats();
   }, []);
   return (
-    <div className="w-screen border border-slate-800 bg-[#0B1120]">
-      <div className="max-w-screen mx-auto  overflow-hidden  shadow-2xl">
-        {/* Hero Section */}
-        <div className="grid md:grid-cols-2 bg-gradient-to-r from-[#0f172a] via-[#111827] to-[#1e1b4b]">
-          {/* Left Content */}
-          <div className="p-8 flex flex-col justify-center">
-            <h1 className="text-4xl font-bold leading-tight">
-              Sharpen Your Coding Skills
-            </h1>
+    <div className="w-screen border border-slate-800 bg-black">
+      <div className="w-screen mx-auto  overflow-hidden  shadow-2xl">
+        <div className="relative overflow-hidden h-[580px]">
+          <Lightfall />
+          {/* Hero Section */}
+          <div className="relative z-10 flex flex-col items-center justify-center h-full ">
+            {/* Left Content */}
+            <div className=" flex items-center">
+              <TextType
+                text={[
+                  "Sharpen Your Coding Skills",
+                  "Compete, Solve and Climb the Leaderboard",
+                  "Welcome to JudgeX 🚀",
+                ]}
+                typingSpeed={70}
+                deletingSpeed={40}
+                pauseDuration={1800}
+                className="text-5xl font-bold text-white leading-tight"
+              />
+            </div>
+            <div className="w-2/3  flex flex-col ">
+              <div className="flex justify-center">
+                <p className="text-slate-400 mt-4  text-xl font-semibold">
+                  Solve problems, participate in contests and become the best of
+                  the best.
+                </p>
+              </div>
 
-            <h2 className="text-4xl font-bold mt-1 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-              Compete, Solve, and Climb the Leaderboard
-            </h2>
+              <div className="flex justify-center gap-12 mt-6 ">
+                <Link
+                  to={`/problem/6a43ed91a112992e8b165965`}
+                  className="btn btn-primary"
+                >
+                  {"</>"} Start Coding
+                </Link>
 
-            <p className="text-slate-400 mt-4 max-w-md">
-              Solve problems, participate in contests and become the best of the
-              best.
-            </p>
-
-            <div className="flex gap-3 mt-6">
-              <Link to="/problemSolution" className="btn btn-primary">
-                {"</>"} Start Coding
-              </Link>
-
-              <Link to="/problems" className="btn btn-active border-slate-600">
-                ☰ View Problems
-              </Link>
+                <Link
+                  to="/problems"
+                  className="btn btn-active border-slate-600"
+                >
+                  ☰ View Problems
+                </Link>
+              </div>
             </div>
           </div>
+        </div>
+      </div>
 
-          {/* Right Illustration */}
-          <div className="hidden md:flex items-center justify-center p-6">
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/6062/6062646.png"
-              alt="coding"
-              className="w-80 object-contain"
-            />
+      {/* Stats Section */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-[1px] bg-slate-800">
+        <div className="bg-[#0f172a] p-5 flex items-center gap-4">
+          <div className="text-blue-500 text-3xl">👥</div>
+
+          <div>
+            <h3 className="font-bold text-xl text-gray-200">
+              {stats?.totalUser}
+            </h3>
+            <p className="text-xs text-slate-400">Total Users</p>
           </div>
         </div>
 
-        {/* Stats Section */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-[1px] bg-slate-800">
-          <div className="bg-[#0f172a] p-5 flex items-center gap-4">
-            <div className="text-blue-500 text-3xl">👥</div>
+        <div className="bg-[#0f172a] p-5 flex items-center gap-4">
+          <div className="text-green-500 text-3xl">📄</div>
 
-            <div>
-              <h3 className="font-bold text-xl text-gray-200">
-                {stats?.totalUser}
-              </h3>
-              <p className="text-xs text-slate-400">Total Users</p>
-            </div>
+          <div>
+            <h3 className="font-bold text-xl text-gray-200">
+              {stats?.totalQuestions}
+            </h3>
+            <p className="text-xs text-slate-400">Total Problems</p>
           </div>
+        </div>
 
-          <div className="bg-[#0f172a] p-5 flex items-center gap-4">
-            <div className="text-green-500 text-3xl">📄</div>
+        <div className="bg-[#0f172a] p-5 flex items-center gap-4">
+          <div className="text-yellow-500 text-3xl">{"</>"}</div>
 
-            <div>
-              <h3 className="font-bold text-xl text-gray-200">
-                {stats?.totalQuestions}
-              </h3>
-              <p className="text-xs text-slate-400">Total Problems</p>
-            </div>
+          <div>
+            <h3 className="font-bold text-xl text-gray-200">
+              {stats?.submissions}
+            </h3>
+            <p className="text-xs text-slate-400">Total Submissions</p>
           </div>
+        </div>
 
-          <div className="bg-[#0f172a] p-5 flex items-center gap-4">
-            <div className="text-yellow-500 text-3xl">{"</>"}</div>
+        <div className="bg-[#0f172a] p-5 flex items-center gap-4">
+          <div className="text-purple-500 text-3xl">🏆</div>
 
-            <div>
-              <h3 className="font-bold text-xl text-gray-200">
-                {stats?.submissions}
-              </h3>
-              <p className="text-xs text-slate-400">Total Submissions</p>
-            </div>
-          </div>
-
-          <div className="bg-[#0f172a] p-5 flex items-center gap-4">
-            <div className="text-purple-500 text-3xl">🏆</div>
-
-            <div>
-              <h3 className="font-bold text-xl text-gray-200">25</h3>
-              <p className="text-xs text-slate-400">Active Contests</p>
-            </div>
+          <div>
+            <h3 className="font-bold text-xl text-gray-200">25</h3>
+            <p className="text-xs text-slate-400">Active Contests</p>
           </div>
         </div>
       </div>
