@@ -10,7 +10,6 @@ const EditProblem = () => {
   const dispatch = useDispatch();
   const question = useSelector((store) => store?.question);
   const navigate = useNavigate();
-  const [toast, setToast] = useState(false);
 
   var getQuestionInfo = async () => {
     try {
@@ -117,10 +116,6 @@ const EditProblem = () => {
         },
       );
       setErr("");
-      setToast(true);
-      setTimeout(() => {
-        setToast(false);
-      }, 2000);
       navigate("/questions");
     } catch (err) {
       setErr(err?.response?.data?.message);
@@ -396,13 +391,6 @@ const EditProblem = () => {
           </div>
         </div>
       </div>
-      {toast && (
-        <div className="toast toast-top toast-center">
-          <div className="alert alert-success">
-            <span>Message sent successfully.</span>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

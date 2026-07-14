@@ -18,6 +18,8 @@ const AddProblem = () => {
   const [errMsg, setErr] = useState("");
   const user = useSelector((store) => store?.user);
 
+  const [toast, setToast] = useState(false);
+
   const addConstraint = () => {
     setConstraint([...constraint, ""]);
   };
@@ -55,12 +57,12 @@ const AddProblem = () => {
       let dataStructureSplit = dataStructure
         .split(",")
         .map((val) => val.trim());
-      let res = await axios.post(
-        BASE_URL + "/addQuestions",
+      await axios.post(
+        BASE_URL + "/questionRequest",
         {
           title,
           description,
-          constraint,
+          constraints: constraint,
           difficulty,
           testcase,
           timeLimit,
@@ -72,7 +74,21 @@ const AddProblem = () => {
           withCredentials: true,
         },
       );
-      console.log(res?.data);
+
+      setToast(true);
+      setTimeout(() => {
+        setToast(false);
+      }, 2000);
+      setTitle("");
+      setDescription("");
+      setConstraint([]);
+      setDifficulty("");
+      setTestcase([]);
+      setTimeLimit("");
+      setDataStructure([]);
+      setMemoryLimit("");
+      setExplanation("");
+      setDescription("");
     } catch (err) {
       setErr(err?.response?.data?.message);
     }
@@ -341,6 +357,14 @@ const AddProblem = () => {
           </div>
         </div>
       </div>
+
+      {toast && (
+        <div className="toast toast-middle toast-center">
+          <div className="alert alert-success">
+            <span>Message sent successfully.</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
