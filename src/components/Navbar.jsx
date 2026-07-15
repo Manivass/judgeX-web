@@ -101,6 +101,18 @@ const Navbar = () => {
                   </Link>
                 </li>
               )}
+              {user?.role == "admin" && (
+                <li>
+                  <Link
+                    to="/admin/questionRequest"
+                    onClick={closeDrawer}
+                    className="text-lg font-semibold"
+                  >
+                    <TbUserSquareRounded className="text-2xl" />
+                    Problem Request
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
         </div>

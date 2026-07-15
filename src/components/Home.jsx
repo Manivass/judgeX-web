@@ -5,7 +5,6 @@ import { Link, useNavigate } from "react-router";
 import { BASE_URL } from "../utils/constant";
 import { addStats } from "../store/stats";
 import TextType from "./TextType";
-import LineWaves from "./LightFall";
 import Lightfall from "./LightFall";
 
 const Home = () => {

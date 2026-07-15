@@ -12,6 +12,8 @@ import AddProblem from "./components/AddProblem";
 import Questions from "./components/Questions";
 import ProblemDetails from "./components/ProblemDetails";
 import EditProblem from "./components/EditProblem";
+import AdminQuestionRequests from "./components/AdminQuestionRequest";
+import ViewQuestionRequest from "./components/ViewQuestionRequest";
 
 export const Layout = () => {
   return (
@@ -61,6 +63,14 @@ const router = createBrowserRouter([
       {
         path: "/questions",
         element: <ProblemDetails />,
+      },
+      {
+        path: "/admin/questionrequest",
+        element: <AdminQuestionRequests />,
+      },
+      {
+        path: "/admin/view/questionequest",
+        element: <ViewQuestionRequest />,
       },
     ],
   },
