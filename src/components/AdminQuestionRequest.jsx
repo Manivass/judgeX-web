@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { BASE_URL } from "../utils/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { addRequest } from "../store/questionRequest";
+import { Link } from "react-router";
 
 const AdminQuestionRequests = () => {
   const dispatch = useDispatch();
@@ -78,7 +79,7 @@ const AdminQuestionRequests = () => {
       <div className="grid lg:grid-cols-2 gap-6">
         {requests?.map((request) => (
           <div
-            key={request.id}
+            key={request._id}
             className="card bg-slate-900 border border-slate-800 hover:border-violet-500 transition-all duration-300 shadow-xl"
           >
             <div className="card-body">
@@ -141,7 +142,12 @@ const AdminQuestionRequests = () => {
               </div>
 
               <div className="flex justify-end gap-3 mt-8">
-                <button className="btn btn-info">👁 View</button>
+                <Link
+                  className="btn btn-info"
+                  to={`/admin/view/questionrequest/${request._id}`}
+                >
+                  👁 View
+                </Link>
 
                 <button className="btn btn-success">✔ Approve</button>
 

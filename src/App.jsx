@@ -69,7 +69,7 @@ const router = createBrowserRouter([
         element: <AdminQuestionRequests />,
       },
       {
-        path: "/admin/view/questionequest",
+        path: "/admin/view/questionrequest/:id",
         element: <ViewQuestionRequest />,
       },
     ],
