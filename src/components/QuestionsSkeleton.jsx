@@ -1,4 +1,5 @@
 const QuestionSkeleton = () => {
+  console.log("question start");
   return (
     <div className="flex w-300 flex-col gap-4 my-4">
       {Array(9)
