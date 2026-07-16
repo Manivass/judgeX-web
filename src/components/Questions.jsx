@@ -6,6 +6,7 @@ import { SiTicktick } from "react-icons/si";
 import { useDispatch, useSelector } from "react-redux";
 import { removeTestcase } from "../store/testcase";
 import QuestionSkeleton from "./QuestionsSkeleton";
+import ProblemSkeleton from "./StatsSkeleton";
 const Questions = () => {
   const [allQuestion, setAllQuestion] = useState();
   const [questions, setQuestions] = useState();
@@ -47,6 +48,7 @@ const Questions = () => {
   };
   return (
     <div>
+      <ProblemSkeleton />
       <div className="min-h-screen bg-[#050b18] text-white p-6">
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
