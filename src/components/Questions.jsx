@@ -5,9 +5,11 @@ import { Link } from "react-router-dom";
 import { SiTicktick } from "react-icons/si";
 import { useDispatch, useSelector } from "react-redux";
 import { removeTestcase } from "../store/testcase";
+import QuestionSkeleton from "./QuestionsSkeleton";
 const Questions = () => {
   const [allQuestion, setAllQuestion] = useState();
   const [questions, setQuestions] = useState();
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   dispatch(removeTestcase());
   const solvedProblems = useSelector(
@@ -25,11 +27,13 @@ const Questions = () => {
       });
       setAllQuestion(res?.data?.questions);
       setQuestions(res?.data?.questions);
+      setLoading(false);
     } catch (err) {
       console.log(err?.response?.data?.message);
     }
   };
   useEffect(() => {
+    setLoading(true);
     getQuestions();
   }, []);
 
@@ -58,15 +62,29 @@ const Questions = () => {
 
         {/* Status Cards */}
         <div className="flex gap-3 mb-6">
-          <div className="badge badge-primary p-4">
-            All Problems {allQuestion?.length}
-          </div>
+          {loading ? (
+            <div className="skeleton bg-[#1f2937] h-9 w-22"></div>
+          ) : (
+            <div className="badge badge-primary p-4">
+              All Problems {allQuestion?.length}
+            </div>
+          )}
 
-          <div className="badge badge-success p-4">Solved {solvedProblems}</div>
-
-          <div className="badge badge-warning p-4">
-            Unsolved {allQuestion?.length - solvedProblems}
-          </div>
+          {loading ? (
+            <div className="skeleton bg-[#1f2937] h-9 w-22"></div>
+          ) : (
+            <div className="badge badge-success p-4">
+              {" "}
+              Solved {solvedProblems}
+            </div>
+          )}
+          {loading ? (
+            <div className="skeleton bg-[#1f2937] h-9 w-22"></div>
+          ) : (
+            <div className="badge badge-warning p-4">
+              Unsolved {allQuestion?.length - solvedProblems}
+            </div>
+          )}
         </div>
 
         <div className="flex gap-5 w-10/12 mx-auto">
@@ -103,7 +121,10 @@ const Questions = () => {
                 </thead>
 
                 <tbody>
-                  {questions !== undefined &&
+                  {loading ? (
+                    <QuestionSkeleton />
+                  ) : (
+                    questions !== undefined &&
                     questions?.map((problem, index) => (
                       <tr key={index} className="hover:bg-[#071024]">
                         <td className="flex gap-2">
@@ -150,7 +171,8 @@ const Questions = () => {
                           <button className="btn btn-ghost btn-sm">🔖</button>
                         </td>
                       </tr>
-                    ))}
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>

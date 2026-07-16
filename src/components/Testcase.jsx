@@ -5,7 +5,6 @@ const Testcase = ({ testcase }) => {
   const hiddenTestcase = testcase?.hiddenTestcase;
   const visibleTestcase = testcase?.visibleTestcase;
   const [testpass, setTestPass] = useState(false);
-  console.log("Testcase rendered");
   useEffect(() => {
     if (!result?.testcaseResults) {
       setTestPass(false);

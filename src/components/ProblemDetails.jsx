@@ -4,10 +4,12 @@ import { BASE_URL } from "../utils/constant";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { removeQuestion } from "../store/question";
+import QuestionSkeleton from "./QuestionsSkeleton";
 const ProblemDetails = () => {
   const [allQuestion, setAllQuestion] = useState();
   const [questions, setQuestions] = useState();
   const [reload, setReload] = useState(false);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   dispatch(removeQuestion());
   let getQuestions = async () => {
@@ -19,9 +21,12 @@ const ProblemDetails = () => {
       setQuestions(res?.data?.questions);
     } catch (err) {
       console.log(err?.response?.data?.message);
+    } finally {
+      setLoading(false);
     }
   };
   useEffect(() => {
+    setLoading(true);
     getQuestions();
   }, [reload]);
 
@@ -90,7 +95,10 @@ const ProblemDetails = () => {
                 </thead>
 
                 <tbody>
-                  {questions !== undefined &&
+                  {loading ? (
+                    <QuestionSkeleton />
+                  ) : (
+                    questions !== undefined &&
                     questions?.map((problem, index) => (
                       <tr key={index} className="hover:bg-[#071024]">
                         <td className="text-white">
@@ -140,7 +148,8 @@ const ProblemDetails = () => {
                           </button>
                         </td>
                       </tr>
-                    ))}
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>

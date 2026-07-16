@@ -1,7 +1,7 @@
 import CodeEditor from "./CodeEditor";
 import { BASE_URL } from "../utils/constant";
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { addQuestion } from "../store/question";
 import { useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,13 +11,14 @@ import Editorial from "./Editorial";
 import Submissions from "./Submission";
 import { clearSubmission } from "../store/submission";
 import Discuss from "./Discuss";
+import ProblemSkeleton from "./StatsSkeleton";
 const ProblemPage = () => {
+  const [loading, setLoading] = useState(true);
   const { id } = useParams();
   const dispatch = useDispatch();
   const question = useSelector((store) => store?.question);
   const activetab = useSelector((store) => store?.activetab);
   const user = useSelector((store) => store?.user);
-  console.log(user);
 
   const isSolved = user?.solvedProblems?.solvedQuestionsIds?.some(
     (questionId) => questionId.toString() === id,
@@ -36,9 +37,12 @@ const ProblemPage = () => {
       dispatch(addQuestion(res?.data?.question));
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
   useEffect(() => {
+    setLoading(true);
     dispatch(clearSubmission());
     dispatch(changeActiveTab("Problem"));
     getQuestions();
@@ -92,73 +96,78 @@ const ProblemPage = () => {
             Discuss
           </a>
         </div>
-        {activetab && activetab === "Problem" && (
-          <div className="p-6 ">
-            <div className="flex justify-between my-auto">
-              <h2 className="text-3xl font-bold">
-                {question?.questionNumber}.{question && question?.title}
-              </h2>
-              <div>
-                {isSolved ? (
-                  <span className="text-white bg-green-500 p-2 rounded-lg font-semibold">
-                    🟢 Solved
-                  </span>
-                ) : isAttempted ? (
-                  <span className="text-yellow-500 font-semibold">
-                    🟡 Attempted
-                  </span>
-                ) : (
-                  <span className="text-gray-500"></span>
-                )}
+
+        {activetab &&
+          activetab === "Problem" &&
+          (loading ? (
+            <ProblemSkeleton />
+          ) : (
+            <div className="p-6 ">
+              <div className="flex justify-between my-auto">
+                <h2 className="text-3xl font-bold">
+                  {question?.questionNumber}.{question && question?.title}
+                </h2>
+                <div>
+                  {isSolved ? (
+                    <span className="text-white bg-green-500 p-2 rounded-lg font-semibold">
+                      🟢 Solved
+                    </span>
+                  ) : isAttempted ? (
+                    <span className="text-yellow-500 font-semibold">
+                      🟡 Attempted
+                    </span>
+                  ) : (
+                    <span className="text-gray-500"></span>
+                  )}
+                </div>
               </div>
-            </div>
 
-            <div className="mt-3">
-              <span className="badge badge-success">
-                {question?.difficulty}
-              </span>
-            </div>
+              <div className="mt-3">
+                <span className="badge badge-success">
+                  {question?.difficulty}
+                </span>
+              </div>
 
-            <p className="mt-5 leading-7 font-semibold">
-              {question?.description}
-            </p>
+              <p className="mt-5 leading-7 font-semibold">
+                {question?.description}
+              </p>
 
-            <p className="mt-4 leading-7">{question?.explanation}</p>
+              <p className="mt-4 leading-7">{question?.explanation}</p>
 
-            {/* Example 1 */}
-            {visibleTestcase &&
-              visibleTestcase?.map((val, index) => {
-                return (
-                  <div key={index}>
-                    <div className="mt-8">
-                      <h2 className="font-bold mb-3">Example {index + 1}</h2>
+              {/* Example 1 */}
+              {visibleTestcase &&
+                visibleTestcase?.map((val, index) => {
+                  return (
+                    <div key={index}>
+                      <div className="mt-8">
+                        <h2 className="font-bold mb-3">Example {index + 1}</h2>
 
-                      <div className="mockup-code">
-                        <pre>
-                          <code>{val.input}</code>
-                        </pre>
+                        <div className="mockup-code">
+                          <pre>
+                            <code>{val.input}</code>
+                          </pre>
 
-                        <pre>
-                          <code>{val.output}</code>
-                        </pre>
+                          <pre>
+                            <code>{val.output}</code>
+                          </pre>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
 
-            {/* Constraints */}
-            <div className="mt-8">
-              <h2 className="font-bold mb-3">Constraints</h2>
+              {/* Constraints */}
+              <div className="mt-8">
+                <h2 className="font-bold mb-3">Constraints</h2>
 
-              <ul className="list-disc pl-5 space-y-2">
-                {constraints?.map((val) => (
-                  <li>{val}</li>
-                ))}
-              </ul>
+                <ul className="list-disc pl-5 space-y-2">
+                  {constraints?.map((val) => (
+                    <li>{val}</li>
+                  ))}
+                </ul>
+              </div>
             </div>
-          </div>
-        )}
+          ))}
         {activetab === "Testcase" && (
           <Testcase testcase={{ hiddenTestcase, visibleTestcase }} />
         )}

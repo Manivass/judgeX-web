@@ -1,12 +1,14 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BASE_URL, map } from "../utils/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { addSubmission } from "../store/submission";
+import ProblemSkeleton from "./StatsSkeleton";
 
 const Submissions = () => {
   const question = useSelector((store) => store?.question?._id);
   let submission = useSelector((store) => store?.submission);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
   let getSubmission = async () => {
@@ -17,14 +19,19 @@ const Submissions = () => {
       dispatch(addSubmission(res?.data?.submissions));
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
   useEffect(() => {
+    setLoading(true);
     getSubmission();
   }, []);
   return (
     <div className="px-3  py-3 w-full">
-      {submission?.length > 0 ? (
+      {loading ? (
+        <ProblemSkeleton />
+      ) : submission?.length > 0 ? (
         <div className="join join-vertical  w-full  bg-gray-200 border border-gray-300">
           {submission?.map((val, index) => (
             <div
