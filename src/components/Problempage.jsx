@@ -12,7 +12,6 @@ import Submissions from "./Submission";
 import { clearSubmission } from "../store/submission";
 import Discuss from "./Discuss";
 import ProblemSkeleton from "./StatsSkeleton";
-import StatsSkeleton from "./StatsSkeleton";
 const ProblemPage = () => {
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
@@ -34,7 +33,6 @@ const ProblemPage = () => {
       const res = await axios.get(BASE_URL + `/question/${id}`, {
         withCredentials: true,
       });
-
       dispatch(addQuestion(res?.data?.question));
     } catch (err) {
       console.log(err);
@@ -101,7 +99,7 @@ const ProblemPage = () => {
         {activetab &&
           activetab === "Problem" &&
           (loading ? (
-            <StatsSkeleton />
+            <ProblemSkeleton />
           ) : (
             <div className="p-6 ">
               <div className="flex justify-between my-auto">
