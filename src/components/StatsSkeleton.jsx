@@ -1,4 +1,4 @@
-const ProblemSkeleton = () => {
+const StatsSkeleton = () => {
   return (
     <div className="flex flex-col gap-8 my-4">
       <div className="bg-gray-300 skeleton h-8 w-[400px]"></div>
@@ -11,4 +11,4 @@ const ProblemSkeleton = () => {
   );
 };
 
-export default ProblemSkeleton;
+export default StatsSkeleton;

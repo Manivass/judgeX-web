@@ -12,6 +12,7 @@ import Submissions from "./Submission";
 import { clearSubmission } from "../store/submission";
 import Discuss from "./Discuss";
 import ProblemSkeleton from "./StatsSkeleton";
+import StatsSkeleton from "./StatsSkeleton";
 const ProblemPage = () => {
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
@@ -100,7 +101,7 @@ const ProblemPage = () => {
         {activetab &&
           activetab === "Problem" &&
           (loading ? (
-            <ProblemSkeleton />
+            <StatsSkeleton />
           ) : (
             <div className="p-6 ">
               <div className="flex justify-between my-auto">

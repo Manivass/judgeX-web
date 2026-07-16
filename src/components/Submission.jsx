@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { BASE_URL, map } from "../utils/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { addSubmission } from "../store/submission";
-import ProblemSkeleton from "./StatsSkeleton";
+import StatsSkeleton from "./StatsSkeleton";
 
 const Submissions = () => {
   const question = useSelector((store) => store?.question?._id);
@@ -30,7 +30,7 @@ const Submissions = () => {
   return (
     <div className="px-3  py-3 w-full">
       {loading ? (
-        <ProblemSkeleton />
+        <StatsSkeleton />
       ) : submission?.length > 0 ? (
         <div className="join join-vertical  w-full  bg-gray-200 border border-gray-300">
           {submission?.map((val, index) => (
