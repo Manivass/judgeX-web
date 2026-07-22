@@ -18,7 +18,6 @@ const Questions = () => {
   const solvedQuestions = useSelector(
     (store) => store?.user?.solvedProblems?.solvedQuestionsIds,
   );
-  console.log();
 
   let getQuestions = async () => {
     try {
@@ -27,15 +26,27 @@ const Questions = () => {
       });
       setAllQuestion(res?.data?.questions);
       setQuestions(res?.data?.questions);
-      setLoading(false);
     } catch (err) {
       console.log(err?.response?.data?.message);
+    } finally {
+      setLoading(false);
     }
   };
   useEffect(() => {
     setLoading(true);
     getQuestions();
   }, []);
+  const handleDifficulty = async (value) => {
+    try {
+      const res = await axios.get(BASE_URL + `/question/search/${value}`, {
+        withCredentials: true,
+      });
+      setAllQuestion(res?.data?.questions);
+      setQuestions(res?.data?.questions);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const handleSearch = (value) => {
     const searchValue = value.toLowerCase();
@@ -93,18 +104,39 @@ const Questions = () => {
 
           <div className="flex-1 bg-[#0b1428] rounded-lg overflow-hidden px-3">
             {/* Search */}
-
-            <div className="p-4">
-              <input
-                className="
+            <div className=" w-full flex gap-3 justify-between ">
+              <div className="p-4">
+                <input
+                  className="
           input 
           input-bordered 
-          w-full 
+          w-[450px]
           bg-[#111c33]
           "
-                placeholder="Search problems..."
-                onChange={(e) => handleSearch(e.target.value)}
-              />
+                  placeholder="Search problems..."
+                  onChange={(e) => handleSearch(e.target.value)}
+                />
+              </div>
+              <div className="flex gap-4 my-auto">
+                <select
+                  className="select select-bordered w-44 bg-blue-900 text-white"
+                  onChange={(e) => handleDifficulty(e.target.value)}
+                >
+                  <option value="all">All Difficulty</option>
+                  <option value="easy">Easy</option>
+                  <option value="medium">Medium</option>
+                  <option value="hard">Hard</option>
+                </select>
+
+                <select className="select select-bordered w-52 bg-blue-900 text-white">
+                  <option>All Data Structures</option>
+                  <option>Array</option>
+                  <option>String</option>
+                  <option>Linked List</option>
+                  <option>Tree</option>
+                  <option>Graph</option>
+                </select>
+              </div>
             </div>
 
             <div className="overflow-x-auto">

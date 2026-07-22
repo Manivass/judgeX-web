@@ -8,29 +8,31 @@ import { addStateSuggestion } from "../store/stateSuggestion";
 import { addUser } from "../store/user";
 const Editpage = () => {
   const userInfo = useSelector((store) => store?.user);
+  console.log(userInfo);
+
   const stateSuggest = useSelector((store) => store?.stateSuggest);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   if (!userInfo) {
     navigate("/login");
   }
-  let [firstName, setFirstName] = useState(userInfo?.data?.user?.firstName);
-  let [lastName, setLastName] = useState(userInfo?.data?.user?.lastName);
+  let [firstName, setFirstName] = useState(userInfo?.firstName);
+  let [lastName, setLastName] = useState(userInfo?.lastName);
   let [contactEmail, setContactEmail] = useState(
-    userInfo?.data?.user?.contactEmail,
+    userInfo?.contactEmail,
   );
   let [isFocus, setIsFocused] = useState(false);
-  let [state, setState] = useState(userInfo?.data?.user?.state);
-  let [bio, setBio] = useState(userInfo?.data?.user?.bio);
-  let [githubURL, setGithubURL] = useState(userInfo?.data?.user?.githubURL);
+  let [state, setState] = useState(userInfo?.state);
+  let [bio, setBio] = useState(userInfo?.bio);
+  let [githubURL, setGithubURL] = useState(userInfo?.githubURL);
   let [instagramURL, setinstagramURL] = useState(
-    userInfo?.data?.user?.instagramURL,
+    userInfo?.instagramURL,
   );
   let [linkedinURL, setLinkedinURL] = useState(
-    userInfo?.data?.user?.linkedinURL,
+    userInfo?.linkedinURL,
   );
   let [phoneNumber, setPhoneNumber] = useState(
-    userInfo?.data?.user?.phoneNumber,
+    userInfo?.phoneNumber,
   );
 
   let [college, setCollege] = useState("");
@@ -84,8 +86,8 @@ const Editpage = () => {
 
   return (
     <div>
-      <div className="card   rounded-box   w-55 md:w-auto  grow  px-3 py-1 ">
-        <div className="drawer drawer-end h-12  ">
+      <div className="card   rounded-box my-8    w-55 md:w-auto  grow  px-3 py-1 ">
+        <div className="drawer drawer-end h-12 border ">
           <input id="my-drawer-5" type="checkbox" className="drawer-toggle" />
           <div className="drawer-content  flex justify-end">
             <label
