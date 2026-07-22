@@ -81,3 +81,27 @@ export const getTimeAgo = (createdAt) => {
 
   return `${Math.floor(diff / 86400)} days ago`;
 };
+
+export const dataStructreTypes = [
+  "array",
+  "string ",
+  "linked list",
+  "stack",
+  "queue",
+  "tree",
+  "binary tree",
+  "bst",
+  "graph",
+  "heap",
+  "trie",
+  "hashmap",
+  "sliding window",
+  "two pointer",
+  "greedy",
+  "backtracking",
+  "recursion",
+  "dynamic programming",
+  "binary search",
+  "prefix sum",
+  "bit manipulation",
+];

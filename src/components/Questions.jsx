@@ -6,10 +6,13 @@ import { SiTicktick } from "react-icons/si";
 import { useDispatch, useSelector } from "react-redux";
 import { removeTestcase } from "../store/testcase";
 import QuestionSkeleton from "./QuestionsSkeleton";
+import { dataStructreTypes } from "../utils/constant";
 const Questions = () => {
   const [allQuestion, setAllQuestion] = useState();
   const [questions, setQuestions] = useState();
   const [loading, setLoading] = useState(true);
+  const [difficulty, setDifficulty] = useState("all");
+  const [dataStructure, setDataStrucute] = useState("all");
   const dispatch = useDispatch();
   dispatch(removeTestcase());
   const solvedProblems = useSelector(
@@ -36,11 +39,17 @@ const Questions = () => {
     setLoading(true);
     getQuestions();
   }, []);
-  const handleDifficulty = async (value) => {
+  const handleDifficultyAndDataStructre = async () => {
     try {
-      const res = await axios.get(BASE_URL + `/question/search/${value}`, {
-        withCredentials: true,
-      });
+      console.log(difficulty + " " + dataStructure);
+
+      const res = await axios.get(
+        BASE_URL +
+          `/question/search?difficulty=${difficulty}&dataStructure=${dataStructure}`,
+        {
+          withCredentials: true,
+        },
+      );
       setAllQuestion(res?.data?.questions);
       setQuestions(res?.data?.questions);
     } catch (err) {
@@ -56,6 +65,9 @@ const Questions = () => {
 
     setQuestions(getQuestion);
   };
+  useEffect(() => {
+    handleDifficultyAndDataStructre();
+  }, [difficulty, dataStructure]);
   return (
     <div>
       <div className="min-h-screen bg-[#050b18] text-white p-6">
@@ -114,13 +126,18 @@ const Questions = () => {
           bg-[#111c33]
           "
                   placeholder="Search problems..."
-                  onChange={(e) => handleSearch(e.target.value)}
+                  onChange={(e) => {
+                    handleSearch(e.target.value);
+                  }}
                 />
               </div>
               <div className="flex gap-4 my-auto">
                 <select
                   className="select select-bordered w-44 bg-blue-900 text-white"
-                  onChange={(e) => handleDifficulty(e.target.value)}
+                  value={difficulty}
+                  onChange={(e) => {
+                    setDifficulty(e.target.value);
+                  }}
                 >
                   <option value="all">All Difficulty</option>
                   <option value="easy">Easy</option>
@@ -128,13 +145,19 @@ const Questions = () => {
                   <option value="hard">Hard</option>
                 </select>
 
-                <select className="select select-bordered w-52 bg-blue-900 text-white">
-                  <option>All Data Structures</option>
-                  <option>Array</option>
-                  <option>String</option>
-                  <option>Linked List</option>
-                  <option>Tree</option>
-                  <option>Graph</option>
+                <select
+                  className="select select-bordered w-52 bg-blue-900 text-white"
+                  value={dataStructure}
+                  onChange={(e) => {
+                    setDataStrucute(e.target.value);
+                  }}
+                >
+                  <option value="all">All Data Structures</option>
+                  {dataStructreTypes?.map((val, index) => (
+                    <option key={index} value={val}>
+                      {val}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
