@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
 import { BASE_URL } from "../utils/constant";
@@ -10,9 +10,11 @@ import Lightfall from "./LightFall";
 const Home = () => {
   const navigate = useNavigate();
   const userDetails = useSelector((store) => store?.user);
+  console.log(userDetails?._id);
 
   const dispatch = useDispatch();
   const stats = useSelector((store) => store?.stats);
+  const [submissions, setSubmissions] = useState("");
 
   const getStats = async () => {
     try {
@@ -24,10 +26,30 @@ const Home = () => {
       console.log(err?.response?.data?.message);
     }
   };
+
+  const getSubmissions = async () => {
+    try {
+      const res = await axios.get(
+        BASE_URL + `/recentSubmissions/${userDetails._id}`,
+        {
+          withCredentials: true,
+        },
+      );
+      let sum = res?.data?.submissions;
+      sum = sum.slice(0, 5);
+      setSubmissions(sum);
+      
+    } catch (err) {
+      console.log(err?.response?.data?.message);
+    }
+  };
   useEffect(() => {
     if (!userDetails) {
       navigate("/login");
+      return;
     }
+
+    getSubmissions();
   }, [userDetails]);
 
   useEffect(() => {
@@ -219,32 +241,32 @@ const Home = () => {
             <div className="flex justify-between">
               <h2 className="font-semibold">Recent Problems</h2>
 
-              <button className="text-primary text-sm">View All</button>
+              <Link
+                to={`/submissions/${userDetails._id}`}
+                className="text-primary text-sm"
+              >
+                View All
+              </Link>
             </div>
 
-            {[
-              ["Binary Search", "Medium"],
-              ["Merge Intervals", "Medium"],
-              ["Reverse Linked List", "Easy"],
-              ["Maximum Subarray", "Hard"],
-              ["Valid Parentheses", "Easy"],
-            ].map((problem, idx) => (
-              <div key={idx} className="flex justify-between mt-2">
-                <span>{problem[0]}</span>
+            {submissions.length > 0 &&
+              submissions?.map((problem, idx) => (
+                <div key={idx} className="flex justify-between mt-2">
+                  <span>{problem?.problemId?.title}</span>
 
-                <div
-                  className={`badge ${
-                    problem[1] === "Easy"
-                      ? "badge-success"
-                      : problem[1] === "Medium"
-                        ? "badge-warning"
-                        : "badge-error"
-                  }`}
-                >
-                  {problem[1]}
+                  <div
+                    className={`badge ${
+                      problem?.problemId?.difficulty === "easy"
+                        ? "badge-success"
+                        : problem?.problemId?.difficulty === "medium"
+                          ? "badge-warning"
+                          : "badge-error"
+                    }`}
+                  >
+                    {problem?.problemId?.difficulty}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
 

@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Testcase from "./Testcase";
 import { changeActiveTab } from "../store/activetab";
 import Editorial from "./Editorial";
-import Submissions from "./Submission";
+import Submissions from "./QuestionSubmission";
 import { clearSubmission } from "../store/submission";
 import Discuss from "./Discuss";
 import ProblemSkeleton from "./StatsSkeleton";
