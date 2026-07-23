@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import { BASE_URL } from "../utils/constant";
 import { useSelector } from "react-redux";
 
@@ -66,8 +66,10 @@ const UserSubmissions = () => {
                     <tr key={submission._id} className="hover">
                       <td>{index + 1}</td>
 
-                      <td className="font-semibold">
-                        {submission.problemId.title}
+                      <td className="font-semibold hover:text-blue-800 hover:underline cursor-pointer">
+                        <Link to={`/submissionDetails/${submission?._id}`}>
+                          {submission.problemId.title}
+                        </Link>
                       </td>
 
                       <td>

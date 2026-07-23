@@ -10,11 +10,9 @@ import Lightfall from "./LightFall";
 const Home = () => {
   const navigate = useNavigate();
   const userDetails = useSelector((store) => store?.user);
-  console.log(userDetails?._id);
-
   const dispatch = useDispatch();
   const stats = useSelector((store) => store?.stats);
-  const [submissions, setSubmissions] = useState("");
+  const [submissions, setSubmissions] = useState([]);
 
   const getStats = async () => {
     try {
@@ -38,7 +36,6 @@ const Home = () => {
       let sum = res?.data?.submissions;
       sum = sum.slice(0, 5);
       setSubmissions(sum);
-      
     } catch (err) {
       console.log(err?.response?.data?.message);
     }
@@ -242,7 +239,7 @@ const Home = () => {
               <h2 className="font-semibold">Recent Problems</h2>
 
               <Link
-                to={`/submissions/${userDetails._id}`}
+                to={`/submissions/${userDetails?._id}`}
                 className="text-primary text-sm"
               >
                 View All
