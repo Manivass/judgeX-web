@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { BASE_URL, map } from "../utils/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { addSubmission } from "../store/submission";
-import StatsSkeleton from "./StatsSkeleton";
+import StatsSkeleton from "../skeleton/StatsSkeleton";
 
 const Submissions = () => {
   const question = useSelector((store) => store?.question?._id);

@@ -10,10 +10,10 @@ import { FaInstagram } from "react-icons/fa";
 import { RiGraduationCapFill } from "react-icons/ri";
 import { Link } from "react-router";
 import axios from "axios";
-import QuestionSkeleton from "./QuestionsSkeleton";
+import ProfileSkeleton from "../skeleton/ProfileSkeleton";
 const Profile = () => {
   const userDetails = useSelector((store) => store?.user);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState();
   const navigate = useNavigate();
   const { id } = useParams();
   const [totalQuestions, setTotalQuestions] = useState({
@@ -101,16 +101,16 @@ const Profile = () => {
   let attemptedEasy = Number(user?.attemptedProblems?.easy);
   let attemptedMedium = Number(user?.attemptedProblems?.medium);
   let attemptedHard = Number(user?.attemptedProblems?.hard);
-  if (!user) return <QuestionSkeleton />;
+  if (!user) return <ProfileSkeleton />;
   return (
     <div className="min-h-screen bg-[#050816] p-6">
       {/* Background Glow */}
       <div className="fixed inset-0 -z-10">
-        <div className="absolute top-0 right-0 h-96 w-96 bg-blue-500/20 blur-[140px]" />
-        <div className="absolute bottom-0 left-0 h-96 w-96 bg-purple-500/20 blur-[140px]" />
+        <div className="absolute top-0 right-0 h-96 w-96  blur-[140px]" />
+        <div className="absolute bottom-0 left-0 h-96 w-96  blur-[140px]" />
       </div>
       {userDetails?._id?.toString() === user?._id?.toString() && (
-        <div className="drawer drawer-end   w-6/7 p-4  mx-auto">
+        <div className="   w-6/7 p-4  mx-auto">
           <Editpage />
         </div>
       )}

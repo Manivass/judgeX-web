@@ -4,7 +4,7 @@ import { BASE_URL } from "../utils/constant";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { removeQuestion } from "../store/question";
-import QuestionSkeleton from "./QuestionsSkeleton";
+import QuestionSkeleton from "../skeleton/QuestionsSkeleton";
 const ProblemDetails = () => {
   const [allQuestion, setAllQuestion] = useState();
   const [questions, setQuestions] = useState();

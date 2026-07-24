@@ -11,7 +11,7 @@ import Editorial from "./Editorial";
 import Submissions from "./QuestionSubmission";
 import { clearSubmission } from "../store/submission";
 import Discuss from "./Discuss";
-import ProblemSkeleton from "./StatsSkeleton";
+import ProblemSkeleton from "../skeleton/StatsSkeleton";
 const ProblemPage = () => {
   const [loading, setLoading] = useState(true);
   const { id } = useParams();

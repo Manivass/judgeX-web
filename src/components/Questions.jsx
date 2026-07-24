@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { SiTicktick } from "react-icons/si";
 import { useDispatch, useSelector } from "react-redux";
 import { removeTestcase } from "../store/testcase";
-import QuestionSkeleton from "./QuestionsSkeleton";
+import QuestionSkeleton from "../skeleton/QuestionsSkeleton";
 import { dataStructreTypes } from "../utils/constant";
 const Questions = () => {
   const [allQuestion, setAllQuestion] = useState();
