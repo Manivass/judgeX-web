@@ -4,14 +4,18 @@ import { HiMiniTrophy } from "react-icons/hi2";
 import Editpage from "./EditProfilePage";
 import { useSelector } from "react-redux";
 import { BASE_URL, map } from "../utils/constant";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useEffect, useState } from "react";
 import { FaInstagram } from "react-icons/fa";
 import { RiGraduationCapFill } from "react-icons/ri";
+import { Link } from "react-router";
 import axios from "axios";
+import QuestionSkeleton from "./QuestionsSkeleton";
 const Profile = () => {
   const userDetails = useSelector((store) => store?.user);
+  const [user, setUser] = useState({});
   const navigate = useNavigate();
+  const { id } = useParams();
   const [totalQuestions, setTotalQuestions] = useState({
     totaleasy: 0,
     totalmedium: 0,
@@ -22,6 +26,18 @@ const Profile = () => {
     totalSubmissions: 0,
     passedSubmissions: 0,
   });
+  const [questionSubmission, setQuestionSubmission] = useState([]);
+
+  const getQuestionSubmission = async () => {
+    try {
+      const res = await axios.get(BASE_URL + `/recentSubmissions/${id}`, {
+        withCredentials: true,
+      });
+      setQuestionSubmission(res?.data?.submissions);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const getQuestionCount = async () => {
     try {
@@ -35,6 +51,17 @@ const Profile = () => {
         totalmedium: Number(questions.mediumQuestion),
         totalhard: Number(questions.hardQuestion),
       });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const getUserDetails = async () => {
+    try {
+      const res = await axios.get(BASE_URL + `/getuser/${id}`, {
+        withCredentials: true,
+      });
+      setUser(res?.data?.user);
     } catch (err) {
       console.log(err);
     }
@@ -56,27 +83,25 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    if (!userDetails) {
-      navigate("/login");
-      return null;
-    }
-  }, [userDetails]);
+    getUserDetails();
+    getQuestionSubmission();
+  }, [id]);
   useEffect(() => {
     getQuestionCount();
     getSubmissionCount();
   }, []);
 
-  let joinedDate = userDetails?.createdAt;
+  let joinedDate = user?.createdAt;
   joinedDate = joinedDate?.slice(0, 10)?.split("-") || [];
 
-  let solvedeasy = Number(userDetails?.solvedProblems?.easy);
-  let solvedmedium = Number(userDetails?.solvedProblems?.medium);
-  let solvedhard = Number(userDetails?.solvedProblems?.hard);
+  let solvedeasy = Number(user?.solvedProblems?.easy);
+  let solvedmedium = Number(user?.solvedProblems?.medium);
+  let solvedhard = Number(user?.solvedProblems?.hard);
 
-  let attemptedEasy = Number(userDetails?.attemptedProblems?.easy);
-  let attemptedMedium = Number(userDetails?.attemptedProblems?.medium);
-  let attemptedHard = Number(userDetails?.attemptedProblems?.hard);
-
+  let attemptedEasy = Number(user?.attemptedProblems?.easy);
+  let attemptedMedium = Number(user?.attemptedProblems?.medium);
+  let attemptedHard = Number(user?.attemptedProblems?.hard);
+  if (!user) return <QuestionSkeleton />;
   return (
     <div className="min-h-screen bg-[#050816] p-6">
       {/* Background Glow */}
@@ -84,9 +109,11 @@ const Profile = () => {
         <div className="absolute top-0 right-0 h-96 w-96 bg-blue-500/20 blur-[140px]" />
         <div className="absolute bottom-0 left-0 h-96 w-96 bg-purple-500/20 blur-[140px]" />
       </div>
-      <div className="drawer drawer-end   w-6/7 p-4  mx-auto">
-        <Editpage />
-      </div>
+      {userDetails?._id?.toString() === user?._id?.toString() && (
+        <div className="drawer drawer-end   w-6/7 p-4  mx-auto">
+          <Editpage />
+        </div>
+      )}
       <div className="max-w-7xl mx-auto">
         {/* PROFILE CARD */}
 
@@ -98,51 +125,51 @@ const Profile = () => {
             <div className="flex flex-col md:flex-row gap-6">
               <div className="avatar">
                 <div className="w-32 md:w-35 h-35 rounded-full  ring-offset-4 ring-offset-base-100 shadow-[0_0_40px_rgba(59,130,246,0.4)]">
-                  <img src={userDetails?.profilePicture} alt="" />
+                  <img src={user?.profilePicture} alt="" />
                 </div>
               </div>
 
               <div>
                 <div className="flex items-center gap-3 flex-wrap">
                   <h1 className="text-3xl font-bold text-white">
-                    {userDetails?.firstName} {userDetails?.lastName}
+                    {user?.firstName} {user?.lastName}
                   </h1>
                 </div>
                 <div className=" flex gap-4 text-slate-400">
                   <div className="flex items-center gap-2  ">
                     <RiGraduationCapFill className=" my-auto  mt-3" />
                     <p className="mt-2 text-slate-400 font-semibold">
-                      {userDetails?.college}
+                      {user?.college}
                     </p>
                   </div>
 
                   <div className="flex items-center gap-2 mt-2 ">
                     <MdLocationOn />
                     <h2 className="text-sm font-semibold">
-                      {userDetails?.state},India
+                      {user?.state},India
                     </h2>
                   </div>
                 </div>
 
-                <p className="mt-4 text-slate-300">{userDetails?.bio}</p>
+                <p className="mt-4 text-slate-300">{user?.bio}</p>
 
                 <div className="flex gap-4 mt-5">
                   <a
-                    href={userDetails?.githubURL}
+                    href={user?.githubURL}
                     className="btn  btn-active btn-outline hover:btn-success hover:duration-500"
                   >
                     <FaGithub />
                     GitHub
                   </a>
                   <a
-                    href={userDetails?.linkedinURL}
+                    href={user?.linkedinURL}
                     className="btn  btn-active btn-outline hover:btn-success hover:duration-500"
                   >
                     <FaLinkedin />
                     LinkedIn
                   </a>
                   <a
-                    href={userDetails?.instagramURL}
+                    href={user?.instagramURL}
                     className="btn  btn-active btn-outline hover:btn-success hover:duration-500 "
                   >
                     <FaInstagram />
@@ -160,7 +187,7 @@ const Profile = () => {
               <div className="space-y-3 mt-6 lg:mt-0">
                 <div className="flex items-center gap-3 text-slate-300">
                   <MdOutlineEmail />
-                  {userDetails?.email}
+                  {user?.email}
                 </div>
 
                 <div className="flex items-center gap-3 text-slate-300">
@@ -172,7 +199,7 @@ const Profile = () => {
                     joinedDate[0]}
                 </div>
                 <div className="flex items-center gap-3 text-slate-300">
-                  🎯 Role : {userDetails?.role}
+                  🎯 Role : {user?.role}
                 </div>
               </div>
             </div>
@@ -188,7 +215,7 @@ const Profile = () => {
             <p className="mt-4 text-slate-400">Problems Solved</p>
 
             <h1 className="text-5xl font-bold text-emerald-400 mt-2">
-              {userDetails?.solvedProblems?.total}
+              {user?.solvedProblems?.total}
             </h1>
 
             <p className="text-slate-500 mt-2">Rank #25,543</p>
@@ -216,7 +243,7 @@ const Profile = () => {
             <p className="mt-4 text-slate-400">Total Submissions</p>
 
             <h1 className="text-5xl font-bold text-purple-400 mt-2">
-              {userDetails?.totalSubmissions?.total}
+              {user?.totalSubmissions?.total}
             </h1>
 
             <p className="text-slate-500 mt-2">Rank #44,112</p>
@@ -419,37 +446,39 @@ const Profile = () => {
             {/* Recent Submissions */}
             <div className="card bg-gray-900 shadow-xs shadow-slate-400 border border-slate-700">
               <div className="card-body">
-                <h2 className="card-title text-sm text-gray-400">
-                  Recent Submissions
-                </h2>
+                <div className="flex justify-between">
+                  <h2 className="card-title text-sm text-gray-400">
+                    Recent Submissions
+                  </h2>
+                  <Link to={`/submissions/${id}`} className="text-blue-600">
+                    View All
+                  </Link>
+                </div>
 
                 <div className="space-y-4 mt-2">
-                  <div className="flex justify-between">
-                    <div>
-                      <p className="text-white">Two Sum</p>
-                      <div className="badge badge-success badge-sm">Easy</div>
-                    </div>
+                  {questionSubmission?.length > 0 &&
+                    questionSubmission?.map((problem, idx) => (
+                      <div key={idx} className="flex justify-between mt-2">
+                        <Link
+                          className="text-white"
+                          to={`/submissionDetails/${problem?._id}`}
+                        >
+                          {problem?.problemId?.title}
+                        </Link>
 
-                    <span className="text-success">Accepted</span>
-                  </div>
-
-                  <div className="flex justify-between">
-                    <div>
-                      <p className="text-white">Merge Intervals</p>
-                      <div className="badge badge-warning badge-sm">Medium</div>
-                    </div>
-
-                    <span className="text-success">Accepted</span>
-                  </div>
-
-                  <div className="flex justify-between">
-                    <div>
-                      <p className="text-white">Regular Expression Matching</p>
-                      <div className="badge badge-error badge-sm">Hard</div>
-                    </div>
-
-                    <span className="text-error">Wrong Answer</span>
-                  </div>
+                        <div
+                          className={`badge ${
+                            problem?.problemId?.difficulty === "easy"
+                              ? "badge-success"
+                              : problem?.problemId?.difficulty === "medium"
+                                ? "badge-warning"
+                                : "badge-error"
+                          }`}
+                        >
+                          {problem?.problemId?.difficulty}
+                        </div>
+                      </div>
+                    ))}
                 </div>
               </div>
             </div>

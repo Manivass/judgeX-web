@@ -249,7 +249,9 @@ const Home = () => {
             {submissions.length > 0 &&
               submissions?.map((problem, idx) => (
                 <div key={idx} className="flex justify-between mt-2">
-                  <span>{problem?.problemId?.title}</span>
+                  <Link to={`/submissionDetails/${problem?._id}`}>
+                    {problem?.problemId?.title}
+                  </Link>
 
                   <div
                     className={`badge ${

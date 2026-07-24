@@ -1,14 +1,15 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { BASE_URL } from "../utils/constant";
 import { Link } from "react-router";
+import { useSelector } from "react-redux";
 
 const SubmissionDetails = () => {
   const { id } = useParams();
   const [submission, setSubmission] = useState([]);
-  console.log(submission);
-
+  const navigate = useNavigate();
+  const user = useSelector((store) => store?.user);
   const getSubmission = async () => {
     try {
       const res = await axios.get(BASE_URL + `/submissionDetails/${id}`);
@@ -17,6 +18,12 @@ const SubmissionDetails = () => {
       console.log(err);
     }
   };
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+  }, []);
   useEffect(() => {
     getSubmission();
   }, [id]);

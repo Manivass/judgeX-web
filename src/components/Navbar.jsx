@@ -71,7 +71,7 @@ const Navbar = () => {
               </li>
               <li>
                 <Link
-                  to="/profile"
+                  to={`/profile/${user?._id}`}
                   onClick={closeDrawer}
                   className="text-lg font-semibold"
                 >
