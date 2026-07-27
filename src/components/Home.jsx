@@ -13,7 +13,7 @@ const Home = () => {
   const dispatch = useDispatch();
   const stats = useSelector((store) => store?.stats);
   const [submissions, setSubmissions] = useState([]);
-
+  const [leaderboard, setLeaderboard] = useState([]);
   const getStats = async () => {
     try {
       const res = await axios.get(BASE_URL + "/dashboard/stats", {
@@ -40,6 +40,18 @@ const Home = () => {
       console.log(err?.response?.data?.message);
     }
   };
+
+  const getLeaderboard = async () => {
+    try {
+      const res = await axios.get(BASE_URL + "/leaderboard", {
+        withCredentials: true,
+      });
+      const top5 = res?.data?.leaderboard?.slice(0, 5);
+      setLeaderboard(top5);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   useEffect(() => {
     if (!userDetails) {
       navigate("/login");
@@ -47,6 +59,7 @@ const Home = () => {
     }
 
     getSubmissions();
+    getLeaderboard();
   }, [userDetails]);
 
   useEffect(() => {
@@ -209,22 +222,23 @@ const Home = () => {
             <div className="flex justify-between">
               <h2 className="font-semibold">Top Performers</h2>
 
-              <button className="text-primary text-sm">View All</button>
+              <Link to={"/leaderboard"} className="text-primary text-sm">
+                View All
+              </Link>
             </div>
 
-            {[
-              ["🥇", "Mani", 150],
-              ["🥈", "Arjun", 145],
-              ["🥉", "Karthik", 130],
-              ["#4", "Divya", 120],
-              ["#5", "Priya", 110],
-            ].map((user, index) => (
+            {leaderboard?.map((user, index) => (
               <div key={index} className="flex justify-between mt-2">
-                <span>
-                  {user[0]} {user[1]}
-                </span>
+                <Link
+                  to={`/profile/${user?._id}`}
+                  className="hover:text-blue-400 cursor-pointer"
+                >
+                  {user?.firstName} {user?.lastName}
+                </Link>
 
-                <span className="text-yellow-400">{user[2]}</span>
+                <span className="text-yellow-400">
+                  {user?.solvedProblems?.total}
+                </span>
               </div>
             ))}
           </div>

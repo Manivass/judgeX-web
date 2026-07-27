@@ -4,7 +4,7 @@ import { HiMiniTrophy } from "react-icons/hi2";
 import Editpage from "./EditProfilePage";
 import { useSelector } from "react-redux";
 import { BASE_URL, map } from "../utils/constant";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import { useEffect, useState } from "react";
 import { FaInstagram } from "react-icons/fa";
 import { RiGraduationCapFill } from "react-icons/ri";
@@ -14,7 +14,6 @@ import ProfileSkeleton from "../skeleton/ProfileSkeleton";
 const Profile = () => {
   const userDetails = useSelector((store) => store?.user);
   const [user, setUser] = useState();
-  const navigate = useNavigate();
   const { id } = useParams();
   const [totalQuestions, setTotalQuestions] = useState({
     totaleasy: 0,
@@ -26,6 +25,8 @@ const Profile = () => {
     totalSubmissions: 0,
     passedSubmissions: 0,
   });
+  console.log(submission);
+
   const [questionSubmission, setQuestionSubmission] = useState([]);
 
   const getQuestionSubmission = async () => {
@@ -33,7 +34,7 @@ const Profile = () => {
       const res = await axios.get(BASE_URL + `/recentSubmissions/${id}`, {
         withCredentials: true,
       });
-      setQuestionSubmission(res?.data?.submissions);
+      setQuestionSubmission(res?.data?.submissions?.slice(0, 5));
     } catch (err) {
       console.log(err);
     }
@@ -68,10 +69,12 @@ const Profile = () => {
   };
   const getSubmissionCount = async () => {
     try {
-      const res = await axios.get(BASE_URL + "/totalSubmissions", {
+      const res = await axios.get(BASE_URL + `/totalSubmissions/${id} `, {
         withCredentials: true,
       });
-      let submission = res?.data?.submission;
+      console.log(res?.data);
+
+      const submission = res?.data?.submission || {};
 
       setSubmission({
         totalSubmissions: Number(submission.totalSubmissions),
@@ -90,6 +93,12 @@ const Profile = () => {
     getQuestionCount();
     getSubmissionCount();
   }, []);
+  const percentage =
+    submission.totalSubmissions > 0
+      ? Math.round(
+          (submission.passedSubmissions / submission.totalSubmissions) * 100,
+        )
+      : 0;
 
   let joinedDate = user?.createdAt;
   joinedDate = joinedDate?.slice(0, 10)?.split("-") || [];
@@ -243,7 +252,7 @@ const Profile = () => {
             <p className="mt-4 text-slate-400">Total Submissions</p>
 
             <h1 className="text-5xl font-bold text-purple-400 mt-2">
-              {user?.totalSubmissions?.total}
+              {submission?.totalSubmissions}
             </h1>
 
             <p className="text-slate-500 mt-2">Rank #44,112</p>
@@ -252,10 +261,10 @@ const Profile = () => {
           <div className="group rounded-3xl bg-gradient-to-br from-yellow-500/10 to-transparent border border-yellow-500/20 p-6 hover:-translate-y-2 transition duration-300">
             <div
               className="radial-progress text-warning"
-              style={{ "--value": 73 }}
+              style={{ "--value": percentage }}
               role="progressbar"
             >
-              73%
+              {percentage}
             </div>
 
             <p className="mt-4 text-slate-400">Acceptance Rate</p>
@@ -378,21 +387,12 @@ const Profile = () => {
                   <div
                     className="radial-progress text-primary"
                     style={{
-                      "--value": Math.floor(
-                        (submission.passedSubmissions /
-                          submission.totalSubmissions) *
-                          100,
-                      ),
+                      "--value": percentage,
                       "--size": "8rem",
                     }}
                     role="progressbar"
                   >
-                    {Math.floor(
-                      (submission.passedSubmissions /
-                        submission.totalSubmissions) *
-                        100,
-                    )}
-                    %
+                    {percentage}%
                   </div>
                 </div>
 
@@ -450,7 +450,10 @@ const Profile = () => {
                   <h2 className="card-title text-sm text-gray-400">
                     Recent Submissions
                   </h2>
-                  <Link to={`/submissions/${id}`} className="text-blue-600">
+                  <Link
+                    to={`/submissions/${user?._id}`}
+                    className="text-blue-600"
+                  >
                     View All
                   </Link>
                 </div>

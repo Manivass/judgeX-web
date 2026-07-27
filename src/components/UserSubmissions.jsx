@@ -3,23 +3,25 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import { BASE_URL } from "../utils/constant";
 import { useSelector } from "react-redux";
+import StatsSkeleton from "../skeleton/StatsSkeleton";
 
 const UserSubmissions = () => {
   const { id } = useParams();
+
   const [submission, setSubmissions] = useState([]);
   const userDetails = useSelector((store) => store?.user);
   const navigate = useNavigate();
+  const [skeleton, setSkeleton] = useState(true);
   const getSubmissions = async () => {
     try {
-      const res = await axios.get(
-        BASE_URL + `/recentSubmissions/${userDetails?._id}`,
-        {
-          withCredentials: true,
-        },
-      );
+      const res = await axios.get(BASE_URL + `/recentSubmissions/${id}`, {
+        withCredentials: true,
+      });
       setSubmissions(res?.data?.submissions);
     } catch (err) {
       console.log(err?.response?.data?.message);
+    } finally {
+      setSkeleton(false);
     }
   };
   useEffect(() => {
@@ -33,6 +35,9 @@ const UserSubmissions = () => {
   useEffect(() => {
     getSubmissions();
   }, [id]);
+  if (skeleton) {
+    return <StatsSkeleton />;
+  }
   return (
     <div>
       <div className="min-h-screen bg-base-400 p-8 ">

@@ -16,6 +16,7 @@ import AdminQuestionRequests from "./components/AdminQuestionRequest";
 import ViewQuestionRequest from "./components/ViewQuestionRequest";
 import UserSubmissions from "./components/UserSubmissions";
 import SubmissionDetails from "./components/SubmissionDetails";
+import Leaderboard from "./components/Leaderboard";
 
 export const Layout = () => {
   return (
@@ -81,6 +82,10 @@ const router = createBrowserRouter([
       {
         path: "/submissions/:id",
         element: <UserSubmissions />,
+      },
+      {
+        path: "/leaderboard",
+        element: <Leaderboard />,
       },
     ],
   },
