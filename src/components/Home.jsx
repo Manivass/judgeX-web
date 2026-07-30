@@ -14,6 +14,7 @@ const Home = () => {
   const stats = useSelector((store) => store?.stats);
   const [submissions, setSubmissions] = useState([]);
   const [leaderboard, setLeaderboard] = useState([]);
+  const [problemOfTheDay, setProblemOfTheDay] = useState();
   const getStats = async () => {
     try {
       const res = await axios.get(BASE_URL + "/dashboard/stats", {
@@ -52,6 +53,17 @@ const Home = () => {
       console.log(err);
     }
   };
+
+  const getproblemOfTheDay = async () => {
+    try {
+      const res = await axios.get(BASE_URL + "/problemOfTheDay", {
+        withCredentials: true,
+      });
+      setProblemOfTheDay(res?.data?.question);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   useEffect(() => {
     if (!userDetails) {
       navigate("/login");
@@ -60,6 +72,7 @@ const Home = () => {
 
     getSubmissions();
     getLeaderboard();
+    getproblemOfTheDay();
   }, [userDetails]);
 
   useEffect(() => {
@@ -194,26 +207,34 @@ const Home = () => {
 
         {/* Problem of the Day */}
         <div className="card bg-[#111827] border border-slate-700">
-          <div className="card-body">
-            <div className="flex justify-between">
-              <h2 className="font-semibold text-white">
-                🌟 Problem of the Day
-              </h2>
+          {problemOfTheDay && (
+            <div className="card-body">
+              <div className="flex justify-between">
+                <h2 className="font-semibold text-white">
+                  🌟 Problem of the Day
+                </h2>
 
-              <div className="badge badge-success">Easy</div>
+                <div className="badge badge-success">
+                  {problemOfTheDay?.difficulty}
+                </div>
+              </div>
+
+              <h1 className="text-2xl font-bold mt-2 text-slate-200">
+                {problemOfTheDay?.title}
+              </h1>
+
+              <p className="text-slate-400 text-sm mt-2">
+                {problemOfTheDay?.description}
+              </p>
+
+              <Link
+                to={`/problem/${problemOfTheDay?._id}`}
+                className="btn btn-primary btn-sm mt-4 w-fit"
+              >
+                Solve Now
+              </Link>
             </div>
-
-            <h1 className="text-2xl font-bold mt-2 text-slate-200">Two Sum</h1>
-
-            <p className="text-slate-400 text-sm mt-2">
-              Given an array of integers, return indices of the two numbers such
-              that they add up to a specific target.
-            </p>
-
-            <button className="btn btn-primary btn-sm mt-4 w-fit">
-              Solve Now
-            </button>
-          </div>
+          )}
         </div>
 
         {/* Top Performers */}
