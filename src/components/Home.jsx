@@ -6,6 +6,7 @@ import { BASE_URL } from "../utils/constant";
 import { addStats } from "../store/stats";
 import TextType from "./TextType";
 import Lightfall from "./LightFall";
+import CardSkeleton from "../skeleton/CardSkeleton";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -174,40 +175,48 @@ const Home = () => {
       <div className="grid lg:grid-cols-3 gap-4 mt-6 px-4 md:px-8 lg:px-12">
         {/* Problems by Difficulty */}
         <div className="card bg-[#111827] border border-slate-700">
-          <div className="card-body">
-            <h2 className="font-semibold text-white">Problems by Difficulty</h2>
+          {stats ? (
+            <div className="card-body">
+              <h2 className="font-semibold text-white">
+                Problems by Difficulty
+              </h2>
 
-            <div className="grid grid-cols-3 gap-3 mt-3">
-              <div className="bg-green-900/30 rounded-lg p-4 text-center">
-                <p className="text-green-400 font-semibold">Easy</p>
-                <h1 className="text-3xl font-bold mt-2 text-white">
-                  {stats?.easyQuestions}
-                </h1>
-                <p className="text-xs text-slate-400">Problems</p>
-              </div>
+              <div className="grid grid-cols-3 gap-3 mt-3">
+                <div className="bg-green-900/30 rounded-lg p-4 text-center">
+                  <p className="text-green-400 font-semibold">Easy</p>
+                  <h1 className="text-3xl font-bold mt-2 text-white">
+                    {stats?.easyQuestions}
+                  </h1>
+                  <p className="text-xs text-slate-400">Problems</p>
+                </div>
 
-              <div className="bg-yellow-900/30 rounded-lg p-4 text-center">
-                <p className="text-yellow-400 font-semibold">Medium</p>
-                <h1 className="text-3xl font-bold mt-2 text-white">
-                  {stats?.mediumQuestions}
-                </h1>
-                <p className="text-xs text-slate-400">Problems</p>
-              </div>
+                <div className="bg-yellow-900/30 rounded-lg p-4 text-center">
+                  <p className="text-yellow-400 font-semibold">Medium</p>
+                  <h1 className="text-3xl font-bold mt-2 text-white">
+                    {stats?.mediumQuestions}
+                  </h1>
+                  <p className="text-xs text-slate-400">Problems</p>
+                </div>
 
-              <div className="bg-red-900/30 rounded-lg p-4 text-center">
-                <p className="text-red-400 font-semibold">Hard</p>
-                <h1 className="text-3xl font-bold mt-2 text-white">
-                  {stats?.hardQuestions}
-                </h1>
-                <p className="text-xs text-slate-400">Problems</p>
+                <div className="bg-red-900/30 rounded-lg p-4 text-center">
+                  <p className="text-red-400 font-semibold">Hard</p>
+                  <h1 className="text-3xl font-bold mt-2 text-white">
+                    {stats?.hardQuestions}
+                  </h1>
+                  <p className="text-xs text-slate-400">Problems</p>
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <CardSkeleton />
+          )}
         </div>
 
         {/* Problem of the Day */}
         <div className="card bg-[#111827] border border-slate-700">
-          {problemOfTheDay && (
+          {!problemOfTheDay ? (
+            <CardSkeleton />
+          ) : (
             <div className="card-body">
               <div className="flex justify-between">
                 <h2 className="font-semibold text-white">
@@ -239,50 +248,54 @@ const Home = () => {
 
         {/* Top Performers */}
         <div className="card bg-[#111827] border border-slate-700 text-white">
-          <div className="card-body">
-            <div className="flex justify-between">
-              <h2 className="font-semibold">Top Performers</h2>
+          {leaderboard?.length > 0 ? (
+            <div className="card-body">
+              <div className="flex justify-between">
+                <h2 className="font-semibold">Top Performers</h2>
 
-              <Link to={"/leaderboard"} className="text-primary text-sm">
-                View All
-              </Link>
-            </div>
-
-            {leaderboard?.map((user, index) => (
-              <div key={index} className="flex justify-between mt-2">
-                <Link
-                  to={`/profile/${user?._id}`}
-                  className="hover:text-blue-400 cursor-pointer"
-                >
-                  {user?.firstName} {user?.lastName}
+                <Link to={"/leaderboard"} className="text-primary text-sm">
+                  View All
                 </Link>
-
-                <span className="text-yellow-400">
-                  {user?.solvedProblems?.total}
-                </span>
               </div>
-            ))}
-          </div>
+
+              {leaderboard?.map((user, index) => (
+                <div key={index} className="flex justify-between mt-2">
+                  <Link
+                    to={`/profile/${user?._id}`}
+                    className="hover:text-blue-400 cursor-pointer"
+                  >
+                    {user?.firstName} {user?.lastName}
+                  </Link>
+
+                  <span className="text-yellow-400">
+                    {user?.solvedProblems?.total}
+                  </span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <CardSkeleton />
+          )}
         </div>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-4 mt-4 px-4 md:px-8 lg:px-12 py-3 text-white ">
         {/* Recent Problems */}
         <div className="card bg-[#111827] border border-slate-700">
-          <div className="card-body">
-            <div className="flex justify-between">
-              <h2 className="font-semibold">Recent Problems</h2>
+          {submissions.length > 0 ? (
+            <div className="card-body">
+              <div className="flex justify-between">
+                <h2 className="font-semibold">Recent Problems</h2>
 
-              <Link
-                to={`/submissions/${userDetails?._id}`}
-                className="text-primary text-sm"
-              >
-                View All
-              </Link>
-            </div>
+                <Link
+                  to={`/submissions/${userDetails?._id}`}
+                  className="text-primary text-sm"
+                >
+                  View All
+                </Link>
+              </div>
 
-            {submissions.length > 0 &&
-              submissions?.map((problem, idx) => (
+              {submissions?.map((problem, idx) => (
                 <div key={idx} className="flex justify-between mt-2">
                   <Link to={`/submissionDetails/${problem?._id}`}>
                     {problem?.problemId?.title}
@@ -301,7 +314,10 @@ const Home = () => {
                   </div>
                 </div>
               ))}
-          </div>
+            </div>
+          ) : (
+            <CardSkeleton />
+          )}
         </div>
 
         {/* Upcoming Contests */}
