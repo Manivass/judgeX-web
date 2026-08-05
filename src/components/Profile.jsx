@@ -11,6 +11,7 @@ import { RiGraduationCapFill } from "react-icons/ri";
 import { Link } from "react-router";
 import axios from "axios";
 import ProfileSkeleton from "../skeleton/ProfileSkeleton";
+import Skills from "./Skills";
 const Profile = () => {
   const userDetails = useSelector((store) => store?.user);
   const [user, setUser] = useState();
@@ -25,7 +26,6 @@ const Profile = () => {
     totalSubmissions: 0,
     passedSubmissions: 0,
   });
-  console.log(submission);
 
   const [questionSubmission, setQuestionSubmission] = useState([]);
 
@@ -274,6 +274,7 @@ const Profile = () => {
         </div>
 
         {/* PROGRESS SECTION */}
+        <Skills user={user} />
 
         <div className="mt-10 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-8">
           <h2 className="text-2xl font-bold text-white mb-6">
@@ -532,6 +533,7 @@ const Profile = () => {
           </div>
         </div>
       </div>
+      <Skills />
     </div>
   );
 };

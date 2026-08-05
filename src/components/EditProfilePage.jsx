@@ -18,22 +18,14 @@ const Editpage = () => {
   }
   let [firstName, setFirstName] = useState(userInfo?.firstName);
   let [lastName, setLastName] = useState(userInfo?.lastName);
-  let [contactEmail, setContactEmail] = useState(
-    userInfo?.contactEmail,
-  );
+  let [contactEmail, setContactEmail] = useState(userInfo?.contactEmail);
   let [isFocus, setIsFocused] = useState(false);
   let [state, setState] = useState(userInfo?.state);
   let [bio, setBio] = useState(userInfo?.bio);
   let [githubURL, setGithubURL] = useState(userInfo?.githubURL);
-  let [instagramURL, setinstagramURL] = useState(
-    userInfo?.instagramURL,
-  );
-  let [linkedinURL, setLinkedinURL] = useState(
-    userInfo?.linkedinURL,
-  );
-  let [phoneNumber, setPhoneNumber] = useState(
-    userInfo?.phoneNumber,
-  );
+  let [instagramURL, setinstagramURL] = useState(userInfo?.instagramURL);
+  let [linkedinURL, setLinkedinURL] = useState(userInfo?.linkedinURL);
+  let [phoneNumber, setPhoneNumber] = useState(userInfo?.phoneNumber);
 
   let [college, setCollege] = useState("");
   let [success, setSuccess] = useState("");
@@ -86,10 +78,10 @@ const Editpage = () => {
 
   return (
     <div>
-      <div className="card   rounded-box my-8    w-55 md:w-auto  grow  px-3 py-1 ">
+      <div className="card bg-transparent shadow-none rounded-box my-8 w-55 md:w-auto grow px-3 py-1">
         <div className="drawer drawer-end h-12 border ">
           <input id="my-drawer-5" type="checkbox" className="drawer-toggle" />
-          <div className="drawer-content  flex justify-end">
+          <div className="drawer-content flex justify-end">
             <label
               htmlFor="my-drawer-5"
               className="drawer-button btn text-blue-700 rounded-lg"
@@ -97,7 +89,7 @@ const Editpage = () => {
               Edit Profile <LuPencil className="text-lg" />
             </label>
           </div>
-          <div className="drawer-side  ">
+          <div className="drawer-side ">
             <label
               htmlFor="my-drawer-5"
               aria-label="close sidebar"
