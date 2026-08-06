@@ -16,7 +16,7 @@ import AdminQuestionRequests from "./components/AdminQuestionRequest";
 import ViewQuestionRequest from "./components/ViewQuestionRequest";
 import UserSubmissions from "./components/UserSubmissions";
 import SubmissionDetails from "./components/SubmissionDetails";
-import Leaderboard from "./components/Leaderboard";
+import Leaderboard from "./components/Leaderboard/Leaderboard";
 
 export const Layout = () => {
   return (

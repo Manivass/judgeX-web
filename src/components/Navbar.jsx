@@ -78,6 +78,15 @@ const Navbar = () => {
                   <TbUserSquareRounded className="text-2xl" /> Profile
                 </Link>
               </li>
+              <li>
+                <Link
+                  to={`/profile/${user?._id}`}
+                  onClick={closeDrawer}
+                  className="text-lg font-semibold"
+                >
+                  <TbUserSquareRounded className="text-2xl" /> Leaderboard
+                </Link>
+              </li>
               {user?.role == "admin" && (
                 <li>
                   <Link
