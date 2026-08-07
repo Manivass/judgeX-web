@@ -1,11 +1,15 @@
 import { FaCrown } from "react-icons/fa";
+import { Link } from "react-router";
 
 const Podium = ({ leaderboard }) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 my-12 items-end">
       {/* 2nd */}
       <div className="card h-auto flex flex-col justify-between bg-slate-900 border border-slate-700 shadow-xl hover:-translate-y-2 duration-300">
-        <div className="card-body items-center">
+        <Link
+          to={`/profile/${leaderboard[1]?._id}`}
+          className="card-body items-center"
+        >
           <div className="text-6xl">🥈</div>
 
           <img
@@ -28,13 +32,16 @@ const Podium = ({ leaderboard }) => {
               </div>
             </div>
           </div>
-        </div>
+        </Link>
       </div>
 
       {/* 1st */}
 
       <div className="card h-[500px] bg-gradient-to-b from-yellow-500/20 to-slate-900 border-2 border-yellow-400 shadow-2xl scale-105 hover:scale-110 duration-300">
-        <div className="card-body items-center py-4">
+        <Link
+          to={`/profile/${leaderboard[0]?._id}`}
+          className="card-body items-center py-4"
+        >
           <FaCrown className="text-6xl text-yellow-400 mb-3" />
 
           <img
@@ -59,13 +66,16 @@ const Podium = ({ leaderboard }) => {
           </div>
 
           <div className="badge badge-warning mt-5">👑 Rank #1</div>
-        </div>
+        </Link>
       </div>
 
       {/* 3rd */}
 
       <div className="card  bg-slate-900 border border-slate-700 shadow-xl hover:-translate-y-2 duration-300">
-        <div className="card-body h-auto items-center">
+        <Link
+          to={`/profile/${leaderboard[2]?._id}`}
+          className="card-body h-auto items-center"
+        >
           <div className="text-6xl">🥉</div>
 
           <img
@@ -88,7 +98,7 @@ const Podium = ({ leaderboard }) => {
               </div>
             </div>
           </div>
-        </div>
+        </Link>
       </div>
     </div>
   );

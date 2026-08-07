@@ -1,6 +1,7 @@
 import LeaderboardRow from "./LeaderboardRow";
 
 const LeaderboardTable = ({ leaderboard }) => {
+  leaderboard = leaderboard?.slice(0, 17);
   return (
     <div className="overflow-x-auto rounded-3xl border border-slate-700 bg-slate-900 shadow-xl">
       <table className="table">

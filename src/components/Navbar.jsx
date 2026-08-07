@@ -80,11 +80,20 @@ const Navbar = () => {
               </li>
               <li>
                 <Link
-                  to={`/profile/${user?._id}`}
+                  to="/leaderboard"
                   onClick={closeDrawer}
                   className="text-lg font-semibold"
                 >
                   <TbUserSquareRounded className="text-2xl" /> Leaderboard
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/admin/dashboard"
+                  onClick={closeDrawer}
+                  className="text-lg font-semibold"
+                >
+                  <TbUserSquareRounded className="text-2xl" /> Dashboard
                 </Link>
               </li>
               {user?.role == "admin" && (
@@ -127,10 +136,10 @@ const Navbar = () => {
         </div>
       </div>
       <div className="flex-1 pl-4 ">
-        <a className="flex gap-2 text-xl  text-white">
+        <Link to="/" className="flex gap-2 text-xl  text-white">
           <PiCodesandboxLogoBold className="pt-1 text-3xl  flex items-center -translate-y-0.5" />{" "}
           JudgeX
-        </a>
+        </Link>
       </div>
       <div className="flex gap-2">
         <input

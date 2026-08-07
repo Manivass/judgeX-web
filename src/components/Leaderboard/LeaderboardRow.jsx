@@ -1,5 +1,5 @@
 import { FaFire } from "react-icons/fa";
-
+import { Link } from "react-router";
 const LeaderboardRow = ({ index, user }) => {
   console.log(index);
 
@@ -11,13 +11,12 @@ const LeaderboardRow = ({ index, user }) => {
 
       <td>
         <div className="flex items-center gap-4">
-          <img
-            src={user?.profilePicture}
-            className="w-12 rounded-full"
-          />
+          <img src={user?.profilePicture} className="w-12 rounded-full" />
 
           <div>
-            <h2 className="font-semibold text-gray-300">{user?.firstName} {user?.lastName}</h2>
+            <h2 className="font-semibold text-gray-300">
+              {user?.firstName} {user?.lastName}
+            </h2>
 
             <p className="text-xs text-slate-400">@hari</p>
           </div>
@@ -26,16 +25,22 @@ const LeaderboardRow = ({ index, user }) => {
 
       <td>
         <div className="flex gap-2">
-          <div className="badge badge-success">{user?.solvedProblems?.easy}</div>
+          <div className="badge badge-success">
+            {user?.solvedProblems?.easy}
+          </div>
 
-          <div className="badge badge-warning">{user?.solvedProblems?.medium}</div>
+          <div className="badge badge-warning">
+            {user?.solvedProblems?.medium}
+          </div>
 
           <div className="badge badge-error">{user?.solvedProblems?.hard}</div>
         </div>
       </td>
 
       <td>
-        <span className="font-bold text-primary">{user?.solvedProblems?.total}</span>
+        <span className="font-bold text-primary">
+          {user?.solvedProblems?.total}
+        </span>
       </td>
 
       <td>
@@ -46,7 +51,12 @@ const LeaderboardRow = ({ index, user }) => {
       </td>
 
       <td>
-        <button className="btn btn-primary btn-sm rounded-xl">View</button>
+        <Link
+          to={`/profile/${user?._id}`}
+          className="btn btn-primary btn-sm rounded-xl"
+        >
+          View
+        </Link>
       </td>
     </tr>
   );
