@@ -4,6 +4,7 @@ import {
   FaClipboardList,
   FaTrophy,
 } from "react-icons/fa";
+import { Link } from "react-router";
 
 const actions = [
   {
@@ -11,24 +12,28 @@ const actions = [
     desc: "Create a new coding problem",
     icon: <FaPlusCircle />,
     color: "text-green-400",
+    to: "/questions/create",
   },
   {
     title: "Manage Users",
     desc: "View and manage platform users",
     icon: <FaUsers />,
     color: "text-blue-400",
+    to: "/admin/manage-users",
   },
   {
     title: "Problem Of The Day",
     desc: "Update today's challenge",
     icon: <FaClipboardList />,
     color: "text-orange-400",
+    to: "/questions/create",
   },
   {
     title: "Leaderboard",
     desc: "View platform rankings",
     icon: <FaTrophy />,
     color: "text-yellow-400",
+    to: "/questions/create",
   },
 ];
 
@@ -49,9 +54,12 @@ const QuickActions = () => {
 
             <p className="text-slate-400 mt-2 text-sm">{action.desc}</p>
 
-            <button className="btn btn-primary btn-sm mt-6 rounded-xl w-full">
+            <Link
+              to={action?.to}
+              className="btn btn-primary btn-sm mt-6 rounded-xl w-full"
+            >
               Open
-            </button>
+            </Link>
           </div>
         ))}
       </div>

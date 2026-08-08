@@ -18,7 +18,7 @@ const Home = () => {
   const [problemOfTheDay, setProblemOfTheDay] = useState();
   const getStats = async () => {
     try {
-      const res = await axios.get(BASE_URL + "/dashboard/stats", {
+      const res = await axios.get(BASE_URL + "/admin/dashboard/stats", {
         withCredentials: true,
       });
       dispatch(addStats(res?.data?.stats));

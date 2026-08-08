@@ -8,7 +8,7 @@ import { Provider } from "react-redux";
 import store from "./store/store";
 
 import ProblemPage from "./components/Problempage";
-import AddProblem from "./components/AddProblem";
+import AddProblem from "./components/AdminDashboard/AddProblem";
 import Questions from "./components/Questions";
 import ProblemDetails from "./components/ProblemDetails";
 import EditProblem from "./components/EditProblem";
@@ -18,6 +18,7 @@ import UserSubmissions from "./components/UserSubmissions";
 import SubmissionDetails from "./components/SubmissionDetails";
 import Leaderboard from "./components/Leaderboard/Leaderboard";
 import Dashboard from "./components/AdminDashboard/Dashboard";
+import ManageUsers from "./components/AdminDashboard/ManageUsers";
 
 export const Layout = () => {
   return (
@@ -91,6 +92,10 @@ const router = createBrowserRouter([
       {
         path: "/admin/dashboard",
         element: <Dashboard />,
+      },
+      {
+        path: "/admin/manage-users",
+        element: <ManageUsers />,
       },
     ],
   },

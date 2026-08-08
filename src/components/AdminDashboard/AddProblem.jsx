@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import { BASE_URL } from "../utils/constant";
+import { BASE_URL } from "../../utils/constant";
 import { useSelector } from "react-redux";
 
 const AddProblem = () => {
