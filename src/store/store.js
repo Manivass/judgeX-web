@@ -7,6 +7,7 @@ import testcaseReducer from "./testcase";
 import activetabReducer from "./activetab";
 import submissionReducer from "./submission";
 import questionRequestReducer from "./questionRequest";
+import problemofDayReducer from "./problemofday";
 
 const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ const store = configureStore({
     activetab: activetabReducer,
     submission: submissionReducer,
     questionRequest: questionRequestReducer,
+    problemofDay: problemofDayReducer,
   },
 });
 

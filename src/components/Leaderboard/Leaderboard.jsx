@@ -6,6 +6,7 @@ import SearchBar from "./SearchBar";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constant";
+import ManageUsers from "../AdminDashboard/UserTable";
 
 const Leaderboard = () => {
   const [leaderboard, setLeaderboard] = useState([]);
@@ -28,7 +29,7 @@ const Leaderboard = () => {
       <Podium leaderboard={leaderboard.slice(0, 3)} />
       <CurrentUserCard leaderboard={leaderboard} />
       <SearchBar />
-      <LeaderboardTable leaderboard={leaderboard?.slice(3)} />
+      <ManageUsers />
     </div>
   );
 };

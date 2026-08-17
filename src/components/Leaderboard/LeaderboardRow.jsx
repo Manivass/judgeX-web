@@ -1,7 +1,5 @@
 import { FaFire } from "react-icons/fa";
-import { Link } from "react-router";
 const LeaderboardRow = ({ index, user }) => {
-  console.log(index);
 
   return (
     <tr className="hover:bg-slate-800 transition duration-300">
@@ -50,14 +48,6 @@ const LeaderboardRow = ({ index, user }) => {
         </div>
       </td>
 
-      <td>
-        <Link
-          to={`/profile/${user?._id}`}
-          className="btn btn-primary btn-sm rounded-xl"
-        >
-          View
-        </Link>
-      </td>
     </tr>
   );
 };

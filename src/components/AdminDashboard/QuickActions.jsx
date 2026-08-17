@@ -33,7 +33,7 @@ const actions = [
     desc: "View platform rankings",
     icon: <FaTrophy />,
     color: "text-yellow-400",
-    to: "/questions/create",
+    to: "/leaderboard",
   },
 ];
 

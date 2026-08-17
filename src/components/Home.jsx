@@ -7,6 +7,8 @@ import { addStats } from "../store/stats";
 import TextType from "./TextType";
 import Lightfall from "./LightFall";
 import CardSkeleton from "../skeleton/CardSkeleton";
+import store from "../store/store";
+import { addProblemofDay } from "../store/problemofday";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -15,7 +17,7 @@ const Home = () => {
   const stats = useSelector((store) => store?.stats);
   const [submissions, setSubmissions] = useState([]);
   const [leaderboard, setLeaderboard] = useState([]);
-  const [problemOfTheDay, setProblemOfTheDay] = useState();
+  const problemOfTheDay = useSelector((store) => store?.problemofDay);
   const getStats = async () => {
     try {
       const res = await axios.get(BASE_URL + "/admin/dashboard/stats", {
@@ -60,7 +62,7 @@ const Home = () => {
       const res = await axios.get(BASE_URL + "/problemOfTheDay", {
         withCredentials: true,
       });
-      setProblemOfTheDay(res?.data?.question);
+      dispatch(addProblemofDay(res?.data?.question));
     } catch (err) {
       console.log(err);
     }
