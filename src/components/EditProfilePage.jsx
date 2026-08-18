@@ -8,7 +8,6 @@ import { addStateSuggestion } from "../store/stateSuggestion";
 import { addUser } from "../store/user";
 const Editpage = () => {
   const userInfo = useSelector((store) => store?.user);
-  console.log(userInfo);
 
   const stateSuggest = useSelector((store) => store?.stateSuggest);
   const dispatch = useDispatch();
@@ -66,6 +65,13 @@ const Editpage = () => {
       );
       const user = res?.data?.updatedUser;
       dispatch(addUser(user));
+      setFirstName(user?.firstName);
+      setLastName(user?.lastName);
+      setContactEmail(user?.contactEmail);
+      setBio(user?.bio);
+      setGithubURL(user?.githubURL);
+      setinstagramURL(user?.instagramURL);
+      setPhoneNumber(user?.phoneNumber);
       setErr("");
       setSuccess(true);
       setTimeout(() => {

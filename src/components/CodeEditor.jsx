@@ -35,6 +35,7 @@ const CodeEditor = () => {
 
   const handleSubmit = async () => {
     try {
+      dispatch(changeActiveTab("Submitting"));
       const res = await axios.post(
         BASE_URL + `/codeSubmission/${question._id}`,
         {
@@ -46,11 +47,11 @@ const CodeEditor = () => {
         },
       );
       dispatch(addTestcase(res?.data?.newSubmission));
-
-      dispatch(changeActiveTab("Testcase"));
       dispatch(addUser(res?.data?.user));
     } catch (err) {
       console.log(err);
+    } finally {
+      dispatch(changeActiveTab("Testcase"));
     }
   };
 

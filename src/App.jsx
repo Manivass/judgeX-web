@@ -19,10 +19,12 @@ import SubmissionDetails from "./components/SubmissionDetails";
 import Leaderboard from "./components/Leaderboard/Leaderboard";
 import Dashboard from "./components/AdminDashboard/Dashboard";
 import ManageUsers from "./components/AdminDashboard/ManageUsers";
+import ScrollToTop from "./components/ScrollTop";
 
 export const Layout = () => {
   return (
     <>
+      <ScrollToTop />
       <Navbar />
       <div className="mt-16">
         <Outlet />

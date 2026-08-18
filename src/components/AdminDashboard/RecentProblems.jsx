@@ -1,37 +1,7 @@
+import { useEffect, useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
-
-const problems = [
-  {
-    title: "Two Sum",
-    difficulty: "Easy",
-    submissions: 1245,
-    status: "Published",
-  },
-  {
-    title: "Longest Substring Without Repeating Characters",
-    difficulty: "Medium",
-    submissions: 985,
-    status: "Published",
-  },
-  {
-    title: "Merge Intervals",
-    difficulty: "Medium",
-    submissions: 632,
-    status: "Published",
-  },
-  {
-    title: "LRU Cache",
-    difficulty: "Hard",
-    submissions: 418,
-    status: "Draft",
-  },
-  {
-    title: "Binary Tree Maximum Path Sum",
-    difficulty: "Hard",
-    submissions: 276,
-    status: "Published",
-  },
-];
+import axios from "axios";
+import { BASE_URL } from "../../utils/constant";
 
 const badgeColor = (difficulty) => {
   switch (difficulty) {
@@ -47,6 +17,21 @@ const badgeColor = (difficulty) => {
 };
 
 const RecentProblems = () => {
+  const [problems, setProblems] = useState([]);
+
+  const getQuestions = async () => {
+    try {
+      const res = await axios.get(BASE_URL + "/admin/getRecentProblems", {
+        withCredentials: true,
+      });
+      setProblems(res?.data?.question);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    getQuestions();
+  }, []);
   return (
     <div className="bg-[#111827] border border-slate-700 rounded-3xl shadow-xl">
       <div className="flex justify-between items-center p-6 border-b border-slate-700">
@@ -68,53 +53,22 @@ const RecentProblems = () => {
               <th>Problem</th>
 
               <th>Difficulty</th>
-
-              <th>Submissions</th>
-
-              <th>Status</th>
-
-              <th>Action</th>
             </tr>
           </thead>
 
           <tbody>
-            {problems.map((problem, index) => (
-              <tr key={index} className="hover:bg-slate-800 transition">
-                <td className="font-semibold text-white">{problem.title}</td>
+            {problems &&
+              problems?.map((problem, index) => (
+                <tr key={index} className="hover:bg-slate-800 transition px-4">
+                  <td className="font-semibold text-white">{problem.title}</td>
 
-                <td>
-                  <div className={`badge ${badgeColor(problem.difficulty)}`}>
-                    {problem.difficulty}
-                  </div>
-                </td>
-
-                <td className="text-slate-300">{problem.submissions}</td>
-
-                <td>
-                  <div
-                    className={`badge ${
-                      problem.status === "Published"
-                        ? "badge-success"
-                        : "badge-warning"
-                    }`}
-                  >
-                    {problem.status}
-                  </div>
-                </td>
-
-                <td>
-                  <div className="flex gap-2">
-                    <button className="btn btn-sm btn-info rounded-xl">
-                      <FaEdit />
-                    </button>
-
-                    <button className="btn btn-sm btn-error rounded-xl">
-                      <FaTrash />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
+                  <td>
+                    <div className={`badge ${badgeColor(problem.difficulty)}`}>
+                      {problem.difficulty}
+                    </div>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>

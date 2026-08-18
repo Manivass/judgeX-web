@@ -4,6 +4,7 @@ import {
   FaClipboardList,
   FaTrophy,
 } from "react-icons/fa";
+import { useSelector } from "react-redux";
 import { Link } from "react-router";
 
 const actions = [
@@ -26,7 +27,6 @@ const actions = [
     desc: "Update today's challenge",
     icon: <FaClipboardList />,
     color: "text-orange-400",
-    to: "/questions/create",
   },
   {
     title: "Leaderboard",
@@ -38,6 +38,8 @@ const actions = [
 ];
 
 const QuickActions = () => {
+  const problemOfTheDay = useSelector((store) => store?.problemofDay);
+
   return (
     <div>
       <h2 className="text-2xl font-bold text-white mb-5">⚡ Quick Actions</h2>
@@ -55,7 +57,11 @@ const QuickActions = () => {
             <p className="text-slate-400 mt-2 text-sm">{action.desc}</p>
 
             <Link
-              to={action?.to}
+              to={
+                action.title === "Problem Of The Day"
+                  ? `/problem/${problemOfTheDay?._id}`
+                  : action.to
+              }
               className="btn btn-primary btn-sm mt-6 rounded-xl w-full"
             >
               Open

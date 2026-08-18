@@ -87,15 +87,17 @@ const Navbar = () => {
                   <TbUserSquareRounded className="text-2xl" /> Leaderboard
                 </Link>
               </li>
-              <li>
-                <Link
-                  to="/admin/dashboard"
-                  onClick={closeDrawer}
-                  className="text-lg font-semibold"
-                >
-                  <TbUserSquareRounded className="text-2xl" /> Dashboard
-                </Link>
-              </li>
+              {user?.role == "admin" && (
+                <li>
+                  <Link
+                    to="/admin/dashboard"
+                    onClick={closeDrawer}
+                    className="text-lg font-semibold"
+                  >
+                    <TbUserSquareRounded className="text-2xl" /> Dashboard
+                  </Link>
+                </li>
+              )}
               {user?.role == "admin" && (
                 <li>
                   <Link

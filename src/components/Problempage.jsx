@@ -12,6 +12,7 @@ import Submissions from "./QuestionSubmission";
 import { clearSubmission } from "../store/submission";
 import Discuss from "./Discuss";
 import ProblemSkeleton from "../skeleton/StatsSkeleton";
+import Submitting from "./Submitting";
 const ProblemPage = () => {
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
@@ -173,6 +174,7 @@ const ProblemPage = () => {
         {activetab === "Editorial" && <Editorial editorial={editorial} />}
         {activetab === "Submissions" && <Submissions />}
         {activetab === "Discuss" && <Discuss />}
+        {activetab == "Submitting" && <Submitting />}
       </div>
 
       {/* Right Side */}

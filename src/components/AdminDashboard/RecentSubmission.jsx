@@ -1,46 +1,10 @@
+import axios from "axios";
 import { FaCheckCircle, FaTimesCircle, FaClock } from "react-icons/fa";
-
-const submissions = [
-  {
-    user: "Manivass",
-    problem: "Two Sum",
-    language: "Java",
-    verdict: "Accepted",
-    time: "2 mins ago",
-  },
-  {
-    user: "Hari",
-    problem: "LRU Cache",
-    language: "C++",
-    verdict: "Wrong Answer",
-    time: "5 mins ago",
-  },
-  {
-    user: "Vignesh",
-    problem: "Merge Intervals",
-    language: "Python",
-    verdict: "Time Limit",
-    time: "8 mins ago",
-  },
-  {
-    user: "Akash",
-    problem: "Binary Search",
-    language: "Java",
-    verdict: "Accepted",
-    time: "12 mins ago",
-  },
-  {
-    user: "Rahul",
-    problem: "Valid Parentheses",
-    language: "JavaScript",
-    verdict: "Accepted",
-    time: "18 mins ago",
-  },
-];
-
+import { BASE_URL } from "../../utils/constant";
+import { useEffect, useState } from "react";
 const getVerdict = (verdict) => {
   switch (verdict) {
-    case "Accepted":
+    case true:
       return (
         <div className="badge badge-success gap-2">
           <FaCheckCircle />
@@ -48,25 +12,33 @@ const getVerdict = (verdict) => {
         </div>
       );
 
-    case "Wrong Answer":
+    case false:
       return (
         <div className="badge badge-error gap-2">
           <FaTimesCircle />
           Wrong Answer
         </div>
       );
-
-    default:
-      return (
-        <div className="badge badge-warning gap-2">
-          <FaClock />
-          Time Limit
-        </div>
-      );
   }
 };
 
 const RecentSubmission = () => {
+  const [submissions, getSubmissions] = useState();
+  console.log(submissions);
+
+  const getSubmission = async () => {
+    try {
+      const res = await axios.get(BASE_URL + "/admin/getSubmissions", {
+        withCredentials: true,
+      });
+      getSubmissions(res?.data?.submissions);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    getSubmission();
+  }, []);
   return (
     <div className="bg-[#111827] border border-slate-700 rounded-3xl shadow-xl">
       <div className="flex justify-between items-center p-6 border-b border-slate-700">
@@ -94,27 +66,23 @@ const RecentSubmission = () => {
               <th>Language</th>
 
               <th>Verdict</th>
-
-              <th>Time</th>
             </tr>
           </thead>
 
           <tbody>
-            {submissions.map((submission, index) => (
+            {submissions?.map((submission, index) => (
               <tr key={index} className="hover:bg-slate-800 transition">
-                <td className="font-semibold text-white">{submission.user}</td>
+                <td className="font-semibold text-white">{submission?.userId?.firstName}</td>
 
-                <td className="text-slate-300">{submission.problem}</td>
+                <td className="text-slate-300">{submission?.problemId?.title}</td>
 
                 <td>
-                  <div className="badge badge-outline">
-                    {submission.language}
+                  <div className="badge badge-outline text-white">
+                    {submission?.language}
                   </div>
                 </td>
 
-                <td>{getVerdict(submission.verdict)}</td>
-
-                <td className="text-slate-400">{submission.time}</td>
+                <td>{getVerdict(submission?.result)}</td>
               </tr>
             ))}
           </tbody>
