@@ -8,6 +8,7 @@ import activetabReducer from "./activetab";
 import submissionReducer from "./submission";
 import questionRequestReducer from "./questionRequest";
 import problemofDayReducer from "./problemofday";
+import profileUpdateReducer from "./profileupdate";
 
 const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ const store = configureStore({
     submission: submissionReducer,
     questionRequest: questionRequestReducer,
     problemofDay: problemofDayReducer,
+    profileupdate: profileUpdateReducer,
   },
 });
 
