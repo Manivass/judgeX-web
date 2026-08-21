@@ -40,16 +40,17 @@ const EditProblem = () => {
 
   useEffect(() => {
     if (question) {
-      setTitle(question?.title);
-      setDescription(question?.description);
-      setDifficulty(question?.difficulty);
-      setTimeLimit(question?.timeLimit);
-      setMemoryLimit(question?.memoryLimit);
-      setDescription(question?.description);
-      setExplanation(question?.explanation);
-      setConstraint(question?.constraints);
-      setTestcase(question?.testcase);
-      setDataStructure(question?.dataStructure);
+      setTitle(question?.title || "");
+      setDescription(question?.description || "");
+      setDifficulty(question?.difficulty || "");
+      setTimeLimit(question?.timeLimit || "");
+      setMemoryLimit(question?.memoryLimit || "");
+      setExplanation(question?.explanation || "");
+
+      setConstraint(question?.constraints || []);
+      setTestcase(question?.testcase || []);
+
+      setDataStructure(question?.dataStructure?.join(", ") || "");
     }
   }, [question]);
 
@@ -86,24 +87,27 @@ const EditProblem = () => {
   };
 
   const handleSaveProblem = async () => {
-    console.log("START FUNCTION");
+    console.log("1 - function started");
 
     try {
-      console.log("INSIDE TRY");
+      console.log("2 - inside try");
+      console.log("dataStructure:", dataStructure);
+      console.log("dataStructure type:", typeof dataStructure);
 
-      let dataStructureSplit = (dataStructure || "")
+      const dataStructureSplit = (dataStructure || "")
         .split(",")
-        .map((val) => val.trim());
-      dataStructureSplit = dataStructureSplit.map((val) =>
-        val.toLowerCase().trim(),
-      );
-      console.log(dataStructureSplit);
+        .map((val) => val.trim().toLowerCase())
+        .filter(Boolean);
+
+      console.log("dataStructureSplit:", dataStructureSplit);
+
+      console.log("about to call API");
       await axios.post(
         BASE_URL + `/editQuestion/${question?._id}`,
         {
           title,
           description,
-          constraint,
+          constraints: constraint,
           difficulty,
           testcase,
           timeLimit,
@@ -116,6 +120,7 @@ const EditProblem = () => {
         },
       );
       setErr("");
+
       navigate("/questions");
     } catch (err) {
       setErr(err?.response?.data?.message);
@@ -123,8 +128,10 @@ const EditProblem = () => {
   };
 
   const handleHiddenTestCase = (index) => {
-    let updated = [...testcase];
-    updated[index].hidden = !updated[index].hidden;
+    const updated = testcase.map((item, i) =>
+      i === index ? { ...item, ishidden: !item.ishidden } : item,
+    );
+
     setTestcase(updated);
   };
 
@@ -311,6 +318,8 @@ const EditProblem = () => {
               <div className="grid grid-grid-cols-1 lg:grid-cols-3 align-items-center gap-4">
                 {/* Test Case 1 */}
                 {testcase?.map((item, index) => {
+                  console.log(item);
+
                   return (
                     <div
                       key={index}

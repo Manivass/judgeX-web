@@ -89,7 +89,11 @@ const SubmissionDetails = () => {
             <div className="card bg-base-100 shadow">
               <div className="card-body items-center">
                 <h2 className="text-sm text-gray-500">Submitted</h2>
-                <p className="font-bold">2 mins ago</p>
+                <p className="font-bold text-xs">
+                  {submission?.createdAt
+                    ? new Date(submission?.createdAt).toLocaleString()
+                    : "-"}{" "}
+                </p>
               </div>
             </div>
           </div>

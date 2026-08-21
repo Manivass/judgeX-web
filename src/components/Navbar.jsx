@@ -13,6 +13,7 @@ import { removeStateSuggestion } from "../store/stateSuggestion";
 import { clearSubmission } from "../store/submission";
 import { removeTestcase } from "../store/testcase";
 import { removeUser } from "../store/user";
+import TextType from "./TextType";
 const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -144,11 +145,22 @@ const Navbar = () => {
         </Link>
       </div>
       <div className="flex gap-2">
-        <input
-          type="text"
-          placeholder="Search"
-          className="input bg-gray-800 border-gray-700 text-white"
-        />
+        <div className=" flex items-center">
+          <TextType
+            text={
+              "welcome" +
+              " " +
+              user?.firstName +
+              " " +
+              (user?.lastName == undefined ? "" : user?.lastName) +
+              " 💫"
+            }
+            typingSpeed={90}
+            deletingSpeed={80}
+            pauseDuration={1800}
+            className="text-lg font-bold text-white leading-tight"
+          />
+        </div>
         <div className="dropdown dropdown-end">
           <div
             tabIndex={0}

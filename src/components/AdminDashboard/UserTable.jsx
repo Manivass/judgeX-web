@@ -2,11 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 import {
-  FaSearch,
-  FaEye,
   FaBan,
   FaCheckCircle,
-  FaUserPlus,
 } from "react-icons/fa";
 
 import { BASE_URL } from "../../utils/constant";
@@ -14,7 +11,6 @@ import { Link } from "react-router";
 
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
-  console.log(users);
 
   const [page, setPage] = useState(1);
 

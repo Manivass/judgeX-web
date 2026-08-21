@@ -19,13 +19,11 @@ const Editpage = ({ onProfileUpdate }) => {
 
   const [lastName, setLastName] = useState(userInfo?.lastName || "");
 
-  const [contactEmail, setContactEmail] = useState(
-    userInfo?.contactEmail || "",
-  );
+  const [contactEmail, setContactEmail] = useState(userInfo?.contactEmail);
 
-  const [phoneNumber, setPhoneNumber] = useState(userInfo?.phoneNumber || "");
+  const [phoneNumber, setPhoneNumber] = useState(userInfo?.phoneNumber);
 
-  const [state, setState] = useState(userInfo?.state || "");
+  const [state, setState] = useState(userInfo?.state);
 
   const [college, setCollege] = useState(userInfo?.college || "");
 
@@ -97,9 +95,7 @@ const Editpage = ({ onProfileUpdate }) => {
         throw new Error("Updated user was not returned by server");
       }
 
-
       dispatch(addUser(updatedUser));
-
 
       onProfileUpdate?.(updatedUser);
 
@@ -122,9 +118,7 @@ const Editpage = ({ onProfileUpdate }) => {
       setLinkedinURL(updatedUser?.linkedinURL);
 
       setInstagramURL(updatedUser?.instagramURL);
--
-
-      setSuccess(true);
+      -setSuccess(true);
 
       setTimeout(() => {
         setSuccess(false);
@@ -143,7 +137,6 @@ const Editpage = ({ onProfileUpdate }) => {
     navigate("/login");
     return null;
   }
-
 
   return (
     <div>
