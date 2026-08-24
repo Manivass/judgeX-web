@@ -85,7 +85,6 @@ const SubmissionDetails = () => {
                 </p>
               </div>
             </div>
-
             <div className="card bg-base-100 shadow">
               <div className="card-body items-center">
                 <h2 className="text-sm text-gray-500">Submitted</h2>
