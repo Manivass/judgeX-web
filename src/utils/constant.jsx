@@ -1,5 +1,5 @@
-export const BASE_URL = "http://localhost:7777";
-// http://localhost:7777
+export const BASE_URL = "/api";
+// http://localhost:7777 , /api
 
 export const map = {
   "01": "Jan",
