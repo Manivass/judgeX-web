@@ -26,6 +26,8 @@ const Questions = () => {
     (store) => store?.user?.solvedProblems?.solvedQuestionsIds,
   );
 
+  const userRole = useSelector((store) => store?.user?.role);
+
   let getQuestions = async () => {
     try {
       const res = await axios.get(
@@ -41,6 +43,18 @@ const Questions = () => {
       console.log(err?.response?.data?.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      console.log(id);
+
+      await axios.delete(BASE_URL + `/deleteQuestion/${id}`, {
+        withCredentials: true,
+      });
+    } catch (err) {
+      console.log(err);
     }
   };
   useEffect(() => {
@@ -90,31 +104,33 @@ const Questions = () => {
         </div>
 
         {/* Status Cards */}
-        <div className="flex gap-3 mb-6">
-          {loading ? (
-            <div className="skeleton bg-[#1f2937] h-9 w-22"></div>
-          ) : (
-            <div className="badge badge-primary p-4">
-              All Problems {pagination}
-            </div>
-          )}
+        {userRole == "user" && (
+          <div className="flex gap-3 mb-6">
+            {loading ? (
+              <div className="skeleton bg-[#1f2937] h-9 w-22"></div>
+            ) : (
+              <div className="badge badge-primary p-4">
+                All Problems {pagination}
+              </div>
+            )}
 
-          {loading ? (
-            <div className="skeleton bg-[#1f2937] h-9 w-22"></div>
-          ) : (
-            <div className="badge badge-success p-4">
-              {" "}
-              Solved {solvedProblems}
-            </div>
-          )}
-          {loading ? (
-            <div className="skeleton bg-[#1f2937] h-9 w-22"></div>
-          ) : (
-            <div className="badge badge-warning p-4">
-              Unsolved {pagination - solvedProblems}
-            </div>
-          )}
-        </div>
+            {loading ? (
+              <div className="skeleton bg-[#1f2937] h-9 w-22"></div>
+            ) : (
+              <div className="badge badge-success p-4">
+                {" "}
+                Solved {solvedProblems}
+              </div>
+            )}
+            {loading ? (
+              <div className="skeleton bg-[#1f2937] h-9 w-22"></div>
+            ) : (
+              <div className="badge badge-warning p-4">
+                Unsolved {pagination - solvedProblems}
+              </div>
+            )}
+          </div>
+        )}
 
         <div className="flex gap-5 w-10/12 mx-auto">
           {/* Filter Sidebar */}
@@ -176,7 +192,7 @@ const Questions = () => {
                     <th>Title</th>
                     <th>Difficulty</th>
                     <th>Data Structure</th>
-                    <th>Tags</th>
+                    {userRole == "user" && <th>Tags</th>}
                     <th></th>
                   </tr>
                 </thead>
@@ -227,10 +243,26 @@ const Questions = () => {
                             ))}
                           </div>
                         </td>
-
-                        <td>
-                          <button className="btn btn-ghost btn-sm">🔖</button>
-                        </td>
+                        {userRole == "user" ? (
+                          <td>
+                            <button className="btn btn-ghost btn-sm">🔖</button>
+                          </td>
+                        ) : (
+                          <td className="flex gap-5">
+                            <Link
+                              to={`/questions/edit/${problem?._id}`}
+                              className="btn btn-active btn-md"
+                            >
+                              Edit
+                            </Link>
+                            <button
+                              className="btn btn-error btn-md"
+                              onClick={() => handleDelete(problem?._id)}
+                            >
+                              Delete
+                            </button>
+                          </td>
+                        )}
                       </tr>
                     ))
                   )}

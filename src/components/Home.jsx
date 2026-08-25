@@ -7,7 +7,6 @@ import { addStats } from "../store/stats";
 import TextType from "./TextType";
 import Lightfall from "./LightFall";
 import CardSkeleton from "../skeleton/CardSkeleton";
-import store from "../store/store";
 import { addProblemofDay } from "../store/problemofday";
 
 const Home = () => {
@@ -18,6 +17,7 @@ const Home = () => {
   const [submissions, setSubmissions] = useState([]);
   const [leaderboard, setLeaderboard] = useState([]);
   const problemOfTheDay = useSelector((store) => store?.problemofDay);
+  const userRole = useSelector((store) => store?.user?.role);
   const getStats = async () => {
     try {
       const res = await axios.get(BASE_URL + "/admin/dashboard/stats", {
@@ -109,22 +109,23 @@ const Home = () => {
                   the best.
                 </p>
               </div>
+              {userRole == "user" && (
+                <div className="flex justify-center gap-12 mt-6 ">
+                  <Link
+                    to={`/problem/6a43ed91a112992e8b165965`}
+                    className="btn btn-primary"
+                  >
+                    {"</>"} Start Coding
+                  </Link>
 
-              <div className="flex justify-center gap-12 mt-6 ">
-                <Link
-                  to={`/problem/6a43ed91a112992e8b165965`}
-                  className="btn btn-primary"
-                >
-                  {"</>"} Start Coding
-                </Link>
-
-                <Link
-                  to="/problems"
-                  className="btn btn-active border-slate-600"
-                >
-                  ☰ View Problems
-                </Link>
-              </div>
+                  <Link
+                    to="/problems"
+                    className="btn btn-active border-slate-600"
+                  >
+                    ☰ View Problems
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         </div>

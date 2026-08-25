@@ -39,16 +39,6 @@ const ProblemDetails = () => {
     setQuestions(getQuestion);
   };
 
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(BASE_URL + `/deleteQuestion/${id}`, {
-        withCredentials: true,
-      });
-      setReload(!reload);
-    } catch (err) {
-      console.log(err);
-    }
-  };
   return (
     <div>
       <div className="min-h-screen bg-[#050b18] text-white p-6">

@@ -14,6 +14,9 @@ import { clearSubmission } from "../store/submission";
 import { removeTestcase } from "../store/testcase";
 import { removeUser } from "../store/user";
 import TextType from "./TextType";
+import { MdLeaderboard } from "react-icons/md";
+import { FaPlus } from "react-icons/fa";
+import { LuClipboardList } from "react-icons/lu";
 const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -85,7 +88,7 @@ const Navbar = () => {
                   onClick={closeDrawer}
                   className="text-lg font-semibold"
                 >
-                  <TbUserSquareRounded className="text-2xl" /> Leaderboard
+                  <MdLeaderboard className="text-2xl" /> Leaderboard
                 </Link>
               </li>
               {user?.role == "admin" && (
@@ -99,17 +102,16 @@ const Navbar = () => {
                   </Link>
                 </li>
               )}
-              {user?.role == "admin" && (
-                <li>
-                  <Link
-                    to="/questions"
-                    onClick={closeDrawer}
-                    className="text-lg font-semibold"
-                  >
-                    <TbUserSquareRounded className="text-2xl" /> Edit Problem
-                  </Link>
-                </li>
-              )}
+              <li>
+                <Link
+                  to="/problems"
+                  onClick={closeDrawer}
+                  className="text-lg font-semibold"
+                >
+                  <LuClipboardList className="text-2xl" />{" "}
+                  {user?.role == "admin" ? "Edit" : "View"} Problem
+                </Link>
+              </li>
               {user?.role == "user" && (
                 <li>
                   <Link
@@ -117,8 +119,7 @@ const Navbar = () => {
                     onClick={closeDrawer}
                     className="text-lg font-semibold"
                   >
-                    <TbUserSquareRounded className="text-2xl" /> Contribute
-                    Problem
+                    <FaPlus className="text-2xl" /> Contribute Problem
                   </Link>
                 </li>
               )}

@@ -4,10 +4,13 @@ import { useNavigate, useParams } from "react-router";
 import { BASE_URL } from "../utils/constant";
 import { Link } from "react-router";
 import { useSelector } from "react-redux";
+import SubmissionDetailsSkeleton from "../skeleton/SubmissionDetailsSkeleton";
 
 const SubmissionDetails = () => {
   const { id } = useParams();
-  const [submission, setSubmission] = useState([]);
+  const [submission, setSubmission] = useState();
+  console.log(submission);
+
   const navigate = useNavigate();
   const user = useSelector((store) => store?.user);
   const getSubmission = async () => {
@@ -27,6 +30,7 @@ const SubmissionDetails = () => {
   useEffect(() => {
     getSubmission();
   }, [id]);
+  if (!submission) return <SubmissionDetailsSkeleton />;
   return (
     <div>
       <div className="min-h-screen bg-base-200 p-8">
@@ -42,8 +46,6 @@ const SubmissionDetails = () => {
               </Link>
               <p className="text-base-content/60">Submission Details</p>
             </div>
-
-            <button className="btn btn-outline">← Back</button>
           </div>
 
           {/* Top Cards */}

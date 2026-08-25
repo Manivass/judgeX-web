@@ -121,7 +121,7 @@ const EditProblem = () => {
       );
       setErr("");
 
-      navigate("/questions");
+      navigate("/problems");
     } catch (err) {
       setErr(err?.response?.data?.message);
     }

@@ -4,8 +4,8 @@ const CardSkeleton = () => {
       <div className="card-body">
         {/* Badge */}
         <div className="flex justify-between items-center">
-          <div className="skeleton h-6 w-40"></div>
-          <div className="skeleton h-6 w-16 rounded-full"></div>
+          <div className="skeleton h-6 w-50"></div>
+          <div className="skeleton h-6 w-26 rounded-full"></div>
         </div>
 
         {/* Title */}
