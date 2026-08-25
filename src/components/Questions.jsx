@@ -88,7 +88,9 @@ const Questions = () => {
     setQuestions(getQuestion);
   };
   useEffect(() => {
-    handleDifficultyAndDataStructre();
+    if (difficulty !== "all" || dataStructure !== "all") {
+      handleDifficultyAndDataStructre();
+    }
   }, [difficulty, dataStructure]);
   return (
     <div>
