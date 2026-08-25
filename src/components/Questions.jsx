@@ -15,6 +15,10 @@ const Questions = () => {
   const [dataStructure, setDataStrucute] = useState("all");
   const dispatch = useDispatch();
   dispatch(removeTestcase());
+  const [page, setPage] = useState(1);
+
+  const [pagination, setPagination] = useState(0);
+
   const solvedProblems = useSelector(
     (store) => store?.user?.solvedProblems?.total,
   );
@@ -24,11 +28,15 @@ const Questions = () => {
 
   let getQuestions = async () => {
     try {
-      const res = await axios.get(BASE_URL + "/questions", {
-        withCredentials: true,
-      });
+      const res = await axios.get(
+        BASE_URL + `/questions/?page=${page}&limit=20`,
+        {
+          withCredentials: true,
+        },
+      );
       setAllQuestion(res?.data?.questions);
       setQuestions(res?.data?.questions);
+      setPagination(res?.data?.totalQuestions);
     } catch (err) {
       console.log(err?.response?.data?.message);
     } finally {
@@ -37,12 +45,12 @@ const Questions = () => {
   };
   useEffect(() => {
     setLoading(true);
-    getQuestions();
   }, []);
+  useEffect(() => {
+    getQuestions();
+  }, [page]);
   const handleDifficultyAndDataStructre = async () => {
     try {
-      console.log(difficulty + " " + dataStructure);
-
       const res = await axios.get(
         BASE_URL +
           `/question/search?difficulty=${difficulty}&dataStructure=${dataStructure}`,
@@ -79,8 +87,6 @@ const Questions = () => {
               Explore and solve problems to improve your coding skills.
             </p>
           </div>
-
-          <button className="btn btn-primary btn-sm">Random Problem</button>
         </div>
 
         {/* Status Cards */}
@@ -89,7 +95,7 @@ const Questions = () => {
             <div className="skeleton bg-[#1f2937] h-9 w-22"></div>
           ) : (
             <div className="badge badge-primary p-4">
-              All Problems {allQuestion?.length}
+              All Problems {pagination}
             </div>
           )}
 
@@ -105,7 +111,7 @@ const Questions = () => {
             <div className="skeleton bg-[#1f2937] h-9 w-22"></div>
           ) : (
             <div className="badge badge-warning p-4">
-              Unsolved {allQuestion?.length - solvedProblems}
+              Unsolved {pagination - solvedProblems}
             </div>
           )}
         </div>
@@ -230,6 +236,39 @@ const Questions = () => {
                   )}
                 </tbody>
               </table>
+            </div>
+
+            {/* PAGINATION */}
+
+            <div className="flex justify-between items-center p-5 border-t border-slate-700">
+              <p className="text-sm text-slate-400">
+                Page <span className="text-white font-semibold">{page}</span> of{" "}
+                <span className="text-white font-semibold">
+                  {Math.ceil(pagination / 20) || 0}
+                </span>
+              </p>
+
+              <div className="join">
+                <button
+                  className="join-item btn btn-sm"
+                  disabled={page === 1 || loading}
+                  onClick={() => setPage(page - 1)}
+                >
+                  «
+                </button>
+
+                <button className="join-item btn btn-sm btn-primary">
+                  {page}
+                </button>
+
+                <button
+                  className="join-item btn btn-sm"
+                  disabled={page === Math.ceil(pagination / 20) || loading}
+                  onClick={() => setPage(page + 1)}
+                >
+                  »
+                </button>
+              </div>
             </div>
           </div>
         </div>
