@@ -70,7 +70,13 @@ const Login = () => {
 
       window.google.accounts.id.renderButton(
         document.getElementById("googleBtn"),
-        { theme: "outline", size: "large" },
+        {
+          theme: "outline",
+          size: "large",
+          width: 300,
+          text: "signin_with",
+          shape: "rectangular",
+        },
       );
     }
   }, []);
