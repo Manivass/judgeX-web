@@ -57,27 +57,41 @@ const Login = () => {
     }
   };
   useEffect(() => {
-    if (!window.google) {
-      console.log("Google SDK Not Loaded");
-      return;
-    }
-    if (window.google) {
+    const renderGoogleButton = () => {
+      if (!window.google) return;
+
+      const googleBtn = document.getElementById("googleBtn");
+
+      if (!googleBtn) return;
+
       window.google.accounts.id.initialize({
         client_id:
           "309200387998-4irl0kdpdb895getlg8d0j5h6um54699.apps.googleusercontent.com",
         callback: handleGoogleLogin,
       });
 
-      window.google.accounts.id.renderButton(
-        document.getElementById("googleBtn"),
-        {
-          theme: "outline",
-          size: "large",
-          width: 300,
-          text: "signin_with",
-          shape: "rectangular",
-        },
-      );
+      googleBtn.innerHTML = "";
+
+      window.google.accounts.id.renderButton(googleBtn, {
+        theme: "outline",
+        size: "large",
+        width: 300,
+        text: "signin_with",
+        shape: "rectangular",
+      });
+    };
+
+    if (window.google) {
+      renderGoogleButton();
+    } else {
+      const interval = setInterval(() => {
+        if (window.google) {
+          clearInterval(interval);
+          renderGoogleButton();
+        }
+      }, 100);
+
+      return () => clearInterval(interval);
     }
   }, []);
   return (
