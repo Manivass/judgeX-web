@@ -6,38 +6,30 @@ import { useSelector } from "react-redux";
 const Membership = () => {
   const user = useSelector((store) => store.user);
   const handlePremium = async (type) => {
+    console.log("🔥 BUTTON CLICKED");
+    console.log("TYPE:", type);
+    console.log("BASE_URL:", BASE_URL);
+
     try {
-      const order = await axios.post(
+      console.log("🔥 CALLING:", BASE_URL + "/payment/create");
+
+      const response = await axios.post(
         BASE_URL + "/payment/create",
         {
           membershipType: type,
         },
-        { withCredentials: true },
+        {
+          withCredentials: true,
+        },
       );
 
-      const { key, amount, currency, notes, orderId } = order.data;
-      const { firstName, lastName, email } = notes;
-      const options = {
-        key, // Replace with your Razorpay key_id
-        amount, // Amount is in currency subunits.
-        currency,
-        name: "JudgeX",
-        description: "pay to get premium features",
-        order_id: orderId, // This is the order_id created in the backend
-        // callback_url: "http://localhost:3000/payment-success", // Your success URL
-        prefill: {
-          name: firstName + " " + lastName,
-          email,
-          contact: "9999999999",
-        },
-        theme: {
-          color: "#F37254",
-        },
-      };
-      const rzp = new window.Razorpay(options);
-      rzp.open();
+      console.log("✅ PAYMENT RESPONSE:", response.data);
+
+      // ...
     } catch (err) {
-      console.log(err);
+      console.error("❌ PAYMENT ERROR:", err);
+      console.error("❌ STATUS:", err.response?.status);
+      console.error("❌ DATA:", err.response?.data);
     }
   };
   if (user.isPremium) return <h2>You are already a premium user</h2>;
