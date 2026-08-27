@@ -11,8 +11,6 @@ const Membership = () => {
     console.log("BASE_URL:", BASE_URL);
 
     try {
-      console.log("🔥 CALLING:", BASE_URL + "/payment/create");
-
       const response = await axios.post(
         BASE_URL + "/payment/create",
         {
@@ -23,8 +21,6 @@ const Membership = () => {
         },
       );
 
-      console.log("✅ PAYMENT RESPONSE:", response.data);
-
       const { key, amount, currency, notes, orderId } = response.data;
 
       console.log("KEY:", key);
@@ -33,7 +29,6 @@ const Membership = () => {
       console.log("RAZORPAY:", window.Razorpay);
 
       if (!window.Razorpay) {
-        console.error("❌ Razorpay SDK is not loaded");
         alert("Razorpay SDK not loaded");
         return;
       }
@@ -61,21 +56,9 @@ const Membership = () => {
         handler: function (response) {
           console.log("✅ PAYMENT SUCCESS:", response);
         },
-
-        modal: {
-          ondismiss: function () {
-            console.log("❌ Razorpay checkout closed");
-          },
-        },
       };
 
-      console.log("🚀 Opening Razorpay...");
-
       const rzp = new window.Razorpay(options);
-
-      rzp.on("payment.failed", function (response) {
-        console.error("❌ PAYMENT FAILED:", response.error);
-      });
 
       rzp.open();
     } catch (err) {
