@@ -25,11 +25,62 @@ const Membership = () => {
 
       console.log("✅ PAYMENT RESPONSE:", response.data);
 
-      // ...
+      const { key, amount, currency, notes, orderId } = response.data;
+
+      console.log("KEY:", key);
+      console.log("AMOUNT:", amount);
+      console.log("ORDER ID:", orderId);
+      console.log("RAZORPAY:", window.Razorpay);
+
+      if (!window.Razorpay) {
+        console.error("❌ Razorpay SDK is not loaded");
+        alert("Razorpay SDK not loaded");
+        return;
+      }
+
+      const { firstName, lastName, email } = notes;
+
+      const options = {
+        key: key,
+        amount: amount,
+        currency: currency,
+        name: "JudgeX",
+        description: `JudgeX ${type} Membership`,
+        order_id: orderId,
+
+        prefill: {
+          name: `${firstName} ${lastName}`,
+          email: email,
+          contact: "9999999999",
+        },
+
+        theme: {
+          color: "#F37254",
+        },
+
+        handler: function (response) {
+          console.log("✅ PAYMENT SUCCESS:", response);
+        },
+
+        modal: {
+          ondismiss: function () {
+            console.log("❌ Razorpay checkout closed");
+          },
+        },
+      };
+
+      console.log("🚀 Opening Razorpay...");
+
+      const rzp = new window.Razorpay(options);
+
+      rzp.on("payment.failed", function (response) {
+        console.error("❌ PAYMENT FAILED:", response.error);
+      });
+
+      rzp.open();
     } catch (err) {
       console.error("❌ PAYMENT ERROR:", err);
-      console.error("❌ STATUS:", err.response?.status);
-      console.error("❌ DATA:", err.response?.data);
+      console.error("❌ RESPONSE:", err.response?.data);
     }
   };
   if (user.isPremium) return <h2>You are already a premium user</h2>;
