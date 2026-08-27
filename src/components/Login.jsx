@@ -188,7 +188,7 @@ const Login = () => {
 
                 <div
                   id="googleBtn"
-                  className="w-[300px] border border-gray-900"
+                  className=""
                 ></div>
               </div>
             </div>

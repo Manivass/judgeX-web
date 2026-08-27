@@ -20,6 +20,7 @@ import Leaderboard from "./components/Leaderboard/Leaderboard";
 import Dashboard from "./components/AdminDashboard/Dashboard";
 import ManageUsers from "./components/AdminDashboard/ManageUsers";
 import ScrollToTop from "./components/ScrollTop";
+import Membership from "./components/Membership";
 
 export const Layout = () => {
   return (
@@ -98,6 +99,10 @@ const router = createBrowserRouter([
       {
         path: "/admin/manage-users",
         element: <ManageUsers />,
+      },
+      {
+        path: "/membership",
+        element: <Membership />,
       },
     ],
   },

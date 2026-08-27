@@ -171,7 +171,9 @@ const ProblemPage = () => {
         {activetab === "Testcase" && (
           <Testcase testcase={{ hiddenTestcase, visibleTestcase }} />
         )}
-        {activetab === "Editorial" && <Editorial editorial={editorial} />}
+        {activetab === "Editorial" && (
+          <Editorial numb={question?.questionNumber} />
+        )}
         {activetab === "Submissions" && <Submissions />}
         {activetab === "Discuss" && <Discuss />}
         {activetab == "Submitting" && <Submitting />}
