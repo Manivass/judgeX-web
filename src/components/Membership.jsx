@@ -1,15 +1,21 @@
 import axios from "axios";
 import { FaCheck, FaCrown, FaGem } from "react-icons/fa";
 import { BASE_URL } from "../utils/constant";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 
 const Membership = () => {
-  const user = useSelector((store) => store.user);
+  const [premiumUser, setPremiumUser] = useState();
+  const handlePaymentVerify = async () => {
+    try {
+      const res = await axios.get(BASE_URL + "/payment/verify", {
+        withCredentials: true,
+      });
+      setPremiumUser(res?.data?.isPremium);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
   const handlePremium = async (type) => {
-    console.log("🔥 BUTTON CLICKED");
-    console.log("TYPE:", type);
-    console.log("BASE_URL:", BASE_URL);
-
     try {
       const response = await axios.post(
         BASE_URL + "/payment/create",
@@ -53,20 +59,23 @@ const Membership = () => {
           color: "#F37254",
         },
 
-        handler: function (response) {
-          console.log("✅ PAYMENT SUCCESS:", response);
+        handler: function () {
+          handlePaymentVerify();
         },
       };
 
       const rzp = new window.Razorpay(options);
-
       rzp.open();
     } catch (err) {
       console.error("❌ PAYMENT ERROR:", err);
       console.error("❌ RESPONSE:", err.response?.data);
     }
   };
-  if (user.isPremium) return <h2>You are already a premium user</h2>;
+
+  useEffect(() => {
+    handlePaymentVerify();
+  }, []);
+  if (premiumUser) return <h2>You are already a premium user</h2>;
   const plans = [
     {
       name: "Silver",
@@ -100,8 +109,19 @@ const Membership = () => {
       button: "Get Gold",
     },
   ];
+  return premiumUser ? (
+    <div className="min-h-screen bg-[#050816] flex items-center justify-center px-6">
+      <div className="text-center">
+        <h2 className="text-3xl font-bold text-white">
+          You are already a premium user 🎉
+        </h2>
 
-  return (
+        <p className="text-slate-400 mt-3">
+          You already have an active premium membership.
+        </p>
+      </div>
+    </div>
+  ) : (
     <div className="min-h-screen bg-[#050816] py-16 px-6">
       {/* HEADER */}
 
@@ -126,16 +146,16 @@ const Membership = () => {
           <div
             key={plan.name}
             className={`
-              relative rounded-3xl p-8
-              border backdrop-blur-xl
-              transition duration-300
-              hover:-translate-y-2
-              ${
-                plan.name === "Gold"
-                  ? "border-yellow-400/40 bg-yellow-400/5 shadow-[0_0_40px_rgba(250,204,21,0.12)]"
-                  : "border-white/10 bg-white/5"
-              }
-            `}
+            relative rounded-3xl p-8
+            border backdrop-blur-xl
+            transition duration-300
+            hover:-translate-y-2
+            ${
+              plan.name === "Gold"
+                ? "border-yellow-400/40 bg-yellow-400/5 shadow-[0_0_40px_rgba(250,204,21,0.12)]"
+                : "border-white/10 bg-white/5"
+            }
+          `}
           >
             {/* GOLD BADGE */}
 
@@ -151,17 +171,17 @@ const Membership = () => {
 
             <div
               className={`
-                w-14 h-14 rounded-2xl
-                flex items-center justify-center
-                text-2xl
-                ${
-                  plan.name === "Gold"
-                    ? "bg-yellow-400/10 text-yellow-400"
-                    : plan.name === "Silver"
-                      ? "bg-slate-400/10 text-slate-300"
-                      : "bg-blue-500/10 text-blue-400"
-                }
-              `}
+              w-14 h-14 rounded-2xl
+              flex items-center justify-center
+              text-2xl
+              ${
+                plan.name === "Gold"
+                  ? "bg-yellow-400/10 text-yellow-400"
+                  : plan.name === "Silver"
+                    ? "bg-slate-400/10 text-slate-300"
+                    : "bg-blue-500/10 text-blue-400"
+              }
+            `}
             >
               {plan.icon}
             </div>
@@ -206,16 +226,16 @@ const Membership = () => {
             <button
               onClick={() => handlePremium(plan.name)}
               className={`
-                w-full mt-10 py-3 rounded-xl
-                font-semibold transition
-                ${
-                  plan.name === "Gold"
-                    ? "bg-yellow-400 text-black hover:bg-yellow-300"
-                    : plan.name === "Silver"
-                      ? "bg-slate-300 text-black hover:bg-white"
-                      : "bg-slate-800 text-slate-400 cursor-not-allowed"
-                }
-              `}
+              w-full mt-10 py-3 rounded-xl
+              font-semibold transition
+              ${
+                plan.name === "Gold"
+                  ? "bg-yellow-400 text-black hover:bg-yellow-300"
+                  : plan.name === "Silver"
+                    ? "bg-slate-300 text-black hover:bg-white"
+                    : "bg-slate-800 text-slate-400 cursor-not-allowed"
+              }
+            `}
             >
               {plan.button}
             </button>
