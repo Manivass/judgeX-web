@@ -163,7 +163,7 @@ const Navbar = () => {
               user?.firstName +
               " " +
               (user?.lastName == undefined ? "" : user?.lastName) +
-              " 💫"
+              "💫"
             }
             typingSpeed={90}
             deletingSpeed={80}

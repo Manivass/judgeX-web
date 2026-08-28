@@ -4,7 +4,6 @@ const Premium = ({ membershipType }) => {
   const navigate = useNavigate();
   return (
     <div>
-      return premiumUser ? (
       <div className="min-h-screen bg-[#050816] py-16 px-6">
         <div className="max-w-5xl mx-auto">
           {/* PREMIUM HERO */}
@@ -210,7 +209,6 @@ const Premium = ({ membershipType }) => {
           </div>
         </div>
       </div>
-      ) : ( // YOUR EXISTING PLANS UI );
     </div>
   );
 };

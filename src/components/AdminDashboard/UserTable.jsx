@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import {
-  FaBan,
-  FaCheckCircle,
-} from "react-icons/fa";
+import { FaBan, FaCheckCircle } from "react-icons/fa";
 
 import { BASE_URL } from "../../utils/constant";
 import { Link } from "react-router";
+import { MdVerified } from "react-icons/md";
 
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
@@ -110,6 +108,11 @@ const ManageUsers = () => {
                           <div>
                             <h3 className="font-semibold text-white">
                               {user?.firstName} {user?.lastName}
+                              {user?.isPremium && (
+                                <span className="inline-flex items-center ml-1">
+                                  <MdVerified className="text-blue-500 text-lg translate-y-1" />
+                                </span>
+                              )}
                             </h3>
 
                             <p className="text-xs text-slate-400">

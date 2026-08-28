@@ -3,10 +3,12 @@ import { FaCheck, FaCrown, FaGem } from "react-icons/fa";
 import { BASE_URL } from "../utils/constant";
 import { useEffect, useState } from "react";
 import Premium from "./Premium";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addUser } from "../store/user";
 
 const Membership = () => {
   const [premiumUser, setPremiumUser] = useState();
+  const dispatch = useDispatch();
   const user = useSelector((store) => store?.user);
   const handlePaymentVerify = async () => {
     try {
@@ -31,11 +33,6 @@ const Membership = () => {
       );
 
       const { key, amount, currency, notes, orderId } = response.data;
-
-      console.log("KEY:", key);
-      console.log("AMOUNT:", amount);
-      console.log("ORDER ID:", orderId);
-      console.log("RAZORPAY:", window.Razorpay);
 
       if (!window.Razorpay) {
         alert("Razorpay SDK not loaded");
@@ -69,6 +66,13 @@ const Membership = () => {
 
       const rzp = new window.Razorpay(options);
       rzp.open();
+      dispatch(
+        addUser({
+          ...user,
+          isPremium: true,
+          membershipType: type,
+        }),
+      );
     } catch (err) {
       console.error("❌ PAYMENT ERROR:", err);
       console.error("❌ RESPONSE:", err.response?.data);
@@ -111,9 +115,8 @@ const Membership = () => {
       button: "Get Gold",
     },
   ];
-  return premiumUser ? (
-    <Premium membershipType={user?.membershipType} />
-  ) : (
+  if (premiumUser) return <Premium membershipType={user?.membershipType} />;
+  return (
     <div className="min-h-screen bg-[#050816] py-16 px-6">
       {/* HEADER */}
 

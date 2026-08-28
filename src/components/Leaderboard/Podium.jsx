@@ -1,7 +1,11 @@
 import { FaCrown } from "react-icons/fa";
 import { Link } from "react-router";
 
+import { MdVerified } from "react-icons/md";
+
 const Podium = ({ leaderboard }) => {
+  console.log(leaderboard);
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 my-12 items-end">
       {/* 2nd */}
@@ -19,8 +23,12 @@ const Podium = ({ leaderboard }) => {
 
           <h2 className="text-xl font-bold text-white mt-3">
             {leaderboard[1]?.firstName} {leaderboard[1]?.lastName}
+            {leaderboard[1]?.isPremium && (
+              <span className="inline-flex items-center ml-1">
+                <MdVerified className="text-blue-500 text-2xl translate-y-1" />
+              </span>
+            )}
           </h2>
-
           <p className="text-slate-400">Rank #2</p>
 
           <div className="stats shadow bg-slate-800 mt-4">
@@ -50,7 +58,12 @@ const Podium = ({ leaderboard }) => {
           />
 
           <h2 className="text-2xl font-bold text-white mt-4">
-            {leaderboard[0]?.firstName} {leaderboard[0]?.lastName}
+            {leaderboard[0]?.firstName} {leaderboard[0]?.lastName}{" "}
+            {leaderboard[0]?.isPremium && (
+              <span className="inline-flex items-center ml-1">
+                <MdVerified className="text-blue-500 text-2xl translate-y-1" />
+              </span>
+            )}
           </h2>
 
           <p className="text-yellow-300 font-semibold">Champion</p>
@@ -85,6 +98,11 @@ const Podium = ({ leaderboard }) => {
 
           <h2 className="text-xl font-bold text-white mt-3">
             {leaderboard[2]?.firstName} {leaderboard[2]?.lastName}
+            {leaderboard[2]?.isPremium && (
+              <span className="inline-flex items-center ml-1">
+                <MdVerified className="text-blue-500 text-2xl translate-y-1" />
+              </span>
+            )}
           </h2>
 
           <p className="text-slate-400">Rank #3</p>

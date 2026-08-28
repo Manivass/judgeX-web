@@ -17,14 +17,12 @@ import { BASE_URL, map } from "../utils/constant";
 import { useParams, Link } from "react-router";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { MdVerified } from "react-icons/md";
 
 const Profile = () => {
-
   const userDetails = useSelector((store) => store?.user);
 
-
   const { id } = useParams();
-
 
   const [user, setUser] = useState(null);
 
@@ -52,7 +50,6 @@ const Profile = () => {
     }
   };
 
-
   const getQuestionSubmission = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/recentSubmissions/${id}`, {
@@ -64,7 +61,6 @@ const Profile = () => {
       console.log("Recent submissions error:", err);
     }
   };
-
 
   const getQuestionCount = async () => {
     try {
@@ -83,7 +79,6 @@ const Profile = () => {
       console.log("Question count error:", err);
     }
   };
-
 
   const getSubmissionCount = async () => {
     try {
@@ -227,7 +222,12 @@ const Profile = () => {
               <div>
                 <div className="flex items-center gap-3 flex-wrap">
                   <h1 className="text-3xl font-bold text-white">
-                    {user?.firstName} {user?.lastName}
+                    {user?.firstName} {user?.lastName}{" "}
+                    {user?.isPremium && (
+                      <span className="inline-flex items-center ml-1">
+                        <MdVerified className="text-blue-500 text-2xl translate-y-1" />
+                      </span>
+                    )}
                   </h1>
                 </div>
 
