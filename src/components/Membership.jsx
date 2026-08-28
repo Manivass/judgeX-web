@@ -2,9 +2,12 @@ import axios from "axios";
 import { FaCheck, FaCrown, FaGem } from "react-icons/fa";
 import { BASE_URL } from "../utils/constant";
 import { useEffect, useState } from "react";
+import Premium from "./Premium";
+import { useSelector } from "react-redux";
 
 const Membership = () => {
   const [premiumUser, setPremiumUser] = useState();
+  const user = useSelector((store) => store?.user);
   const handlePaymentVerify = async () => {
     try {
       const res = await axios.get(BASE_URL + "/payment/verify", {
@@ -75,7 +78,6 @@ const Membership = () => {
   useEffect(() => {
     handlePaymentVerify();
   }, []);
-  if (premiumUser) return <h2>You are already a premium user</h2>;
   const plans = [
     {
       name: "Silver",
@@ -110,17 +112,7 @@ const Membership = () => {
     },
   ];
   return premiumUser ? (
-    <div className="min-h-screen bg-[#050816] flex items-center justify-center px-6">
-      <div className="text-center">
-        <h2 className="text-3xl font-bold text-white">
-          You are already a premium user 🎉
-        </h2>
-
-        <p className="text-slate-400 mt-3">
-          You already have an active premium membership.
-        </p>
-      </div>
-    </div>
+    <Premium membershipType={user?.membershipType} />
   ) : (
     <div className="min-h-screen bg-[#050816] py-16 px-6">
       {/* HEADER */}
