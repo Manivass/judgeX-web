@@ -21,6 +21,7 @@ import { MdVerified } from "react-icons/md";
 
 const Profile = () => {
   const userDetails = useSelector((store) => store?.user);
+  const [status, setStatus] = useState();
 
   const { id } = useParams();
 
@@ -43,7 +44,6 @@ const Profile = () => {
       const res = await axios.get(`${BASE_URL}/getuser/${id}`, {
         withCredentials: true,
       });
-
       setUser(res?.data?.user);
     } catch (err) {
       console.log("Get user details error:", err);
@@ -97,14 +97,44 @@ const Profile = () => {
     }
   };
 
+  const getConnectionRequest = async () => {
+    try {
+      const res = await axios.get(BASE_URL + `/request/getConnection/${id}`, {
+        withCredentials: true,
+      });
+      setStatus(res?.data?.status);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleSendRequest = async () => {
+    try {
+      const res = await axios.post(
+        BASE_URL + `/request/send/${id}`,
+        {},
+        { withCredentials: true },
+      );
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     if (!id) return;
-
     getUserDetails();
     getQuestionSubmission();
     getQuestionCount();
     getSubmissionCount();
   }, [id]);
+
+  useEffect(() => {
+    getConnectionRequest();
+  }, []);
+  useEffect(() => {
+    getConnectionRequest();
+  }, [handleSendRequest]);
 
   // --------------------------------------------------
   // PROFILE UPDATE
@@ -320,9 +350,41 @@ const Profile = () => {
                 </div>
 
                 {/* ROLE */}
-
-                <div className="flex items-center gap-3 text-slate-300">
-                  🎯 Role : {user?.role}
+                <div className="flex gap-3 ">
+                  <div>
+                    {userDetails?._id !== id &&
+                      status &&
+                      (status == "null" ? (
+                        <button
+                          onClick={() => handleSendRequest(id)}
+                          className="px-4 py-2 rounded-lg bg-green-500 text-white"
+                        >
+                          Follow +
+                        </button>
+                      ) : status == "interested" ? (
+                        <button className="px-4 py-2 rounded-lg bg-blue-500 text-white">
+                          Requested
+                        </button>
+                      ) : status == "accepted" ? (
+                        <button className="px-4 py-2 rounded-lg bg-orange-500/20 text-white">
+                          Following
+                        </button>
+                      ) : (
+                        ""
+                      ))}
+                  </div>
+                  <div className="translate-y-2">
+                    {userDetails?._id !== id &&
+                      status &&
+                      status === "accepted" && (
+                        <Link
+                          to={`/chat/${user._id}`}
+                          className="px-4 py-2 rounded-lg bg-purple-500 text-white"
+                        >
+                          Chat
+                        </Link>
+                      )}
+                  </div>
                 </div>
               </div>
             </div>

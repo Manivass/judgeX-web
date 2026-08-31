@@ -1,4 +1,5 @@
-export const BASE_URL = "/api";
+import { io } from "socket.io-client";
+export const BASE_URL = "http://localhost:7777";
 // http://localhost:7777 , /api
 
 export const map = {
@@ -106,3 +107,7 @@ export const dataStructreTypes = [
   "prefix sum",
   "bit manipulation",
 ];
+
+export const socketConnectionString = () => {
+  return io(BASE_URL);
+};

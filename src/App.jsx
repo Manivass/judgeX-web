@@ -21,6 +21,8 @@ import Dashboard from "./components/AdminDashboard/Dashboard";
 import ManageUsers from "./components/AdminDashboard/ManageUsers";
 import ScrollToTop from "./components/ScrollTop";
 import Membership from "./components/Membership";
+import Requests from "./components/Request";
+import Chat from "./components/Chat";
 
 export const Layout = () => {
   return (
@@ -103,6 +105,14 @@ const router = createBrowserRouter([
       {
         path: "/membership",
         element: <Membership />,
+      },
+      {
+        path: "/request",
+        element: <Requests />,
+      },
+      {
+        path: "/chat/:id",
+        element: <Chat />,
       },
     ],
   },
