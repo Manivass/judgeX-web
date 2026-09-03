@@ -3,6 +3,8 @@ import {
   FaLinkedin,
   FaCheckCircle,
   FaInstagram,
+  FaCheck,
+  FaTimes,
 } from "react-icons/fa";
 import { MdOutlineEmail, MdLocationOn } from "react-icons/md";
 import { HiMiniTrophy } from "react-icons/hi2";
@@ -22,7 +24,6 @@ import { MdVerified } from "react-icons/md";
 const Profile = () => {
   const userDetails = useSelector((store) => store?.user);
   const [status, setStatus] = useState();
-
   const { id } = useParams();
 
   const [user, setUser] = useState(null);
@@ -49,6 +50,8 @@ const Profile = () => {
       console.log("Get user details error:", err);
     }
   };
+  const loggedUserId = userDetails?._id?.toString();
+  const profileUserId = user?._id?.toString();
 
   const getQuestionSubmission = async () => {
     try {
@@ -102,6 +105,8 @@ const Profile = () => {
       const res = await axios.get(BASE_URL + `/request/getConnection/${id}`, {
         withCredentials: true,
       });
+
+      console.log("status " + "  " + res?.data);
       setStatus(res?.data?.status);
     } catch (err) {
       console.log(err);
@@ -110,14 +115,29 @@ const Profile = () => {
 
   const handleSendRequest = async () => {
     try {
+      const loggedUserId = userDetails?._id?.toString();
+      const targetUserId = user?._id?.toString();
+
+      if (!loggedUserId || !targetUserId) return;
+
+      if (loggedUserId === targetUserId) {
+        console.log("Cannot send request to yourself");
+        return;
+      }
+
       const res = await axios.post(
-        BASE_URL + `/request/send/${id}`,
+        `${BASE_URL}/request/send/${id}`,
         {},
-        { withCredentials: true },
+        {
+          withCredentials: true,
+        },
       );
+
       console.log(res.data);
+
+      setStatus("interested");
     } catch (err) {
-      console.log(err);
+      console.log("Send request error:", err);
     }
   };
 
@@ -128,13 +148,9 @@ const Profile = () => {
     getQuestionCount();
     getSubmissionCount();
   }, [id]);
-
   useEffect(() => {
     getConnectionRequest();
-  }, []);
-  useEffect(() => {
-    getConnectionRequest();
-  }, [handleSendRequest]);
+  }, [handleSendRequest, user]);
 
   // --------------------------------------------------
   // PROFILE UPDATE
@@ -351,27 +367,27 @@ const Profile = () => {
 
                 {/* ROLE */}
                 <div className="flex gap-3 ">
-                  <div>
-                    {userDetails?._id !== id &&
-                      status &&
-                      (status == "null" ? (
-                        <button
-                          onClick={() => handleSendRequest(id)}
-                          className="px-4 py-2 rounded-lg bg-green-500 text-white"
-                        >
-                          Follow +
-                        </button>
-                      ) : status == "interested" ? (
-                        <button className="px-4 py-2 rounded-lg bg-blue-500 text-white">
-                          Requested
-                        </button>
-                      ) : status == "accepted" ? (
-                        <button className="px-4 py-2 rounded-lg bg-orange-500/20 text-white">
-                          Following
-                        </button>
-                      ) : (
-                        ""
-                      ))}
+                  <div className="flex gap-3">
+                    {loggedUserId !== profileUserId && status && (
+                      <>
+                        {status === "null" ? (
+                          <button
+                            onClick={handleSendRequest}
+                            className="px-4 py-2 rounded-lg bg-green-500 text-white"
+                          >
+                            Follow +
+                          </button>
+                        ) : status === "interested" ? (
+                          <button className="px-4 py-2 rounded-lg bg-blue-500 text-white">
+                            Requested
+                          </button>
+                        ) : status === "accepted" ? (
+                          <button className="px-4 py-2 rounded-lg bg-orange-500/20 text-white">
+                            Following
+                          </button>
+                        ) : null}
+                      </>
+                    )}
                   </div>
                   <div className="translate-y-2">
                     {userDetails?._id !== id &&

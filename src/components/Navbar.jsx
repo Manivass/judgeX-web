@@ -146,6 +146,15 @@ const Navbar = () => {
               </li>
               <li>
                 <Link
+                  to="/connections"
+                  onClick={closeDrawer}
+                  className="text-lg font-semibold"
+                >
+                  <FaPlus className="text-2xl" /> Connections
+                </Link>
+              </li>
+              <li>
+                <Link
                   to="/request"
                   onClick={closeDrawer}
                   className="text-lg font-semibold"

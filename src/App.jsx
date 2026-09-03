@@ -23,6 +23,7 @@ import ScrollToTop from "./components/ScrollTop";
 import Membership from "./components/Membership";
 import Requests from "./components/Request";
 import Chat from "./components/Chat";
+import Connections from "./components/Connections";
 
 export const Layout = () => {
   return (
@@ -114,6 +115,10 @@ const router = createBrowserRouter([
         path: "/chat/:id",
         element: <Chat />,
       },
+      {
+        path : "/connections" , 
+        element : <Connections />
+      }
     ],
   },
 ]);
