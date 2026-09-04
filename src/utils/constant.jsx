@@ -109,5 +109,5 @@ export const dataStructreTypes = [
 ];
 
 export const socketConnectionString = () => {
-  return io(BASE_URL);
+  return io("/", { path: "/api/socket.io" });
 };
