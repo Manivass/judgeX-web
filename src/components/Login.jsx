@@ -35,17 +35,44 @@ const Login = () => {
   };
   const handleLogin = async () => {
     try {
+      console.log("1. LOGIN START");
+
       const res = await axios.post(
         BASE_URL + "/login",
         { email, password },
         { withCredentials: true },
       );
-      localStorage.setItem("user", JSON.stringify(res?.data?.user));
 
-      localStorage.setItem("token", res?.data?.token);
-      dispatch(addUser(res?.data?.user));
+      console.log("2. API SUCCESS");
+      console.log("3. RESPONSE:", res.data);
+
+      const user = res?.data?.user;
+      const token = res?.data?.token;
+
+      console.log("4. USER:", user);
+      console.log("5. TOKEN:", token);
+
+      localStorage.setItem("user", JSON.stringify(user));
+
+      console.log("6. USER STORED");
+
+      if (token) {
+        localStorage.setItem("token", token);
+      }
+
+      console.log("7. TOKEN STORED");
+
+      dispatch(addUser(user));
+
+      console.log("8. DISPATCH DONE");
+
       navigate("/");
+
+      console.log("9. NAVIGATE DONE");
     } catch (err) {
+      console.log("❌ LOGIN ERROR:", err);
+      console.log("❌ RESPONSE ERROR:", err?.response?.data);
+
       setErr(err?.response?.data?.message);
     }
   };

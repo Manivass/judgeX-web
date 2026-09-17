@@ -26,7 +26,10 @@ const Questions = () => {
     (store) => store?.user?.solvedProblems?.solvedQuestionsIds,
   );
 
-  const userRole = useSelector((store) => store?.user?.role);
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const userRole = user?.role;
+  console.log(user);
 
   let getQuestions = async () => {
     try {
@@ -245,11 +248,7 @@ const Questions = () => {
                             ))}
                           </div>
                         </td>
-                        {userRole == "user" ? (
-                          <td>
-                            <button className="btn btn-ghost btn-sm">🔖</button>
-                          </td>
-                        ) : (
+                        {userRole == "admin" ? (
                           <td className="flex gap-5">
                             <Link
                               to={`/questions/edit/${problem?._id}`}
@@ -263,6 +262,10 @@ const Questions = () => {
                             >
                               Delete
                             </button>
+                          </td>
+                        ) : (
+                          <td>
+                            <button className="btn btn-ghost btn-sm">🔖</button>
                           </td>
                         )}
                       </tr>
