@@ -9,7 +9,7 @@ import { addStateSuggestion } from "../store/stateSuggestion";
 import { addUser } from "../store/user";
 
 const Editpage = ({ onProfileUpdate }) => {
-  const userInfo = useSelector((store) => store?.user);
+  const userInfo = JSON.parse(localStorage.getItem("user"));
   const stateSuggest = useSelector((store) => store?.stateSuggest);
 
   const dispatch = useDispatch();

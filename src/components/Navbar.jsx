@@ -20,7 +20,7 @@ import { LuClipboardList } from "react-icons/lu";
 const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((store) => store?.user);
+  const user = JSON.parse(localStorage.getItem("user"));
   const closeDrawer = () => {
     document.getElementById("my-drawer-1").checked = false;
   };

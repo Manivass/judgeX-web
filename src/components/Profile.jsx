@@ -13,8 +13,6 @@ import { RiGraduationCapFill } from "react-icons/ri";
 import Editpage from "./EditProfilePage";
 import Skills from "./Skills";
 import ProfileSkeleton from "../skeleton/ProfileSkeleton";
-
-import { useSelector } from "react-redux";
 import { BASE_URL, map } from "../utils/constant";
 import { useParams, Link } from "react-router";
 import { useEffect, useState } from "react";
@@ -22,7 +20,7 @@ import axios from "axios";
 import { MdVerified } from "react-icons/md";
 
 const Profile = () => {
-  const userDetails = useSelector((store) => store?.user);
+  const userDetails = JSON.parse(localStorage.getItem("user"));
   const [status, setStatus] = useState();
   const { id } = useParams();
 

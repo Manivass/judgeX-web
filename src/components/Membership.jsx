@@ -3,13 +3,13 @@ import { FaCheck, FaCrown, FaGem } from "react-icons/fa";
 import { BASE_URL } from "../utils/constant";
 import { useEffect, useState } from "react";
 import Premium from "./Premium";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addUser } from "../store/user";
 
 const Membership = () => {
   const [premiumUser, setPremiumUser] = useState();
   const dispatch = useDispatch();
-  const user = useSelector((store) => store?.user);
+  const user = JSON.parse(localStorage.getItem("user"));
   const handlePaymentVerify = async () => {
     try {
       const res = await axios.get(BASE_URL + "/payment/verify", {

@@ -2,7 +2,7 @@ import { FaTrophy, FaCircleCheck } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 
 const CurrentUserCard = ({ leaderboard }) => {
-  const loggedUser = useSelector((store) => store?.user);
+  const loggedUser = JSON.parse(localStorage.getItem("user"));
   const rank =
     leaderboard?.findIndex((user) => user._id === loggedUser?._id) + 1;
   return (

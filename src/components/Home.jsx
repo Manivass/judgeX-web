@@ -11,13 +11,13 @@ import { addProblemofDay } from "../store/problemofday";
 
 const Home = () => {
   const navigate = useNavigate();
-  const userDetails = useSelector((store) => store?.user);
+  const userDetails = JSON.parse(localStorage.getItem("user"));
   const dispatch = useDispatch();
   const stats = useSelector((store) => store?.stats);
   const [submissions, setSubmissions] = useState([]);
   const [leaderboard, setLeaderboard] = useState([]);
   const problemOfTheDay = useSelector((store) => store?.problemofDay);
-  const userRole = useSelector((store) => store?.user?.role);
+  const userRole = userDetails?.role;
   const getStats = async () => {
     try {
       const res = await axios.get(BASE_URL + "/admin/dashboard/stats", {

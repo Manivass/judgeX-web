@@ -23,6 +23,10 @@ const Login = () => {
         { withCredentials: true },
       );
 
+      localStorage.setItem("user", JSON.stringify(res?.data?.user));
+
+      localStorage.setItem("token", res?.data?.token);
+
       dispatch(addUser(res?.data?.user));
       navigate("/");
     } catch (err) {
@@ -36,6 +40,9 @@ const Login = () => {
         { email, password },
         { withCredentials: true },
       );
+      localStorage.setItem("user", JSON.stringify(res?.data?.user));
+
+      localStorage.setItem("token", res?.data?.token);
       dispatch(addUser(res?.data?.user));
       navigate("/");
     } catch (err) {
@@ -49,6 +56,10 @@ const Login = () => {
         { token: response.credential, authProvider: "google" },
         { withCredentials: true },
       );
+
+      localStorage.setItem("user", JSON.stringify(res?.data?.user));
+
+      localStorage.setItem("token", res?.data?.token);
 
       dispatch(addUser(res?.data?.user));
       navigate("/");
@@ -186,10 +197,7 @@ const Login = () => {
                   OR
                 </h2>
 
-                <div
-                  id="googleBtn"
-                  className=""
-                ></div>
+                <div id="googleBtn" className=""></div>
               </div>
             </div>
           </div>

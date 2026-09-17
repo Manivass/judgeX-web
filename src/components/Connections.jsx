@@ -6,7 +6,7 @@ import { FaUser } from "react-icons/fa";
 import { Link } from "react-router";
 
 const Connections = () => {
-  const user = useSelector((store) => store?.user);
+  const user = JSON.parse(localStorage.getItem("user"));
   const [connections, setConnection] = useState([]);
 
   const getConnections = async () => {

@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
 const Editorial = ({ numb }) => {
-  const user = useSelector((store) => store?.user);
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const [editorial, setEditorial] = useState(null);
   const [loading, setLoading] = useState(true);

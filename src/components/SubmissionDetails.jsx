@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { BASE_URL } from "../utils/constant";
 import { Link } from "react-router";
-import { useSelector } from "react-redux";
 import SubmissionDetailsSkeleton from "../skeleton/SubmissionDetailsSkeleton";
 
 const SubmissionDetails = () => {
@@ -12,7 +11,7 @@ const SubmissionDetails = () => {
   console.log(submission);
 
   const navigate = useNavigate();
-  const user = useSelector((store) => store?.user);
+  const user = JSON.parse(localStorage.getItem("user"));
   const getSubmission = async () => {
     try {
       const res = await axios.get(BASE_URL + `/submissionDetails/${id}`);

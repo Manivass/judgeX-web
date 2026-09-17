@@ -2,13 +2,12 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import { BASE_URL } from "../utils/constant";
-import { useSelector } from "react-redux";
 import StatsSkeleton from "../skeleton/StatsSkeleton";
 
 const UserSubmissions = () => {
   const { id } = useParams();
 
-  const userDetails = useSelector((store) => store?.user);
+  const userDetails = JSON.parse(localStorage.getItem("user"));;
 
   const navigate = useNavigate();
 
